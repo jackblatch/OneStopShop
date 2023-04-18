@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "tailwind": "npx tailwindcss -i ./app/globals.css -o ./tailwind-dist/output.css --watch",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@types/node": "18.15.11",
@@ -21,5 +24,17 @@
     "react-dom": "18.2.0",
     "tailwindcss": "3.3.1",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.0.6",
+    "@storybook/addon-interactions": "^7.0.6",
+    "@storybook/addon-links": "^7.0.6",
+    "@storybook/addon-styling": "^1.0.1",
+    "@storybook/blocks": "^7.0.6",
+    "@storybook/nextjs": "^7.0.6",
+    "@storybook/react": "^7.0.6",
+    "@storybook/testing-library": "^0.0.14-next.2",
+    "eslint-plugin-storybook": "^0.6.11",
+    "storybook": "^7.0.6"
   }
 }
