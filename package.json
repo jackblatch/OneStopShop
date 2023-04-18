@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "tailwind": "npx tailwindcss -i ./app/globals.css -o ./tailwind-dist/output.css --watch",
+    "tailwind": "npx tailwindcss -i ./styles/globals.css -o ./tailwind-dist/output.css --watch",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -16,12 +16,16 @@
     "@types/react": "18.0.37",
     "@types/react-dom": "18.0.11",
     "autoprefixer": "10.4.14",
+    "class-variance-authority": "^0.5.2",
+    "clsx": "^1.2.1",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
+    "lucide-react": "^0.162.0",
     "next": "13.3.0",
     "postcss": "8.4.22",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "tailwind-merge": "^1.12.0",
     "tailwindcss": "3.3.1",
     "typescript": "5.0.4"
   },
@@ -35,6 +39,7 @@
     "@storybook/react": "^7.0.6",
     "@storybook/testing-library": "^0.0.14-next.2",
     "eslint-plugin-storybook": "^0.6.11",
-    "storybook": "^7.0.6"
+    "storybook": "^7.0.6",
+    "tailwindcss-animate": "^1.0.5"
   }
 }

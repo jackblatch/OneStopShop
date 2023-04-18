@@ -1,5 +1,3 @@
-// ./src/stories/Button.js
-
 import React, { useMemo } from 'react';
 
 const getSizeClasses = (size: string) => {
@@ -36,7 +34,7 @@ export const Button = ({ primary = false, size = 'medium', label, ...props }: {p
   }, [primary, size]);
 
   return (
-    <button type="button" className={`${BASE_BUTTON_CLASSES} ${computedClasses} bg-red-500`} {...props}>
+    <button type="button" className={`${BASE_BUTTON_CLASSES} ${computedClasses}`} {...props}>
       {label}
     </button>
   );
