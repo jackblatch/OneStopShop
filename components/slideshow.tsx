@@ -14,21 +14,21 @@ export const SlideShow = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  useEffect(() => {
-    if (hasInteracted) return;
-    const timer = setTimeout(
-      () => setCurrentImageIndex((i) => (i === images.length - 1 ? 0 : i + 1)),
-      5000
-    );
+  // useEffect(() => {
+  //   if (hasInteracted) return;
+  //   const timer = setTimeout(
+  //     () => setCurrentImageIndex((i) => (i === images.length - 1 ? 0 : i + 1)),
+  //     5000
+  //   );
 
-    return () => clearInterval(timer);
-  }, [currentImageIndex]);
+  //   return () => clearInterval(timer);
+  // }, [currentImageIndex]);
 
   return (
     <div>
       <div
         key={currentImageIndex}
-        className="relative w-full h-[600px] motion-safe:animate-fade-in"
+        className="relative w-full h-[600px] animate-fade-in"
       >
         <Image
           src={images[currentImageIndex]}

@@ -5,11 +5,18 @@ import { cn } from "@/lib/utils";
 export const AnnouncementBar = ({
   columns,
   description,
+  backgroundColor = "bg-primary",
+  textColor = "text-secondary",
   children,
-}: PropsWithChildren<{ columns: 1 | 2; description: string }>) => {
+}: PropsWithChildren<{
+  columns: 1 | 2;
+  description: string;
+  backgroundColor?: string;
+  textColor?: string;
+}>) => {
   return (
-    <div className="bg-primary text-secondary p-2">
-      <ContentWrapper paddingY="1">
+    <div className={cn("text-secondary p-2", backgroundColor, textColor)}>
+      <ContentWrapper paddingY="2">
         <div
           className={cn(
             "flex items-center justify-between",

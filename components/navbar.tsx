@@ -17,12 +17,12 @@ export const NavBar = () => {
         description="Free shipping on all orders over $50"
       >
         <div className="flex items-center justify-end gap-2">
-          <Button variant="link" size="sm">
-            <span className="uppercase text-secondary">Stores</span>
-          </Button>
-          <Button variant="link" size="sm">
-            <span className="uppercase text-secondary">Help Centre</span>
-          </Button>
+          <Link href="/" className="uppercase text-secondary text-sm">
+            Stores
+          </Link>
+          <Link href="/" className="uppercase text-secondary text-sm">
+            Help Centre
+          </Link>
         </div>
       </AnnouncementBar>
       <nav className="border-b border-border pb-1">
@@ -52,13 +52,18 @@ export const NavBar = () => {
         </ContentWrapper>
         <Line />
         <ContentWrapper paddingY="0">
-          <MenuItems />
+          <div className="-ml-4">
+            <MenuItems />
+          </div>
         </ContentWrapper>
       </nav>
       <AnnouncementBar
         columns={1}
-        description="Free shipping on all orders over $50"
+        description="New summer sale - limited time only!"
+        backgroundColor="bg-secondary"
+        textColor="text-primary"
       />
+      <Line />
     </>
   );
 };
