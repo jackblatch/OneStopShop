@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1682019488829,
+      "tag": "0000_classy_lord_hawal",
+      "breakpoints": false
+    }
+  ]
+}
