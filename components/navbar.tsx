@@ -24,7 +24,7 @@ export const NavBar = () => {
               <Search />
             </li>
             <li>
-              <Link href="/cart">
+              <Link href="/">
                 <IconWithText
                   icon={<Truck size="36" strokeWidth={2} />}
                   headingText="Fast Dispatch"

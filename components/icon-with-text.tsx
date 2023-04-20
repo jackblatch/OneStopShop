@@ -1,4 +1,4 @@
-import { Heading } from "./ui/heading";
+import { Text } from "./ui/text";
 
 export const IconWithText = ({
   icon,
@@ -14,7 +14,7 @@ export const IconWithText = ({
       {icon}
       <div className="flex flex-col">
         <p className="text-primary">{headingText}</p>
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <Text appearance="secondary">{description}</Text>
       </div>
     </div>
   );
