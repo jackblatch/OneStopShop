@@ -36,7 +36,7 @@ const menuItems = [
 
 export const MenuItems = () => {
   return (
-    <ul className="flex items-center justify-start gap-4 pt-1 ml-2">
+    <ul className="flex items-center justify-start gap-4 pt-1">
       {menuItems.map((item, i) => (
         <li key={i}>
           <Link href="/">

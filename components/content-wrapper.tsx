@@ -3,9 +3,11 @@ import { type PropsWithChildren } from "react";
 
 export const ContentWrapper = ({
   children,
-  padding = "6",
-}: PropsWithChildren<{ padding?: string }>) => {
+  paddingY = "6",
+}: PropsWithChildren<{ paddingY?: string }>) => {
   return (
-    <div className={cn("max-w-7xl m-auto", `p-${padding}`)}>{children}</div>
+    <div className={cn("max-w-7xl m-auto px-6", `py-${paddingY}`)}>
+      {children}
+    </div>
   );
 };

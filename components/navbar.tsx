@@ -7,11 +7,24 @@ import { MenuItems } from "./menu-items";
 import { Line } from "./line";
 import { AnnouncementBar } from "./announcement-bar";
 import { IconWithText } from "./icon-with-text";
+import { Button } from "./ui/button";
 
 export const NavBar = () => {
   return (
     <>
-      <AnnouncementBar />
+      <AnnouncementBar
+        columns={2}
+        description="Free shipping on all orders over $50"
+      >
+        <div className="flex items-center justify-end gap-2">
+          <Button variant="link" size="sm">
+            <span className="uppercase text-secondary">Stores</span>
+          </Button>
+          <Button variant="link" size="sm">
+            <span className="uppercase text-secondary">Help Centre</span>
+          </Button>
+        </div>
+      </AnnouncementBar>
       <nav className="border-b border-border pb-1">
         <ContentWrapper>
           <ul className="flex items-center justify-between gap-12">
@@ -33,15 +46,19 @@ export const NavBar = () => {
               </Link>
             </li>
             <li>
-              <ShoppingCart />
+              <ShoppingCart size={26} />
             </li>
           </ul>
         </ContentWrapper>
         <Line />
-        <ContentWrapper padding="0">
+        <ContentWrapper paddingY="0">
           <MenuItems />
         </ContentWrapper>
       </nav>
+      <AnnouncementBar
+        columns={1}
+        description="Free shipping on all orders over $50"
+      />
     </>
   );
 };
