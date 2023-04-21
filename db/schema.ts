@@ -1,6 +1,8 @@
 // schema.ts
 import {
   decimal,
+  foreignKey,
+  int,
   mysqlTable,
   serial,
   text,
@@ -18,5 +20,4 @@ export const products = mysqlTable("products", {
   price: decimal("price"),
   description: text("description"),
   inventory: decimal("inventory"),
-  storeId: decimal("store_id"),
 });

@@ -1,7 +1,7 @@
 import { NavBar } from "@/components/navbar";
 import "../../styles/globals.css";
 import { Footer } from "@/components/footer";
-import { stores } from "@/db/schema";
+import { products, stores } from "@/db/schema";
 import { db } from "@/db/db";
 import React from "react";
 
@@ -16,11 +16,11 @@ export default async function StorefrontLayout({
   children: React.ReactNode;
 }) {
   // const addStore = await db.insert(stores).values({
-  //   id: 1,
+  //   id: 2,
   //   name: "test",
   // });
-  const myStores = await db.select().from(stores);
-  console.log(myStores);
+  const Myproducts = await db.select().from(products);
+  console.log(Myproducts);
 
   return (
     <div className="min-h-screen w-full flex flex-col bg-gray-50">
