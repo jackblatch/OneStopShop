@@ -7,7 +7,7 @@ import { MenuItems } from "./menu-items";
 import { Line } from "./line";
 import { AnnouncementBar } from "./announcement-bar";
 import { IconWithText } from "./icon-with-text";
-import { Button } from "./ui/button";
+import { routes } from "@/lib/routes";
 
 export const NavBar = () => {
   return (
@@ -16,9 +16,12 @@ export const NavBar = () => {
         columns={2}
         description="Free shipping on all orders over $50"
       >
-        <div className="flex items-center justify-end gap-2">
-          <Link href="/" className="uppercase text-secondary text-sm">
-            Stores
+        <div className="flex items-center justify-end gap-6">
+          <Link
+            href={routes.account}
+            className="uppercase text-secondary text-sm"
+          >
+            Account
           </Link>
           <Link href="/" className="uppercase text-secondary text-sm">
             Help Centre
@@ -27,7 +30,7 @@ export const NavBar = () => {
       </AnnouncementBar>
       <nav className="border-b border-border pb-1">
         <ContentWrapper>
-          <ul className="flex items-center justify-between gap-12">
+          <ul className="flex items-center justify-between gap-12 py-2">
             <li>
               <Link href="/">
                 <Logo />

@@ -12,6 +12,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.16.4",
     "@planetscale/database": "^1.7.0",
     "@types/node": "18.15.11",
     "@types/react": "18.0.37",

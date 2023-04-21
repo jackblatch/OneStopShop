@@ -1,8 +1,8 @@
 import { NavBar } from "@/components/navbar";
 import "../styles/globals.css";
 import { Footer } from "@/components/footer";
-import { stores } from "@/db/schema";
-import { db } from "@/db/db";
+import { ClerkProvider } from "@clerk/nextjs/app-beta";
+import React from "react";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,20 +14,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const addStore = await db.insert(stores).values({
-  //   id: 1,
-  //   name: "test",
-  // });
-  const myStores = await db.select().from(stores);
-  console.log(myStores);
-
   return (
-    <html lang="en">
-      <body className="min-h-screen w-full flex flex-col bg-gray-50">
-        <NavBar />
-        <main className="h-full flex-1">{children}</main>
-        <Footer />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body>{children}</body>
+      </html>
+    </ClerkProvider>
   );
 }
