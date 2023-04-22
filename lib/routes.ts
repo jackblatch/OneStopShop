@@ -1,5 +1,14 @@
 export const routes = {
   signIn: "/auth/sign-in",
   signUp: "/auth/sign-up",
-  account: "/admin/account",
+  account: "/account",
+};
+
+export const singleLevelNestedRoutes = {
+  account: {
+    "selling-profile": routes.account + "/seller/selling-profile",
+    products: routes.account + "/seller/products",
+    orders: routes.account + "/seller/orders",
+    "your-purchases": routes.account + "/buyer/purchases",
+  },
 };

@@ -8,7 +8,7 @@ export const Sidebar = ({
   menuItems: { name: string; href: string; heading: boolean }[];
 }) => {
   return (
-    <ul>
+    <ul className="bg-secondary p-6 rounded-md border-border border">
       {menuItems.map((item, i) => (
         <li
           key={i}

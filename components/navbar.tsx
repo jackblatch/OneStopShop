@@ -8,8 +8,13 @@ import { Line } from "./line";
 import { AnnouncementBar } from "./announcement-bar";
 import { IconWithText } from "./icon-with-text";
 import { routes } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 
-export const NavBar = () => {
+export const NavBar = ({
+  showSecondAnnouncementBar,
+}: {
+  showSecondAnnouncementBar: boolean;
+}) => {
   return (
     <>
       <AnnouncementBar
@@ -28,7 +33,12 @@ export const NavBar = () => {
           </Link>
         </div>
       </AnnouncementBar>
-      <nav className="border-b border-border pb-1">
+      <nav
+        className={cn(
+          "pb-1",
+          showSecondAnnouncementBar && "border-b border-border"
+        )}
+      >
         <ContentWrapper>
           <ul className="flex items-center justify-between gap-12 py-2">
             <li>
@@ -60,12 +70,14 @@ export const NavBar = () => {
           </div>
         </ContentWrapper>
       </nav>
-      <AnnouncementBar
-        columns={1}
-        description="New summer sale - limited time only!"
-        backgroundColor="bg-secondary"
-        textColor="text-primary"
-      />
+      {showSecondAnnouncementBar && (
+        <AnnouncementBar
+          columns={1}
+          description="New summer sale - limited time only!"
+          backgroundColor="bg-secondary"
+          textColor="text-primary"
+        />
+      )}
       <Line />
     </>
   );

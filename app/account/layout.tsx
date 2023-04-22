@@ -7,21 +7,24 @@ import { Heading } from "@/components/ui/heading";
 import { PropsWithChildren } from "react";
 import { SignedIn, SignedOut } from "@clerk/nextjs/app-beta";
 import SignInWrapper from "@/components/sign-in";
+import { singleLevelNestedRoutes } from "@/lib/routes";
 
 export default function AdminLayout({ children }: PropsWithChildren) {
   return (
     <div className="min-h-screen w-full flex flex-col">
-      <NavBar />
+      <NavBar showSecondAnnouncementBar={false} />
       <ContentWrapper>
         <SignedIn>
-          <div className="my-12">
+          <div>
             <Heading size="h3">Admin Dashboard</Heading>
             <div className="grid grid-cols-9 gap-8 mt-6">
               <div className="col-span-2 flex flex-col gap-6">
                 <Sidebar menuItems={menuItems} />
                 <UserProfileWrapper />
               </div>
-              <main className="h-full flex-1">{children}</main>
+              <main className="h-full flex-1 w-full col-span-7">
+                {children}
+              </main>
             </div>
           </div>
         </SignedIn>
@@ -42,17 +45,17 @@ const menuItems = [
   },
   {
     name: "Selling profile",
-    href: "/",
+    href: singleLevelNestedRoutes.account["selling-profile"],
     heading: false,
   },
   {
     name: "Products",
-    href: "/",
+    href: singleLevelNestedRoutes.account.products,
     heading: false,
   },
   {
     name: "Orders",
-    href: "/",
+    href: singleLevelNestedRoutes.account.orders,
     heading: false,
   },
   {
@@ -62,7 +65,7 @@ const menuItems = [
   },
   {
     name: "Your purchases",
-    href: "/",
+    href: singleLevelNestedRoutes.account["your-purchases"],
     heading: false,
   },
 ];

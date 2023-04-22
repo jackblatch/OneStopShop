@@ -1,7 +1,6 @@
 "use client";
 
 import { UserButton } from "@clerk/nextjs";
-import { Text } from "./ui/text";
 
 export const UserProfileWrapper = () => {
   return (
@@ -12,6 +11,7 @@ export const UserProfileWrapper = () => {
       </p>
       <div className="mt-4">
         <UserButton />
+        {/* <div className="h-8 w-8 bg-primary rounded-full" /> - TODO: Add this as default first if clerk button not loaded to prevent content shift */}
       </div>
     </div>
   );
