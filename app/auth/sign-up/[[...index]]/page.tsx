@@ -1,9 +1,10 @@
 "use client";
 
+import { routes } from "@/lib/routes";
 import { SignUp } from "@clerk/nextjs";
 
 const SignUpPage = () => (
-  <SignUp path="/auth/sign-up" routing="path" signInUrl="/auth/sign-in" />
+  <SignUp path={routes.signUp} routing="path" signInUrl={routes.signIn} />
 );
 
 export default SignUpPage;
