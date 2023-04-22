@@ -12,3 +12,7 @@ export const singleLevelNestedRoutes = {
     "your-purchases": routes.account + "/buyer/purchases",
   },
 };
+
+export const apiRoutes = {
+  createStore: "/api/store/create-store",
+};

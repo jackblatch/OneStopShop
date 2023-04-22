@@ -16,13 +16,13 @@ export default function AdminLayout({ children }: PropsWithChildren) {
       <ContentWrapper>
         <SignedIn>
           <div>
-            <Heading size="h3">Admin Dashboard</Heading>
+            <Heading size="h3">Your Account</Heading>
             <div className="grid grid-cols-9 gap-8 mt-6">
               <div className="col-span-2 flex flex-col gap-6">
                 <Sidebar menuItems={menuItems} />
                 <UserProfileWrapper />
               </div>
-              <main className="h-full flex-1 w-full col-span-7">
+              <main className="h-full flex-1 w-full col-span-7 border border-border rounded-md bg-secondary p-6">
                 {children}
               </main>
             </div>

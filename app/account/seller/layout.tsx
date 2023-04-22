@@ -6,8 +6,12 @@ export default async function SellerLayout() {
   console.log(user?.privateMetadata?.storeId);
 
   return (
-    <>{user?.privateMetadata?.storeId ? <div>ddd</div> : <CreateNewStore />}</>
+    <>
+      {user?.privateMetadata?.storeId ? (
+        <div>Store created!</div>
+      ) : (
+        <CreateNewStore />
+      )}
+    </>
   );
 }
-
-// create UI for if storeid isn't on clerk user metadata, then show create store option. Otherwise, fetch and render content

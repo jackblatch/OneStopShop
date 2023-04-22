@@ -6,6 +6,8 @@ export const ContentWrapper = ({
   paddingY = "6",
 }: PropsWithChildren<{ paddingY?: string }>) => {
   return (
-    <div className={`max-w-7xl m-auto px-6 py-${paddingY}`}>{children}</div>
+    <div className={`max-w-[1800px] m-auto px-6 py-${paddingY}`}>
+      {children}
+    </div>
   );
 };
