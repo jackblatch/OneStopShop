@@ -1,13 +1,5 @@
 // schema.ts
-import {
-  decimal,
-  foreignKey,
-  int,
-  mysqlTable,
-  serial,
-  text,
-  varchar,
-} from "drizzle-orm/mysql-core";
+import { decimal, int, mysqlTable, serial, text } from "drizzle-orm/mysql-core";
 
 export const stores = mysqlTable("stores", {
   id: serial("id").primaryKey(),
@@ -20,4 +12,5 @@ export const products = mysqlTable("products", {
   price: decimal("price"),
   description: text("description"),
   inventory: decimal("inventory"),
+  storeId: int("store_id"),
 });
