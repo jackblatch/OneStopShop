@@ -11,4 +11,4 @@ const connection = connect({
 });
 
 export const db = drizzle(connection);
-migrate(db as any, { migrationsFolder: "./migrations-folder" });
+// migrate(db as any, { migrationsFolder: "./migrations-folder" });

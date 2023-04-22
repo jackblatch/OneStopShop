@@ -29,7 +29,7 @@ export default async function StorefrontLayout({
   return (
     <div className="min-h-screen w-full flex flex-col">
       <NavBar showSecondAnnouncementBar={true} />
-      <main className="h-full flex-1">{children}</main>
+      <div className="h-full flex-1">{children}</div>
       <Footer />
     </div>
   );

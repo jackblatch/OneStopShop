@@ -3,7 +3,7 @@ import { currentUser } from "@clerk/nextjs/app-beta";
 
 export default async function SellerLayout() {
   const user = await currentUser();
-  console.log(user?.privateMetadata?.storeId);
+  console.log(user);
 
   return (
     <>

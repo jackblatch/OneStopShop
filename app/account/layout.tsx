@@ -22,9 +22,9 @@ export default function AdminLayout({ children }: PropsWithChildren) {
                 <Sidebar menuItems={menuItems} />
                 <UserProfileWrapper />
               </div>
-              <main className="h-full flex-1 w-full col-span-7 border border-border rounded-md bg-secondary p-6">
+              <div className="h-full flex-1 w-full col-span-7 border border-border rounded-md bg-secondary p-6">
                 {children}
-              </main>
+              </div>
             </div>
           </div>
         </SignedIn>

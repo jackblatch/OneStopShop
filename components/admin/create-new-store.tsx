@@ -7,11 +7,13 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { apiRoutes } from "@/lib/routes";
 import { createStore } from "@/lib/apiTypes";
+import { useToast } from "../ui/use-toast";
 
 // type DataFetchStatus<T extends {formStateStatus: string}> = T["formStateStatus"] extends "error" ? T & createStore["output"] : {formStateStatus: "idle" | "loading"};
 // @TODO: something similar to type above should be used for formState type to ensure createStore["output"] is present when formSTateStatus is "error"
 
 export const CreateNewStore = () => {
+  const { toast } = useToast();
   const [storeName, setStoreName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,10 +30,14 @@ export const CreateNewStore = () => {
         body: JSON.stringify(req),
       });
       const data: createStore["output"] = await res.json();
-      if (data.error) {
-        console.error(data.error);
-      }
       setIsLoading(false);
+      if (!data.error) {
+        setStoreName("");
+      }
+      toast({
+        title: data.message,
+        description: data.action,
+      });
     })();
   };
 
@@ -56,7 +62,9 @@ export const CreateNewStore = () => {
           />
         </div>
         <div className="w-fit">
-          <Button type="submit">Create</Button>
+          <Button type="submit" disabled={isLoading}>
+            Create
+          </Button>
         </div>
       </form>
       <div className="col-span-1">

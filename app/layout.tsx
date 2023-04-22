@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import { Footer } from "@/components/footer";
 import { ClerkProvider } from "@clerk/nextjs/app-beta";
 import React from "react";
+import { Toaster } from "@/components/ui/Toaster";
 
 export const metadata = {
   title: "Create Next App",
@@ -17,7 +18,10 @@ export default async function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>{children}</body>
+        <body>
+          <main>{children}</main>
+          <Toaster />
+        </body>
       </html>
     </ClerkProvider>
   );
