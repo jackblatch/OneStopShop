@@ -36,6 +36,20 @@
       "when": 1682156912896,
       "tag": "0004_silent_dazzler",
       "breakpoints": false
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1682198277441,
+      "tag": "0005_flawless_marauders",
+      "breakpoints": false
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1682198346204,
+      "tag": "0006_keen_steel_serpent",
+      "breakpoints": false
     }
   ]
 }
