@@ -27,7 +27,7 @@ export default async function StorefrontLayout({
   console.log(Myproducts);
 
   return (
-    <div className="min-h-screen w-full flex flex-col bg-gray-50">
+    <div className="min-h-screen w-full flex flex-col">
       <NavBar />
       <main className="h-full flex-1">{children}</main>
       <Footer />
