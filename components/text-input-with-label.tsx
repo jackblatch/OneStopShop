@@ -1,5 +1,4 @@
-"use client";
-
+import { Store } from "@/db/schema";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
@@ -8,20 +7,27 @@ import { Label } from "./ui/label";
 export const TextInputWithLabel = ({
   label,
   id,
-  name,
-  value,
-  setValue,
+  state,
+  setState,
+  ...delegated
 }: {
   label: string;
   id: string;
-  name: string;
-  value: Record<string, unknown>;
-  setValue: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
+  state: Record<string, string>;
+  setState: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  delegated?: Record<string, unknown>;
 }) => {
   return (
-    <div>
-      <Label>{label}</Label>
-      <Input />
+    <div className="flex flex-col gap-2">
+      <Label htmlFor={id}>{label}</Label>
+      <Input
+        name={id}
+        id={id}
+        value={state[id]}
+        onChange={(e) =>
+          setState((prev) => ({ ...prev, [id]: e.target.value }))
+        }
+      />
     </div>
   );
 };
