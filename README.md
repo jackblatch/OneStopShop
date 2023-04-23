@@ -1,7 +1,7 @@
 ## One Stop Shop
 
-> **Info**
-> This app is a work in progress and uses new experimental technologies such as the Next 13 App Router and Drizzle ORM.
+> **Warning**
+> This app is a work in progress and shouldn't be considered production ready. It uses new technologies that are yet to be stable such as the Next 13 App Router with RSC's and Drizzle ORM.
 
 ### Running the app
 
