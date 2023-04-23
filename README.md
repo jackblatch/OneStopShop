@@ -1,8 +1,7 @@
 ## One Stop Shop
 
-> Work in Progress
->
-> Experimental app with RSC's using the Next.js App Router
+> **Info**
+> This app is a work in progress and uses new experimental technologies such as the Next 13 App Router and Drizzle ORM.
 
 ### Running the app
 
