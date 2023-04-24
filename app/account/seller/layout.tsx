@@ -4,7 +4,6 @@ import { PropsWithChildren } from "react";
 
 export default async function SellerLayout({ children }: PropsWithChildren) {
   const user = await currentUser();
-  console.log(user);
 
   return (
     <>

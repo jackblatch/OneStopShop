@@ -8,15 +8,14 @@ import { eq } from "drizzle-orm";
 export default async function SellerProfile() {
   const user = await currentUser();
 
-  let storeDetails;
-  try {
-    storeDetails = await db
-      .select()
-      .from(stores)
-      .where(eq(stores.id, Number(user?.privateMetadata?.storeId)));
-  } catch {
-    console.log("error");
-  }
+  const storeDetails = await db
+    .select()
+    .from(stores)
+    .where(eq(stores.id, Number(user?.privateMetadata?.storeId)))
+    .catch((err) => {
+      console.log(err);
+      return null;
+    });
 
   return (
     <div>

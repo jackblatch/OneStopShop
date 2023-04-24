@@ -1,5 +1,4 @@
 "use client";
-
 import { UserButton } from "@clerk/nextjs";
 
 export const UserProfileWrapper = () => {
@@ -11,7 +10,10 @@ export const UserProfileWrapper = () => {
       </p>
       <div className="mt-4">
         <UserButton />
-        {/* <div className="h-8 w-8 bg-primary rounded-full" /> - TODO: Add this as default first if clerk button not loaded to prevent content shift */}
+        {/* {user.isLoaded ? (
+        ) : (
+          <div className="h-8 w-8 bg-primary rounded-full" />
+        )} */}
       </div>
     </div>
   );

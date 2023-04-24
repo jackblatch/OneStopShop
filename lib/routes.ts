@@ -15,4 +15,5 @@ export const singleLevelNestedRoutes = {
 
 export const apiRoutes = {
   createStore: "/api/store/create-store",
+  updateStoreDetails: "/api/store/update-details",
 };

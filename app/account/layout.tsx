@@ -5,7 +5,7 @@ import { NavBar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
 import { Heading } from "@/components/ui/heading";
 import { PropsWithChildren } from "react";
-import { SignedIn, SignedOut, currentUser } from "@clerk/nextjs/app-beta";
+import { SignedIn, SignedOut } from "@clerk/nextjs/app-beta";
 import SignInWrapper from "@/components/sign-in";
 import { singleLevelNestedRoutes } from "@/lib/routes";
 

@@ -1,6 +1,4 @@
-import { NavBar } from "@/components/navbar";
 import "../styles/globals.css";
-import { Footer } from "@/components/footer";
 import { ClerkProvider } from "@clerk/nextjs/app-beta";
 import React from "react";
 import { Toaster } from "@/components/ui/Toaster";
