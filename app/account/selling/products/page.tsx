@@ -1,5 +1,3 @@
-"use client";
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,7 +12,7 @@ import {
 import { AccountHeading } from "@/components/admin/account-heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import Link from "next/link";
 
 export default function ProductsPage() {
   return (
@@ -24,22 +22,28 @@ export default function ProductsPage() {
           heading="Products"
           subheading="View and manage your products"
         />
-        <CreateProductModal
+        {/* <CreateProductModal /> */}
+        {/* <CreateProductModal
           button={
             <Button>
               New Product <Plus size={18} className="ml-2" />
             </Button>
           }
-        />
+        /> */}
+        <Link href="/account/selling/product/new">Click</Link>
       </div>
     </>
   );
 }
 
-const CreateProductModal = (props: { button: React.ReactNode }) => {
+const CreateProductModal = () => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>{props.button}</AlertDialogTrigger>
+      <AlertDialogTrigger asChild>
+        <Button>
+          New Product <Plus size={18} className="ml-2" />
+        </Button>
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
