@@ -44,8 +44,8 @@ const menuItems = [
     heading: true,
   },
   {
-    name: "Selling profile",
-    href: singleLevelNestedRoutes.account["selling-profile"],
+    name: "Profile",
+    href: singleLevelNestedRoutes.account.profile,
     heading: false,
   },
   {

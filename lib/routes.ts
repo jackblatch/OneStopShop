@@ -6,10 +6,10 @@ export const routes = {
 
 export const singleLevelNestedRoutes = {
   account: {
-    "selling-profile": routes.account + "/seller/selling-profile",
-    products: routes.account + "/seller/products",
-    orders: routes.account + "/seller/orders",
-    "your-purchases": routes.account + "/buyer/purchases",
+    profile: routes.account + "/selling/profile",
+    products: routes.account + "/selling/products",
+    orders: routes.account + "/selling/orders",
+    "your-purchases": routes.account + "/buying/purchases",
   },
 };
 

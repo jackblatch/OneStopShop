@@ -8,7 +8,7 @@ export default async function SellerLayout({ children }: PropsWithChildren) {
   return (
     <>
       {user?.privateMetadata?.storeId ? (
-        <div>{children}</div>
+        <div className="flex flex-col gap-4">{children}</div>
       ) : (
         <CreateNewStore />
       )}

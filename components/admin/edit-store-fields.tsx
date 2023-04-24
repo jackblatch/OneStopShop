@@ -59,7 +59,7 @@ export const EditStoreFields = ({ storeDetails }: { storeDetails: Store }) => {
           id="description"
           state={formValues}
           setState={setFormValues}
-          rows="6"
+          rows="5"
         />
       </div>
       <div className="flex items-center justify-end">

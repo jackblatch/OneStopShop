@@ -1,3 +1,4 @@
+import { AccountHeading } from "@/components/admin/account-heading";
 import { EditStoreFields } from "@/components/admin/edit-store-fields";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
@@ -19,14 +20,12 @@ export default async function SellerProfile() {
     });
 
   return (
-    <div className="flex flex-col gap-4">
-      <div>
-        <Heading size="h3">Selling profile</Heading>
-        <Text appearance="secondary">
-          Review and update your store settings
-        </Text>
-      </div>
+    <>
+      <AccountHeading
+        heading="Selling profile"
+        subheading="Review and update your store settings"
+      />
       {storeDetails && <EditStoreFields storeDetails={storeDetails[0]} />}
-    </div>
+    </>
   );
 }
