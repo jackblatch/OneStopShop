@@ -35,27 +35,33 @@ export const EditStoreFields = ({ storeDetails }: { storeDetails: Store }) => {
 
   return (
     <div className="flex flex-col gap-6">
-      <TextInputWithLabel
-        type="text"
-        label="Store Name"
-        id="name"
-        state={formValues}
-        setState={setFormValues}
-      />
-      <TextInputWithLabel
-        type="text"
-        label="Store Description"
-        id="description"
-        state={formValues}
-        setState={setFormValues}
-      />
-      <TextInputWithLabel
-        type="text"
-        label="Industry"
-        id="industry"
-        state={formValues}
-        setState={setFormValues}
-      />
+      <div className="grid grid-cols-2 gap-8 items-start">
+        <div className="flex flex-col justify-between h-full">
+          <TextInputWithLabel
+            type="text"
+            label="Store Name"
+            id="name"
+            state={formValues}
+            setState={setFormValues}
+          />
+          <TextInputWithLabel
+            type="text"
+            label="Industry"
+            id="industry"
+            state={formValues}
+            setState={setFormValues}
+          />
+        </div>
+        <TextInputWithLabel
+          type="text"
+          inputType="textarea"
+          label="Store Description"
+          id="description"
+          state={formValues}
+          setState={setFormValues}
+          rows="6"
+        />
+      </div>
       <div className="flex items-center justify-end">
         <Button onClick={handleUpdateDetails} disabled={isLoading}>
           {isLoading ? "Saving" : "Save"}
