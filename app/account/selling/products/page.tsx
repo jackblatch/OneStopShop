@@ -1,14 +1,3 @@
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { AccountHeading } from "@/components/admin/account-heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -17,7 +6,8 @@ import { db } from "@/db/db";
 import { products } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { currentUser } from "@clerk/nextjs/app-beta";
-import Image from "next/image";
+import Table from "@/components/admin/table";
+import { secondLevelNestedRoutes } from "@/lib/routes";
 
 export default async function ProductsPage() {
   const user = await currentUser();
@@ -46,40 +36,35 @@ export default async function ProductsPage() {
           </Button>
         </Link>
       </div>
-      <div className="grid grid-cols-3 gap-6">
-        {productsList.map((product) => {
-          return (
-            <div key={product.id}>
-              <h1>{product.name}</h1>
-            </div>
-          );
-        })}
-      </div>
+      <Table columnNames={["Name", "Images", "Inventory", "Price"]}>
+        {productsList.map((product) => (
+          <tr key={product.id}>
+            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-primary sm:pl-6">
+              {product.name}
+            </td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
+              {product.images.length}
+            </td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
+              {product.inventory}
+            </td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(product.price)}
+            </td>
+            <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+              <a
+                href={`${secondLevelNestedRoutes.product.base}/${product.id}`}
+                className="text-primary hover:text-muted-foreground"
+              >
+                Edit<span className="sr-only">, {product.name}</span>
+              </a>
+            </td>
+          </tr>
+        ))}
+      </Table>
     </>
   );
 }
-
-const CreateProductModal = () => {
-  return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button>
-          New Product <Plus size={18} className="ml-2" />
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-};
