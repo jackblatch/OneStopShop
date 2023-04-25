@@ -36,23 +36,23 @@ export default async function ProductsPage() {
           </Button>
         </Link>
       </div>
-      <Table columnNames={["Name", "Images", "Inventory", "Price"]}>
+      <Table columnNames={["Name", "Price", "Inventory", "Images"]}>
         {productsList.map((product) => (
           <tr key={product.id}>
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-primary sm:pl-6">
               {product.name}
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-              {product.images.length}
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(product.price)}
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
               {product.inventory}
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(product.price)}
+              {product.images.length}
             </td>
             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
               <a
