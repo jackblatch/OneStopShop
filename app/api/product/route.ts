@@ -3,11 +3,23 @@ import { products } from "@/db/schema";
 import { createProduct } from "@/lib/apiTypes";
 import { currentUser } from "@clerk/nextjs/app-beta";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
 export async function POST(request: Request) {
+  const schema = z.object({
+    name: z.string(),
+    description: z.string(),
+    price: z.string().nullable(),
+    inventory: z.string().nullable(),
+  });
+
   try {
     const { productValues }: { productValues: createProduct["input"] } =
       await request.json();
+
+    if (!schema.parse(productValues)) {
+      throw new Error("invalid input");
+    }
 
     const user = await currentUser();
 

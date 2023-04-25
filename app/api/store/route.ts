@@ -6,10 +6,20 @@ import { currentUser } from "@clerk/nextjs/app-beta";
 import { users } from "@clerk/nextjs/dist/api";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
 export async function POST(request: Request) {
+  const inputSchema = z.object({
+    storeName: z.string(),
+  });
+
   try {
     const { storeName }: createStore["input"] = await request.json();
+
+    if (!inputSchema.parse(storeName)) {
+      throw new Error("invalid input");
+    }
+
     const existingStore = await db
       .select()
       .from(stores)
@@ -53,10 +63,22 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  const inputSchema = z.object({
+    newStoreValues: z.object({
+      name: z.string(),
+      description: z.string(),
+      industry: z.string(),
+    }),
+  });
+
   try {
     const { newStoreValues }: updateStoreDetails["input"] =
       await request.json();
     const user = await currentUser();
+
+    if (!inputSchema.parse(newStoreValues)) {
+      throw new Error("invalid input");
+    }
 
     await db
       .update(stores)

@@ -6,7 +6,11 @@ import { AccountHeading } from "./account-heading";
 import { Product } from "@/db/schema";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-import { apiRoutes, singleLevelNestedRoutes } from "@/lib/routes";
+import {
+  apiRoutes,
+  secondLevelNestedRoutes,
+  singleLevelNestedRoutes,
+} from "@/lib/routes";
 import { createProduct } from "@/lib/apiTypes";
 import { toast } from "../ui/use-toast";
 
@@ -58,7 +62,7 @@ export const NewProduct = (props: { displayType?: "page" | "modal" }) => {
     const data: createProduct["output"] = await res.json();
     setIsLoading(false);
     if (!data.error) {
-      router.push(`/admin/product/${data.productId}`);
+      router.push(`${secondLevelNestedRoutes.product.base}/${data.productId}`);
       setFormValues(defaultValues);
     }
     toast({
