@@ -18,7 +18,7 @@ export const EditStoreFields = ({ storeDetails }: { storeDetails: Store }) => {
     const req: updateStoreDetails["input"] = {
       newStoreValues: formValues as Store,
     };
-    const res = await fetch(apiRoutes.updateStoreDetails, {
+    const res = await fetch(apiRoutes.store, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

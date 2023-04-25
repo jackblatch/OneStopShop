@@ -13,7 +13,16 @@ export const singleLevelNestedRoutes = {
   },
 };
 
+const baseProductRoute = singleLevelNestedRoutes.account.products.slice(0, -1);
+
+export const secondLevelNestedRoutes = {
+  product: {
+    base: baseProductRoute,
+    new: baseProductRoute + "/new",
+  },
+};
+
 export const apiRoutes = {
-  createStore: "/api/store/create-store",
-  updateStoreDetails: "/api/store/update-details",
+  store: "/api/store",
+  product: "/api/product",
 };

@@ -50,6 +50,13 @@
       "when": 1682198346204,
       "tag": "0006_keen_steel_serpent",
       "breakpoints": false
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1682440348221,
+      "tag": "0007_spooky_black_panther",
+      "breakpoints": false
     }
   ]
 }

@@ -1,35 +1,14 @@
 "use client";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+
+import { NewProduct } from "@/components/admin/new-product";
+import { AlertDialogContent } from "@/components/ui/alert-dialog";
+import { AlertDialog } from "@radix-ui/react-alert-dialog";
 
 export default function NewProductModal() {
-  const router = useRouter();
-
-  const dismissModal = useCallback(() => router.back(), [router]);
-
   return (
     <AlertDialog defaultOpen>
       <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Create a new product</AlertDialogTitle>
-          <AlertDialogDescription>
-            Enter the details of your new product below and click save.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={dismissModal}>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Save</AlertDialogAction>
-        </AlertDialogFooter>
+        <NewProduct displayType="modal" />
       </AlertDialogContent>
     </AlertDialog>
   );

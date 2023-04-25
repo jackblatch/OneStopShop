@@ -1,3 +1,5 @@
-export default function NewProduct() {
-  return <h1>Create new product (actual page!)</h1>;
+import { NewProduct } from "@/components/admin/new-product";
+
+export default function NewProductPage() {
+  return <NewProduct />;
 }

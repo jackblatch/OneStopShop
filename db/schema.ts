@@ -14,9 +14,9 @@ export type Store = InferModel<typeof stores>;
 export const products = mysqlTable("products", {
   id: serial("id").primaryKey(),
   name: text("name"),
-  price: decimal("price"),
+  price: decimal("price").default("0"),
   description: text("description"),
-  inventory: decimal("inventory"),
+  inventory: decimal("inventory").default("0"),
   storeId: int("store_id"),
 });
 

@@ -22,7 +22,7 @@ export const CreateNewStore = () => {
     setIsLoading(true);
     const req: createStore["input"] = { storeName };
     (async function getData() {
-      const res = await fetch(apiRoutes.createStore, {
+      const res = await fetch(apiRoutes.store, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

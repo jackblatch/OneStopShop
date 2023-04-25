@@ -22,15 +22,11 @@ export default function ProductsPage() {
           heading="Products"
           subheading="View and manage your products"
         />
-        {/* <CreateProductModal /> */}
-        {/* <CreateProductModal
-          button={
-            <Button>
-              New Product <Plus size={18} className="ml-2" />
-            </Button>
-          }
-        /> */}
-        <Link href="/account/selling/product/new">Click</Link>
+        <Link href="/account/selling/product/new">
+          <Button>
+            New Product <Plus size={18} className="ml-2" />
+          </Button>
+        </Link>
       </div>
     </>
   );

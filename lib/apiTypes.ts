@@ -19,3 +19,13 @@ export type updateStoreDetails = {
   };
   output: basicResponse;
 };
+
+export type createProduct = {
+  input: {
+    name: string;
+    description: string;
+    price: number;
+    inventory: number;
+  };
+  output: basicResponse & { productId?: string };
+};
