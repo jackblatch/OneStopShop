@@ -16,9 +16,7 @@ export async function POST(request: Request) {
   try {
     const { storeName }: createStore["input"] = await request.json();
 
-    if (!inputSchema.parse(storeName)) {
-      throw new Error("invalid input");
-    }
+    inputSchema.parse(storeName);
 
     const existingStore = await db
       .select()

@@ -57,6 +57,20 @@
       "when": 1682440348221,
       "tag": "0007_spooky_black_panther",
       "breakpoints": false
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1682444526613,
+      "tag": "0008_icy_starbolt",
+      "breakpoints": false
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1682444787124,
+      "tag": "0009_condemned_pretty_boy",
+      "breakpoints": false
     }
   ]
 }

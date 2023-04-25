@@ -26,6 +26,11 @@ export type createProduct = {
     description: string;
     price: number;
     inventory: number;
+    images: {
+      id: string;
+      alt: string;
+      url: string;
+    }[];
   };
   output: basicResponse & { productId?: string };
 };

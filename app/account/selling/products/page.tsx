@@ -13,8 +13,26 @@ import { AccountHeading } from "@/components/admin/account-heading";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { db } from "@/db/db";
+import { products } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { currentUser } from "@clerk/nextjs/app-beta";
+import Image from "next/image";
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const user = await currentUser();
+
+  const productsList = (await db
+    .select()
+    .from(products)
+    .where(eq(products.storeId, Number(user?.privateMetadata.storeId)))
+    .catch((err) => {
+      console.log(err);
+      return [];
+    })) as any[];
+
+  console.log(productsList);
+
   return (
     <>
       <div className="flex items-start justify-between">
@@ -27,6 +45,15 @@ export default function ProductsPage() {
             New Product <Plus size={18} className="ml-2" />
           </Button>
         </Link>
+      </div>
+      <div className="grid grid-cols-3 gap-6">
+        {productsList.map((product) => {
+          return (
+            <div key={product.id}>
+              <h1>{product.name}</h1>
+            </div>
+          );
+        })}
       </div>
     </>
   );

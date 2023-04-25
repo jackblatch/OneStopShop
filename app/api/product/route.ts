@@ -7,7 +7,7 @@ import { z } from "zod";
 
 export async function POST(request: Request) {
   const schema = z.object({
-    name: z.string(),
+    name: z.string().nonempty(),
     description: z.string(),
     price: z.string().nullable(),
     inventory: z.string().nullable(),
@@ -17,9 +17,9 @@ export async function POST(request: Request) {
     const { productValues }: { productValues: createProduct["input"] } =
       await request.json();
 
-    if (!schema.parse(productValues)) {
-      throw new Error("invalid input");
-    }
+    schema.parse(productValues);
+
+    console.log({ productValues });
 
     const user = await currentUser();
 
@@ -32,11 +32,12 @@ export async function POST(request: Request) {
       inventory: isNaN(Number(productValues.inventory))
         ? 0
         : Number(productValues.inventory),
+      images: productValues.images,
       storeId: Number(user?.privateMetadata.storeId),
     };
 
     const dbRes = await db.insert(products).values(values as any); // @TODO: TS error here complaining about 'name' being not included
-
+    console.log({ dbRes });
     const res: createProduct["output"] = {
       error: false,
       message: "Product created",
