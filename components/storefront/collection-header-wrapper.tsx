@@ -28,16 +28,25 @@ export const CollectionHeaderWrapper = (
         <Heading size="h2">{props.heading}</Heading>
         <div
           className={cn(
-            "text-muted-foreground flex flex-col gap-4 mt-2",
+            "text-muted-foreground flex flex-col gap-4 mt-2 relative",
             !showMore && "max-h-[100px] overflow-hidden"
           )}
         >
+          {!showMore && (
+            <div
+              className={cn(
+                "p-2 h-[70px] absolute bottom-0 w-full",
+                !showMore &&
+                  "bg-gradient-to-b from-transparent to-translucentWhite"
+              )}
+            />
+          )}
           {props.children}
         </div>
         <Button
           variant="secondary"
           onClick={() => setShowMore((prev) => !prev)}
-          className="mt-6"
+          className={cn(showMore && "mt-4")}
         >
           {!showMore ? "Show more" : "Show less"}
         </Button>
