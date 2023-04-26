@@ -1,5 +1,5 @@
-import { NewProduct } from "@/components/admin/new-product";
+import { ProductEditor } from "@/components/admin/product-editor";
 
 export default function NewProductPage() {
-  return <NewProduct />;
+  return <ProductEditor productStatus="new-product" />;
 }

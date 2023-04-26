@@ -34,3 +34,8 @@ export type createProduct = {
   };
   output: basicResponse & { productId?: string };
 };
+
+export type UpdateProduct = {
+  input: createProduct["input"] & { id: number };
+  output: basicResponse;
+};
