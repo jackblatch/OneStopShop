@@ -1,8 +1,10 @@
 import { ContentWrapper } from "@/components/content-wrapper";
+import { ParagraphFormatter } from "@/components/paragraph-formatter";
 import { Heading } from "@/components/ui/heading";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Text } from "@/components/ui/text";
 import { db } from "@/db/db";
-import { Product, products } from "@/db/schema";
+import { Product, products, stores } from "@/db/schema";
 import { currencyFormatter } from "@/lib/currency";
 import { eq } from "drizzle-orm";
 import { ImageOff } from "lucide-react";
@@ -25,38 +27,61 @@ export default async function StorefrontProductPage(props: {
     images: { id: string; url: string; alt: string }[];
   };
 
-  console.log(product.description?.split("\n"));
+  const store = await db
+    .select({
+      name: stores.name,
+      description: stores.description,
+    })
+    .from(stores)
+    .where(eq(stores.id, Number(product.storeId)))
+    .then((res) => res[0])
+    .catch(() => {
+      throw new Error("Store not found");
+    });
 
   return (
     <ContentWrapper>
-      <div className="flex flex-col items-center md:items-start justify-start md:grid md:grid-cols-9 gap-8">
-        <div className="col-span-4">
-          {product.images.length > 0 ? (
-            <div className="relative w-full h-48">
-              <Image
-                src={product.images[0].url}
-                alt={product.images[0].alt}
-                fill
-                className="object-cover w-full h-48"
-              />
-            </div>
-          ) : (
-            <div className="w-full h-48 bg-secondary flex justify-center items-center">
-              <ImageOff />
-            </div>
-          )}
-        </div>
-        <div className="col-span-5">
-          <Heading size="h2">{product.name}</Heading>
-          <Text className="text-xl">
-            {currencyFormatter(Number(product.price))}
-          </Text>
-          <div className="flex flex-col gap-2">
-            {product.description?.split("\n").map((item, i) => (
-              <Text key={i}>{item}</Text>
-            ))}
+      <div className="flex flex-col gap-8">
+        <div className="flex flex-col items-center md:items-start justify-start md:grid md:grid-cols-9 gap-8">
+          <div className="col-span-4">
+            {product.images.length > 0 ? (
+              <div className="relative w-full h-48">
+                <Image
+                  src={product.images[0].url}
+                  alt={product.images[0].alt}
+                  fill
+                  className="object-cover w-full h-48"
+                />
+              </div>
+            ) : (
+              <div className="w-full h-48 bg-secondary flex justify-center items-center">
+                <ImageOff />
+              </div>
+            )}
+          </div>
+          <div className="col-span-5">
+            <Heading size="h2">{product.name}</Heading>
+            <Text className="text-sm mt-2">
+              Sold by{" "}
+              <span className="text-muted-foreground">{store.name}</span>
+            </Text>
+            <Text className="text-xl mt-4">
+              {currencyFormatter(Number(product.price))}
+            </Text>
           </div>
         </div>
+        <Tabs defaultValue="product">
+          <TabsList>
+            <TabsTrigger value="product">Product Description</TabsTrigger>
+            <TabsTrigger value="seller">About the Seller</TabsTrigger>
+          </TabsList>
+          <TabsContent value="product" className="pt-2">
+            <ParagraphFormatter paragraphs={product.description} />
+          </TabsContent>
+          <TabsContent value="seller" className="pt-2">
+            {store.description}
+          </TabsContent>
+        </Tabs>
       </div>
     </ContentWrapper>
   );
