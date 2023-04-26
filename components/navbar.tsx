@@ -35,7 +35,7 @@ export const NavBar = ({
       </AnnouncementBar>
       <nav
         className={cn(
-          "pb-1",
+          "pb-1 sticky top-0 bg-white z-10 shadow-sm",
           showSecondAnnouncementBar && "border-b border-border"
         )}
       >

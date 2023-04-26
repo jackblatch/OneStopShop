@@ -4,6 +4,7 @@ export const routes = {
   account: "/account",
   products: "/products",
   product: "/product",
+  productQuickView: "/quickview/product",
 };
 
 export const singleLevelNestedRoutes = {
