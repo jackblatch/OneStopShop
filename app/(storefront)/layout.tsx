@@ -23,8 +23,8 @@ export default async function StorefrontLayout({
   //   inventory: "1",
   //   storeId: 1,
   // });
-  const Myproducts = await db.select().from(products);
-  console.log(Myproducts);
+  // const Myproducts = await db.select().from(products);
+  // console.log(Myproducts);
 
   return (
     <div className="min-h-screen w-full flex flex-col">

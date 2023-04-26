@@ -30,8 +30,6 @@ export default async function ProductDetailPage(props: {
       throw new Error(err);
     });
 
-  console.log({ productDetails });
-
   return (
     <>
       <ProductEditor

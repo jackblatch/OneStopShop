@@ -13,20 +13,18 @@ export default async function StorefrontProductsPage() {
   > & { images: { id: string; url: string; alt: string }[] })[];
 
   return (
-    <>
-      <ContentWrapper>
-        <CollectionHeaderWrapper heading="Products">
-          <SiteDescription />
-        </CollectionHeaderWrapper>
-        <div className="grid grid-cols-12 mt-12">
-          <div className="col-span-3">Sidebar</div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-between col-span-9">
-            {productList.map((product) => (
-              <ProductCard product={product} />
-            ))}
-          </div>
+    <ContentWrapper>
+      <CollectionHeaderWrapper heading="Products">
+        <SiteDescription />
+      </CollectionHeaderWrapper>
+      <div className="grid grid-cols-12 mt-12">
+        <div className="col-span-3">Sidebar</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-between col-span-9">
+          {productList.map((product, i) => (
+            <ProductCard product={product} key={i} />
+          ))}
         </div>
-      </ContentWrapper>
-    </>
+      </div>
+    </ContentWrapper>
   );
 }

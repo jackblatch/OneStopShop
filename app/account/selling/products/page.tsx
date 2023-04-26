@@ -22,8 +22,6 @@ export default async function ProductsPage() {
       return [];
     })) as any[];
 
-  console.log(productsList);
-
   return (
     <>
       <div className="flex items-start justify-between">
@@ -31,7 +29,7 @@ export default async function ProductsPage() {
           heading="Products"
           subheading="View and manage your products"
         />
-        <Link href="/account/selling/product/new">
+        <Link href={secondLevelNestedRoutes.product.new}>
           <Button>
             New Product <Plus size={18} className="ml-2" />
           </Button>

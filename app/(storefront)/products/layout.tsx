@@ -6,7 +6,8 @@ export default function Layout(
   return (
     <>
       {props.children}
-      {/* {props.modal} - @TODO: fix - this causes a 404 not found error on the entire route */}
+      {/* - @TODO: fix - this causes a 404 not found error on the entire route */}
+      {/* {props.modal} */}
     </>
   );
 }

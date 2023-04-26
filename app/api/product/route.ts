@@ -24,8 +24,6 @@ export async function POST(request: Request) {
 
     schema.parse(productValues);
 
-    console.log({ productValues });
-
     const user = await currentUser();
 
     const values = {
