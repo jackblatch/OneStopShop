@@ -39,3 +39,8 @@ export type UpdateProduct = {
   input: createProduct["input"] & { id: number };
   output: basicResponse;
 };
+
+export type DeleteProduct = {
+  input: { id: number };
+  output: basicResponse;
+};

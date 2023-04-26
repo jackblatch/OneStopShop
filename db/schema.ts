@@ -21,10 +21,10 @@ export type Store = InferModel<typeof stores>;
 export const products = mysqlTable("products", {
   id: serial("id").primaryKey(),
   name: text("name"),
-  price: decimal("price").default("0"),
+  price: decimal("price", { precision: 10, scale: 2 }).default("0"),
   description: text("description"),
   inventory: decimal("inventory").default("0"),
-  images: json("images").default([]),
+  images: json("images"),
   storeId: int("store_id"),
 });
 export type Product = InferModel<typeof products>;

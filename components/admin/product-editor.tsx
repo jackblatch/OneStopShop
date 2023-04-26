@@ -54,12 +54,17 @@ export const ProductEditor = (props: {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [onKeyDown]);
 
-  const handleCreateProduct = async (e: FormEvent<HTMLFormElement>) => {
+  const handleProductUpdate = async (
+    e:
+      | FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    buttonAction?: "delete"
+  ) => {
     e.preventDefault();
     setIsLoading(true);
 
     const mutate = async (
-      action: "create" | "update"
+      action: "create" | "update" | "delete"
     ): Promise<createProduct["output"]> => {
       const res = await mutateProduct({
         values: formValues,
@@ -69,7 +74,12 @@ export const ProductEditor = (props: {
     };
 
     let data;
-    if (props.initialValues) {
+    if (buttonAction === "delete") {
+      data = await mutate("delete");
+      if (!data.error) {
+        router.push(singleLevelNestedRoutes.account.products);
+      }
+    } else if (props.initialValues) {
       data = await mutate("update");
     } else {
       data = await mutate("create");
@@ -102,7 +112,7 @@ export const ProductEditor = (props: {
             : "Edit the details of your product below and click save."
         }
       />
-      <form onSubmit={handleCreateProduct}>
+      <form onSubmit={handleProductUpdate}>
         <div className="flex flex-col gap-8 mt-2 mb-6">
           <TextInputWithLabel
             required
@@ -137,8 +147,17 @@ export const ProductEditor = (props: {
             />
           </div>
         </div>
-        <div className="flex justify-end">
-          <div className="flex items-center gap-2">
+        <div className="flex justify-between items-center">
+          {!!props.initialValues && (
+            <Button
+              type="button"
+              variant="destructiveOutline"
+              onClick={(e) => handleProductUpdate(e, "delete")}
+            >
+              Delete
+            </Button>
+          )}
+          <div className="flex items-center gap-2 ml-auto">
             <Button type="button" variant="outline" onClick={dismissModal}>
               Cancel
             </Button>
@@ -153,8 +172,8 @@ export const ProductEditor = (props: {
 };
 
 const mutateProduct = async (props: {
-  values: Omit<Product, "id" | "storeId">;
-  action: "create" | "update";
+  values: Omit<Product, "id" | "storeId"> & { id?: number };
+  action: "create" | "update" | "delete";
 }) => {
   if (props.action === "create") {
     return await fetch(apiRoutes.product, {
@@ -186,6 +205,13 @@ const mutateProduct = async (props: {
           ...props.values,
         },
       }),
+    });
+  } else if (props.action === "delete") {
+    return await fetch(`${apiRoutes.product}?id=${props.values.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
   }
 };
