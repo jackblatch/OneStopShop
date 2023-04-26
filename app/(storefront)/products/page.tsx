@@ -1,4 +1,7 @@
+import SiteDescription from "../../(content)/site-description.mdx";
 import { ContentWrapper } from "@/components/content-wrapper";
+import { CollectionDescription } from "@/components/storefront/collection-description";
+import { CollectionHeaderWrapper } from "@/components/storefront/collection-header-wrapper";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { db } from "@/db/db";
@@ -16,23 +19,27 @@ export default async function StorefrontProductsPage() {
   return (
     <>
       <ContentWrapper>
-        <Heading size="h2">Products</Heading>
-        <div className="grid grid-cols-12">
+        <CollectionHeaderWrapper heading="Products">
+          <CollectionDescription>
+            <SiteDescription />
+          </CollectionDescription>
+        </CollectionHeaderWrapper>
+        <div className="grid grid-cols-12 mt-12">
           <div className="col-span-3">Sidebar</div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 justify-between col-span-9">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-between col-span-9">
             {productList.map((product) => (
               <div key={product.id}>
                 {product.images.length > 0 ? (
-                  <div className="relative w-48 h-48">
+                  <div className="relative w-full h-48">
                     <Image
                       src={product.images[0].url}
                       alt={product.images[0].alt}
                       fill
-                      className="object-cover w-48 h-48"
+                      className="object-cover w-full h-48"
                     />
                   </div>
                 ) : (
-                  <div className="w-48 h-48 bg-gray-200 flex justify-center items-center">
+                  <div className="w-full h-48 bg-gray-200 flex justify-center items-center">
                     <ImageOff />
                   </div>
                 )}
