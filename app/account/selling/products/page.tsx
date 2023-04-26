@@ -8,6 +8,7 @@ import { eq } from "drizzle-orm";
 import { currentUser } from "@clerk/nextjs/app-beta";
 import Table from "@/components/admin/table";
 import { secondLevelNestedRoutes } from "@/lib/routes";
+import { currencyFormatter } from "@/lib/currency";
 
 export default async function ProductsPage() {
   const user = await currentUser();
@@ -43,10 +44,7 @@ export default async function ProductsPage() {
               {product.name}
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(product.price)}
+              {currencyFormatter(product.price)}
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
               {product.inventory}

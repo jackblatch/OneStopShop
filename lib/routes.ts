@@ -2,6 +2,8 @@ export const routes = {
   signIn: "/auth/sign-in",
   signUp: "/auth/sign-up",
   account: "/account",
+  products: "/products",
+  product: "/product",
 };
 
 export const singleLevelNestedRoutes = {
@@ -13,12 +15,15 @@ export const singleLevelNestedRoutes = {
   },
 };
 
-const baseProductRoute = singleLevelNestedRoutes.account.products.slice(0, -1);
+const baseAccountProductRoute = singleLevelNestedRoutes.account.products.slice(
+  0,
+  -1
+);
 
 export const secondLevelNestedRoutes = {
   product: {
-    base: baseProductRoute,
-    new: baseProductRoute + "/new",
+    base: baseAccountProductRoute,
+    new: baseAccountProductRoute + "/new",
   },
 };
 
