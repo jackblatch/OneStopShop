@@ -1,7 +1,7 @@
 import { ContentWrapper } from "@/components/content-wrapper";
 import { ParagraphFormatter } from "@/components/paragraph-formatter";
 import { ProductForm } from "@/components/storefront/product-form";
-import { WhyShopGrid } from "@/components/storefront/why-shop-grid";
+import { FeatureIcons } from "@/components/storefront/feature-icons";
 import { Heading } from "@/components/ui/heading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Text } from "@/components/ui/text";
@@ -61,7 +61,7 @@ export default async function StorefrontProductPage(props: {
               </div>
             )}
           </div>
-          <div className="col-span-5">
+          <div className="md:col-span-5 w-full">
             <Heading size="h2">{product.name}</Heading>
             <Text className="text-sm mt-2">
               Sold by{" "}
@@ -71,14 +71,16 @@ export default async function StorefrontProductPage(props: {
               {currencyFormatter(Number(product.price))}
             </Text>
             <ProductForm availableInventory={product.inventory} />
-            <WhyShopGrid className="mt-8" />
+            <FeatureIcons className="mt-8" />
           </div>
         </div>
         <Tabs defaultValue="product">
-          <TabsList>
-            <TabsTrigger value="product">Product Description</TabsTrigger>
-            <TabsTrigger value="seller">About the Seller</TabsTrigger>
-          </TabsList>
+          <div className="overflow-auto">
+            <TabsList>
+              <TabsTrigger value="product">Product Description</TabsTrigger>
+              <TabsTrigger value="seller">About the Seller</TabsTrigger>
+            </TabsList>
+          </div>
           <TabsContent value="product" className="pt-2">
             <ParagraphFormatter paragraphs={product.description} />
           </TabsContent>

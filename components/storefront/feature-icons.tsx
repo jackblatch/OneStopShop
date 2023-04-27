@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
 import { Phone, RotateCcw, Truck } from "lucide-react";
 
-export const WhyShopGrid = (props: { className?: string }) => {
+export const FeatureIcons = (props: { className?: string }) => {
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-4 bg-secondary border border-border rounded-md p-4 px-12",
+        "text-center flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-4 bg-secondary border border-border rounded-md p-4 px-12",
         props.className
       )}
     >

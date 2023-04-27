@@ -19,11 +19,13 @@ export const AnnouncementBar = ({
       <ContentWrapper paddingY="2">
         <div
           className={cn(
-            "flex items-center justify-between",
+            "flex flex-col sm:flex-row gap-4 sm:gap-2 items-center justify-between text-center sm:text-left text-sm sm:text-base",
             columns === 1 && "justify-center"
           )}
         >
-          <div>{description}</div>
+          <div className={cn(columns === 1 && "text-center")}>
+            {description}
+          </div>
           {children}
         </div>
       </ContentWrapper>

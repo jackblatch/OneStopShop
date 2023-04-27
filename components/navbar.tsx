@@ -9,6 +9,8 @@ import { AnnouncementBar } from "./announcement-bar";
 import { IconWithText } from "./icon-with-text";
 import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
+import { MobileNavigation } from "./mobile-navigation";
+import { ShoppingCartHeader } from "./shopping-cart-header";
 
 export const NavBar = ({
   showSecondAnnouncementBar,
@@ -21,7 +23,7 @@ export const NavBar = ({
         columns={2}
         description="Free shipping on all orders over $50"
       >
-        <div className="flex items-center justify-end gap-6">
+        <div className="items-center justify-end gap-6 hidden sm:flex">
           <Link
             href={routes.account}
             className="uppercase text-secondary text-sm"
@@ -39,7 +41,14 @@ export const NavBar = ({
           showSecondAnnouncementBar && "border-b border-border"
         )}
       >
-        <ContentWrapper>
+        <ContentWrapper className="flex justify-between items-center md:hidden flex-wrap gap-4">
+          <Logo />
+          <div className="ml-auto flex items-center gap-8">
+            <ShoppingCartHeader />
+            <MobileNavigation />
+          </div>
+        </ContentWrapper>
+        <ContentWrapper className="hidden md:block">
           <ul className="flex items-center justify-between gap-12 py-2">
             <li>
               <Link href="/">
@@ -49,7 +58,7 @@ export const NavBar = ({
             <li className="flex-1">
               <Search />
             </li>
-            <li>
+            <li className="hidden lg:block">
               <Link href="/">
                 <IconWithText
                   icon={<Truck size="36" strokeWidth={2} />}
@@ -59,12 +68,12 @@ export const NavBar = ({
               </Link>
             </li>
             <li>
-              <ShoppingCart size={26} />
+              <ShoppingCartHeader />
             </li>
           </ul>
         </ContentWrapper>
-        <Line />
-        <ContentWrapper paddingY="0">
+        <Line className="hidden md:block" />
+        <ContentWrapper paddingY="0" className="hidden md:block">
           <div className="-ml-4">
             <MenuItems />
           </div>
