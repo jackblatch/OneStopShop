@@ -10,7 +10,7 @@ export const SecondaryMenu = (props: { menuItems: MenuItems }) => {
   return (
     <Tabs
       defaultValue="selling"
-      className="w-[400px] flex items-center justify-start gap-2"
+      className="flex items-center justify-start gap-2 overflow-auto"
     >
       <TabsList className="overflow-auto">
         <TabsTrigger value="selling">Selling</TabsTrigger>
