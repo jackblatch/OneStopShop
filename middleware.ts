@@ -7,7 +7,7 @@ import { routes } from "./lib/routes";
 const publicPaths = [
   "/",
   "/collection*",
-  "/product",
+  "/product*",
   "/seller*",
   "/products*",
   "/auth*",

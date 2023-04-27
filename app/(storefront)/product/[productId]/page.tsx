@@ -1,5 +1,7 @@
 import { ContentWrapper } from "@/components/content-wrapper";
 import { ParagraphFormatter } from "@/components/paragraph-formatter";
+import { ProductForm } from "@/components/storefront/product-form";
+import { WhyShopGrid } from "@/components/storefront/why-shop-grid";
 import { Heading } from "@/components/ui/heading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Text } from "@/components/ui/text";
@@ -68,6 +70,8 @@ export default async function StorefrontProductPage(props: {
             <Text className="text-xl mt-4">
               {currencyFormatter(Number(product.price))}
             </Text>
+            <ProductForm availableInventory={product.inventory} />
+            <WhyShopGrid className="mt-8" />
           </div>
         </div>
         <Tabs defaultValue="product">
