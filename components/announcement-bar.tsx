@@ -16,7 +16,7 @@ export const AnnouncementBar = ({
 }>) => {
   return (
     <div className={cn("text-secondary p-2", backgroundColor, textColor)}>
-      <ContentWrapper paddingY="2">
+      <ContentWrapper className="py-2">
         <div
           className={cn(
             "flex flex-col sm:flex-row gap-4 sm:gap-2 items-center justify-between text-center sm:text-left text-sm sm:text-base",

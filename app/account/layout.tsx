@@ -1,71 +1,69 @@
-import { UserProfileWrapper } from "@/components/user-profile-wrapper";
 import { ContentWrapper } from "@/components/content-wrapper";
 import { Footer } from "@/components/footer";
 import { NavBar } from "@/components/navbar";
-import { Sidebar } from "@/components/sidebar";
 import { Heading } from "@/components/ui/heading";
 import { PropsWithChildren } from "react";
-import { SignedIn, SignedOut } from "@clerk/nextjs/app-beta";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs/app-beta";
 import SignInWrapper from "@/components/sign-in";
 import { singleLevelNestedRoutes } from "@/lib/routes";
+import { MenuItems, SecondaryMenu } from "@/components/secondary-menu";
+import { Line } from "@/components/line";
 
 export default async function AdminLayout({ children }: PropsWithChildren) {
   return (
     <div className="min-h-screen w-full flex flex-col">
       <NavBar showSecondAnnouncementBar={false} />
-      <ContentWrapper>
-        <SignedIn>
-          <div>
-            <Heading size="h3">Your Account</Heading>
-            <div className="grid grid-cols-9 gap-8 mt-6">
-              <div className="col-span-2 flex flex-col gap-6">
-                <Sidebar menuItems={menuItems} />
-                <UserProfileWrapper />
-              </div>
-              <div className="h-full flex-1 w-full col-span-7 border border-border rounded-md bg-secondary p-6">
-                {children}
-              </div>
+
+      <div>
+        <div className="bg-secondary py-8 px-6 border-b border-border flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <Heading size="h2">Your Account</Heading>
+            <div className="p-[1px] bg-gray-400 rounded-full">
+              <UserButton />
             </div>
           </div>
+        </div>
+        <div>
+          <ContentWrapper className="w-full py-2">
+            <SecondaryMenu menuItems={menuItems} />
+          </ContentWrapper>
+        </div>
+        <Line />
+      </div>
+
+      <ContentWrapper className="w-full flex items-start flex-col flex-1">
+        <SignedIn>
+          <div className="w-full">{children}</div>
         </SignedIn>
         <SignedOut>
           <SignInWrapper />
         </SignedOut>
       </ContentWrapper>
+
       <Footer />
     </div>
   );
 }
 
-const menuItems = [
-  {
-    name: "Selling",
-    href: "/",
-    heading: true,
-  },
+const menuItems: MenuItems = [
   {
     name: "Profile",
     href: singleLevelNestedRoutes.account.profile,
-    heading: false,
+    group: "selling",
   },
   {
     name: "Products",
     href: singleLevelNestedRoutes.account.products,
-    heading: false,
+    group: "selling",
   },
   {
     name: "Orders",
     href: singleLevelNestedRoutes.account.orders,
-    heading: false,
-  },
-  {
-    name: "Buying",
-    href: "/",
-    heading: true,
+    group: "selling",
   },
   {
     name: "Your purchases",
     href: singleLevelNestedRoutes.account["your-purchases"],
-    heading: false,
+    group: "buying",
   },
 ];
