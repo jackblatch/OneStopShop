@@ -40,7 +40,7 @@ export const ProductEditor = (props: {
     } else {
       router.push(singleLevelNestedRoutes.account.products);
     }
-  }, [router]);
+  }, [router, props.displayType]);
 
   const onKeyDown = useCallback(
     (e: any) => {

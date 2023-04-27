@@ -43,18 +43,18 @@ export default async function StorefrontProductPage(props: {
     <ContentWrapper>
       <div className="flex flex-col gap-8">
         <div className="flex flex-col items-center md:items-start justify-start md:grid md:grid-cols-9 gap-8">
-          <div className="col-span-4">
+          <div className="col-span-4 w-full">
             {product.images.length > 0 ? (
-              <div className="relative w-full h-48">
+              <div className="relative h-96 w-full">
                 <Image
                   src={product.images[0].url}
                   alt={product.images[0].alt}
                   fill
-                  className="object-cover w-full h-48"
+                  className="object-cover h-96 w-full"
                 />
               </div>
             ) : (
-              <div className="w-full h-48 bg-secondary flex justify-center items-center">
+              <div className="h-96 w-full bg-secondary flex justify-center items-center">
                 <ImageOff />
               </div>
             )}
