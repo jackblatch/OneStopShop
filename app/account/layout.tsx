@@ -15,13 +15,13 @@ export default async function AdminLayout({ children }: PropsWithChildren) {
       <NavBar showSecondAnnouncementBar={false} />
 
       <div>
-        <div className="bg-secondary py-8 px-6 border-b border-border flex flex-col gap-2">
-          <div className="flex items-center justify-between">
+        <div className="bg-secondary py-2 px-6 border-b border-border">
+          <ContentWrapper className="flex items-center justify-between">
             <Heading size="h2">Your Account</Heading>
             <div className="p-[1px] bg-gray-400 rounded-full">
               <UserButton />
             </div>
-          </div>
+          </ContentWrapper>
         </div>
         <div>
           <ContentWrapper className="w-full py-2">

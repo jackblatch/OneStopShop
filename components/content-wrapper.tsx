@@ -6,6 +6,6 @@ export const ContentWrapper = ({
   className,
 }: PropsWithChildren<{ className?: string }>) => {
   return (
-    <div className={cn(`max-w-[1800px] m-auto p-6`, className)}>{children}</div>
+    <div className={cn(`max-w-[1400px] m-auto p-6`, className)}>{children}</div>
   );
 };

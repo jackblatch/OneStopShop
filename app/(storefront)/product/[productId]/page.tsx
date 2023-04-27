@@ -42,7 +42,7 @@ export default async function StorefrontProductPage(props: {
     });
 
   return (
-    <ContentWrapper>
+    <ContentWrapper className="max-w-7xl m-x-auto mt-8">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col items-center md:items-start justify-start md:grid md:grid-cols-9 gap-8">
           <div className="col-span-4 w-full">

@@ -25,7 +25,7 @@ export const SlideShow = () => {
   // }, [currentImageIndex]);
 
   return (
-    <div>
+    <div className="mb-4">
       <div
         key={currentImageIndex}
         className="relative w-full h-[600px] animate-fade-in"
