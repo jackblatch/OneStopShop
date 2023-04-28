@@ -1,5 +1,6 @@
 import SiteDescription from "../../(content)/site-description.mdx";
 import { ContentWrapper } from "@/components/content-wrapper";
+import { CollectionBody } from "@/components/storefront/collection-body";
 import { CollectionHeaderWrapper } from "@/components/storefront/collection-header-wrapper";
 import { ProductCard } from "@/components/storefront/product-card";
 import { ProductSidebar } from "@/components/storefront/product-sidebar";
@@ -33,16 +34,7 @@ export default async function StorefrontProductsPage() {
       <CollectionHeaderWrapper heading="Products">
         <SiteDescription />
       </CollectionHeaderWrapper>
-      <div className="grid grid-cols-12 mt-12 gap-12">
-        <div className="col-span-3">
-          <ProductSidebar storeAndProduct={storeAndProduct} />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-between col-span-9">
-          {storeAndProduct.map((product, i) => (
-            <ProductCard storeAndProduct={product} key={i} />
-          ))}
-        </div>
-      </div>
+      <CollectionBody storeAndProduct={storeAndProduct} />
     </ContentWrapper>
   );
 }

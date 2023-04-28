@@ -8,7 +8,9 @@ type basicResponse = {
 
 export type createStore = {
   input: {
-    storeName: string;
+    formData: {
+      storeName: string;
+    };
   };
   output: basicResponse;
 };

@@ -1,4 +1,3 @@
-import { AccountHeading } from "@/components/admin/account-heading";
 import { ProductEditor } from "@/components/admin/product-editor";
 import { db } from "@/db/db";
 import { products } from "@/db/schema";

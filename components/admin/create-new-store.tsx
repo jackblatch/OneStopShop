@@ -8,11 +8,13 @@ import { Label } from "../ui/label";
 import { apiRoutes } from "@/lib/routes";
 import { createStore } from "@/lib/apiTypes";
 import { useToast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
 
 // type DataFetchStatus<T extends {formStateStatus: string}> = T["formStateStatus"] extends "error" ? T & createStore["output"] : {formStateStatus: "idle" | "loading"};
 // @TODO: something similar to type above should be used for formState type to ensure createStore["output"] is present when formSTateStatus is "error"
 
 export const CreateNewStore = () => {
+  const router = useRouter();
   const { toast } = useToast();
   const [storeName, setStoreName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +22,7 @@ export const CreateNewStore = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    const req: createStore["input"] = { storeName };
+    const req: createStore["input"] = { formData: { storeName } };
     (async function getData() {
       const res = await fetch(apiRoutes.store, {
         method: "POST",
@@ -33,6 +35,7 @@ export const CreateNewStore = () => {
       setIsLoading(false);
       if (!data.error) {
         setStoreName("");
+        router.refresh();
       }
       toast({
         title: data.message,

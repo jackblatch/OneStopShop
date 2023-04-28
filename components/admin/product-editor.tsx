@@ -2,7 +2,6 @@
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { TextInputWithLabel } from "../text-input-with-label";
-import { AccountHeading } from "./account-heading";
 import { Product } from "@/db/schema";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
@@ -13,6 +12,7 @@ import {
 } from "@/lib/routes";
 import { createProduct } from "@/lib/apiTypes";
 import { toast } from "../ui/use-toast";
+import { HeadingAndSubheading } from "./heading-and-subheading";
 
 const defaultValues = {
   name: "",
@@ -100,7 +100,7 @@ export const ProductEditor = (props: {
 
   return (
     <>
-      <AccountHeading
+      <HeadingAndSubheading
         heading={
           props.productStatus === "new-product"
             ? "Create a new product"

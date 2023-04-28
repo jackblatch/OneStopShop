@@ -19,7 +19,7 @@ export default async function AdminLayout({ children }: PropsWithChildren) {
           <ContentWrapper className="flex items-center justify-between">
             <Heading size="h2">Your Account</Heading>
             <div className="p-[1px] bg-gray-400 rounded-full">
-              <UserButton />
+              <UserButton afterSignOutUrl={process.env.NEXT_PUBLIC_APP_URL} />
             </div>
           </ContentWrapper>
         </div>

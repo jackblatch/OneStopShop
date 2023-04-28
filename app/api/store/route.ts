@@ -15,15 +15,18 @@ export async function POST(request: Request) {
   });
 
   try {
-    const { storeName }: createStore["input"] = await request.json();
+    const { formData }: createStore["input"] = await request.json();
 
-    inputSchema.parse(storeName);
+    inputSchema.parse(formData);
 
     const existingStore = await db
       .select()
       .from(stores)
       .where(
-        or(eq(stores.name, storeName), eq(stores.slug, createSlug(storeName)))
+        or(
+          eq(stores.name, formData.storeName),
+          eq(stores.slug, createSlug(formData.storeName))
+        )
       );
 
     if (existingStore.length > 0) {
@@ -32,19 +35,44 @@ export async function POST(request: Request) {
         message: "Sorry, a store with that name already exists.",
         action: "Please try again.",
       };
-      return NextResponse.json(res);
-    }
-
-    const { insertId: storeId } = await db
-      .insert(stores)
-      .values({ name: storeName, slug: createSlug(storeName) });
-
-    const user = await currentUser();
-    if (user && !user.privateMetadata.storeId) {
-      await users.updateUser(user.id, {
-        privateMetadata: { ...user.privateMetadata, storeId },
+      return NextResponse.json(res, {
+        status: 400,
       });
     }
+
+    const { insertId: storeId } = await db.insert(stores).values({
+      name: formData.storeName,
+      slug: createSlug(formData.storeName),
+    });
+
+    const user = await currentUser();
+    if (!user) {
+      const res: createStore["output"] = {
+        error: false,
+        message: "Unauthenticated",
+        action: "User is not authenticated",
+      };
+
+      return NextResponse.json(res, {
+        status: 401,
+      });
+    }
+
+    if (user?.privateMetadata.storeId) {
+      const res: createStore["output"] = {
+        error: false,
+        message: "Store already exists",
+        action: "You already have a store",
+      };
+
+      return NextResponse.json(res, {
+        status: 400,
+      });
+    }
+
+    await users.updateUser(user.id, {
+      privateMetadata: { ...user.privateMetadata, storeId },
+    });
 
     const res: createStore["output"] = {
       error: false,
@@ -54,12 +82,15 @@ export async function POST(request: Request) {
 
     return NextResponse.json(res);
   } catch (err) {
+    console.log(err);
     const res: createStore["output"] = {
       error: true,
       message: "Sorry, an error occured creating your store. ",
       action: "Please try again.",
     };
-    return NextResponse.json(res);
+    return NextResponse.json(res, {
+      status: 500,
+    });
   }
 }
 

@@ -1,4 +1,4 @@
-import { AccountHeading } from "@/components/admin/account-heading";
+import { HeadingAndSubheading } from "@/components/admin/heading-and-subheading";
 import { EditStoreFields } from "@/components/admin/edit-store-fields";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
@@ -21,7 +21,7 @@ export default async function SellerProfile() {
 
   return (
     <>
-      <AccountHeading
+      <HeadingAndSubheading
         heading="Selling profile"
         subheading="Review and update your store settings"
       />

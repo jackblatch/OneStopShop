@@ -1,14 +1,34 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Heading } from "../ui/heading";
 import { ProductAndStore } from "@/app/(storefront)/products/page";
+import React from "react";
+import { createSlug } from "@/lib/createSlug";
 
 export const ProductSidebar = (props: {
   storeAndProduct: ProductAndStore[];
+  setSelectedSellers: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedSellers: string[];
 }) => {
+  const uniqueStoresList = Array.from(
+    new Set(props.storeAndProduct.map((product) => product.store.name))
+  ).filter(Boolean) as string[];
+
   return (
     <div>
       <Heading size="h3">Filters</Heading>
-      <ProductSidebar.Group heading="Sellers" />
+      {/* <ProductSidebar.Group heading="Sellers" storeAndProduct={storeAndProduct} /> */}
+      <div className="mt-4">
+        <Heading size="h4">Sellers</Heading>
+        {uniqueStoresList.map((store, i) => (
+          <ProductSidebar.Checkbox
+            key={i}
+            label={store}
+            id={createSlug(store)}
+            setSelectedSellers={props.setSelectedSellers}
+            selectedSellers={props.selectedSellers}
+          />
+        ))}
+      </div>
     </div>
   );
 };
@@ -17,20 +37,36 @@ const FilterGroup = (props: { heading: string }) => {
   return (
     <div className="mt-4">
       <Heading size="h4">{props.heading}</Heading>
-      <ProductSidebar.Checkbox />
     </div>
   );
 };
 
-const FilterCheckbox = () => {
+const FilterCheckbox = (props: {
+  label: string;
+  id: string;
+  setSelectedSellers: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedSellers: string[];
+}) => {
   return (
     <div className="flex items-center space-x-2">
-      <Checkbox id="terms" />
+      <Checkbox
+        id={props.id}
+        // checked={props.selectedSellers.includes(props.id)}
+        onCheckedChange={(checked) => {
+          if (checked) {
+            props.setSelectedSellers((prev) => [...prev, props.id]);
+          } else {
+            props.setSelectedSellers((prev) =>
+              prev.filter((item) => item !== props.id)
+            );
+          }
+        }}
+      />
       <label
-        htmlFor="terms"
+        htmlFor={props.id}
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
-        Accept terms and conditions
+        {props.label}
       </label>
     </div>
   );
