@@ -11,6 +11,8 @@ import { currencyFormatter } from "@/lib/currency";
 import { eq } from "drizzle-orm";
 import { ImageOff } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { productsQueryParams, routes } from "@/lib/routes";
 
 export default async function StorefrontProductPage(props: {
   params: { productId: string };
@@ -33,6 +35,7 @@ export default async function StorefrontProductPage(props: {
     .select({
       name: stores.name,
       description: stores.description,
+      slug: stores.slug,
     })
     .from(stores)
     .where(eq(stores.id, Number(product.storeId)))
@@ -65,7 +68,13 @@ export default async function StorefrontProductPage(props: {
             <Heading size="h2">{product.name}</Heading>
             <Text className="text-sm mt-2">
               Sold by{" "}
-              <span className="text-muted-foreground">{store.name}</span>
+              <Link
+                href={`${routes.products}?${productsQueryParams.seller}${store.slug}`}
+              >
+                <span className="text-muted-foreground hover:underline">
+                  {store.name}
+                </span>
+              </Link>
             </Text>
             <Text className="text-xl mt-4">
               {currencyFormatter(Number(product.price))}

@@ -14,6 +14,7 @@ export const stores = mysqlTable("stores", {
   name: text("store_name"),
   industry: text("industry"),
   description: text("description"),
+  slug: text("slug"),
 });
 
 export type Store = InferModel<typeof stores>;

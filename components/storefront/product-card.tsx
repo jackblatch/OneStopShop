@@ -1,27 +1,23 @@
-import { Product } from "@/db/schema";
 import Image from "next/image";
 import { Text } from "../ui/text";
-import { ImageOff, ShoppingCart, ViewIcon } from "lucide-react";
+import { ImageOff } from "lucide-react";
 import { routes } from "@/lib/routes";
 import Link from "next/link";
 import { currencyFormatter } from "@/lib/currency";
 import { Button } from "../ui/button";
+import { ProductAndStore } from "@/app/(storefront)/products/page";
 
-export const ProductCard = (props: {
-  product: Omit<Product, "images"> & {
-    images: { id: string; url: string; alt: string }[];
-  };
-}) => {
-  const productPageLink = `${routes.product}/${props.product.id}`;
+export const ProductCard = (props: { storeAndProduct: ProductAndStore }) => {
+  const productPageLink = `${routes.product}/${props.storeAndProduct.product.id}`;
 
   return (
-    <div key={props.product.id}>
+    <div key={props.storeAndProduct.product.id}>
       <Link href={productPageLink}>
-        {props.product.images.length > 0 ? (
+        {props.storeAndProduct.product.images.length > 0 ? (
           <div className="relative w-full h-48">
             <Image
-              src={props.product.images[0].url}
-              alt={props.product.images[0].alt}
+              src={props.storeAndProduct.product.images[0].url}
+              alt={props.storeAndProduct.product.images[0].alt}
               fill
               className="object-cover w-full h-48"
             />
@@ -33,12 +29,18 @@ export const ProductCard = (props: {
         )}
       </Link>
       <Link href={productPageLink}>
-        <Text className="line-clamp-1 w-full mt-2">{props.product.name}</Text>
-        <Text>{currencyFormatter(Number(props.product.price))}</Text>
+        <Text className="line-clamp-1 w-full mt-2">
+          {props.storeAndProduct.product.name}
+        </Text>
+        <Text>
+          {currencyFormatter(Number(props.storeAndProduct.product.price))}
+        </Text>
       </Link>
       <div className="flex gap-2 items-center justify-between mt-4 mb-8">
         <Link
-          href={`${routes.productQuickView}/${[props.product.id]}`}
+          href={`${routes.productQuickView}/${[
+            props.storeAndProduct.product.id,
+          ]}`}
           className="w-full"
         >
           <Button variant="outline" size="sm" className="flex gap-2 w-full">

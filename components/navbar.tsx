@@ -74,7 +74,7 @@ export const NavBar = ({
         </ContentWrapper>
         <Line className="hidden md:block" />
         <ContentWrapper className="hidden md:block py-0">
-          <div className="-ml-4">
+          <div className="-ml-4 mt-1">
             <MenuItems />
           </div>
         </ContentWrapper>

@@ -1,10 +1,6 @@
 import { db } from "@/db/db";
 import { products } from "@/db/schema";
-import type {
-  createProduct,
-  DeleteProduct,
-  UpdateProduct,
-} from "@/lib/apiTypes";
+import type { createProduct, UpdateProduct } from "@/lib/apiTypes";
 import { currentUser } from "@clerk/nextjs/app-beta";
 import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
@@ -165,3 +161,19 @@ export async function DELETE(request: Request) {
     return NextResponse.json(res);
   }
 }
+
+/*
+const handlerMap: Record<string, (...args: any) => any> = {
+  GET: handleGet,
+  POST: handlePost,
+};
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<User>
+) {
+  return handlerMap[req.method as string]
+    ? handlerMap[req.method as string](req, res)
+    : res.status(404);
+}
+*/

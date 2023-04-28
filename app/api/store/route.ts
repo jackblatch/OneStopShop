@@ -4,9 +4,10 @@ import { stores } from "@/db/schema";
 import { createStore } from "@/lib/apiTypes";
 import { currentUser } from "@clerk/nextjs/app-beta";
 import { users } from "@clerk/nextjs/dist/api";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { createSlug } from "@/lib/createSlug";
 
 export async function POST(request: Request) {
   const inputSchema = z.object({
@@ -21,7 +22,9 @@ export async function POST(request: Request) {
     const existingStore = await db
       .select()
       .from(stores)
-      .where(eq(stores.name, storeName));
+      .where(
+        or(eq(stores.name, storeName), eq(stores.slug, createSlug(storeName)))
+      );
 
     if (existingStore.length > 0) {
       const res: createStore["output"] = {
@@ -34,7 +37,7 @@ export async function POST(request: Request) {
 
     const { insertId: storeId } = await db
       .insert(stores)
-      .values({ name: storeName });
+      .values({ name: storeName, slug: createSlug(storeName) });
 
     const user = await currentUser();
     if (user && !user.privateMetadata.storeId) {

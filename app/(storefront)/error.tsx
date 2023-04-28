@@ -8,6 +8,8 @@ export default function ProductPageError(props: {
   error: Error;
   reset: () => void;
 }) {
+  console.log(props.error);
+
   return (
     <div className="flex items-center justify-center flex-col mt-24">
       <Heading size="h2">Sorry, this page can&apos;t be found</Heading>

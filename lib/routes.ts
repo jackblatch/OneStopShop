@@ -5,6 +5,11 @@ export const routes = {
   products: "/products",
   product: "/product",
   productQuickView: "/quickview/product",
+  seller: "/seller",
+};
+
+export const productsQueryParams = {
+  seller: "seller=",
 };
 
 export const singleLevelNestedRoutes = {
