@@ -2,8 +2,6 @@ import SiteDescription from "../../(content)/site-description.mdx";
 import { ContentWrapper } from "@/components/content-wrapper";
 import { CollectionBody } from "@/components/storefront/collection-body";
 import { CollectionHeaderWrapper } from "@/components/storefront/collection-header-wrapper";
-import { ProductCard } from "@/components/storefront/product-card";
-import { ProductSidebar } from "@/components/storefront/product-sidebar";
 import { db } from "@/db/db";
 import { Product, Store, stores } from "@/db/schema";
 import { products } from "@/db/schema";

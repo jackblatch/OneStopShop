@@ -5,21 +5,16 @@ import React from "react";
 import { createSlug } from "@/lib/createSlug";
 
 export const ProductSidebar = (props: {
-  storeAndProduct: ProductAndStore[];
+  uniqueStoresList: string[];
   setSelectedSellers: React.Dispatch<React.SetStateAction<string[]>>;
   selectedSellers: string[];
 }) => {
-  const uniqueStoresList = Array.from(
-    new Set(props.storeAndProduct.map((product) => product.store.name))
-  ).filter(Boolean) as string[];
-
   return (
     <div>
       <Heading size="h3">Filters</Heading>
-      {/* <ProductSidebar.Group heading="Sellers" storeAndProduct={storeAndProduct} /> */}
       <div className="mt-4">
         <Heading size="h4">Sellers</Heading>
-        {uniqueStoresList.map((store, i) => (
+        {props.uniqueStoresList.map((store, i) => (
           <ProductSidebar.Checkbox
             key={i}
             label={store}
@@ -48,10 +43,10 @@ const FilterCheckbox = (props: {
   selectedSellers: string[];
 }) => {
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-2 my-2 py-1">
       <Checkbox
         id={props.id}
-        // checked={props.selectedSellers.includes(props.id)}
+        checked={props.selectedSellers.includes(props.id)}
         onCheckedChange={(checked) => {
           if (checked) {
             props.setSelectedSellers((prev) => [...prev, props.id]);

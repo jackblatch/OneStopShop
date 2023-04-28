@@ -2,20 +2,29 @@
 import { ProductAndStore } from "@/app/(storefront)/products/page";
 import { ProductSidebar } from "./product-sidebar";
 import { ProductCard } from "./product-card";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export const CollectionBody = (props: {
   storeAndProduct: ProductAndStore[];
 }) => {
-  const [selectedSellers, setSelectedSellers] = useState<string[]>([]);
+  const searchParams = useSearchParams();
+  const seller = searchParams.get("seller");
+  const [selectedSellers, setSelectedSellers] = useState<string[]>(
+    seller ? [...seller?.split("_")] : []
+  );
 
-  console.log(selectedSellers);
+  const uniqueStoresList = useMemo(() => {
+    return Array.from(
+      new Set(props.storeAndProduct.map((product) => product.store.name))
+    ).filter(Boolean) as string[];
+  }, [props.storeAndProduct]);
 
   return (
     <div className="grid grid-cols-12 mt-12 gap-12">
       <div className="col-span-3">
         <ProductSidebar
-          storeAndProduct={props.storeAndProduct}
+          uniqueStoresList={uniqueStoresList}
           setSelectedSellers={setSelectedSellers}
           selectedSellers={selectedSellers}
         />
