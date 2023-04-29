@@ -15,7 +15,7 @@ export default async function AdminLayout({ children }: PropsWithChildren) {
       <NavBar showSecondAnnouncementBar={false} />
 
       <div>
-        <div className="bg-secondary py-2 px-6 border-b border-border">
+        <div className="bg-secondary py-2 md:px-6 border-b border-border">
           <ContentWrapper className="flex items-center justify-between">
             <Heading size="h2">Your Account</Heading>
             <div className="p-[1px] bg-gray-400 rounded-full">

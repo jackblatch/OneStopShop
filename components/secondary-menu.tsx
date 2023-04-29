@@ -10,16 +10,22 @@ export const SecondaryMenu = (props: { menuItems: MenuItems }) => {
   return (
     <Tabs
       defaultValue="selling"
-      className="flex items-center justify-start gap-2 overflow-auto"
+      className="flex items-center justify-start gap-2"
     >
-      <TabsList className="overflow-auto">
+      <TabsList>
         <TabsTrigger value="selling">Selling</TabsTrigger>
         <TabsTrigger value="buying">Buying</TabsTrigger>
       </TabsList>
-      <TabsContent value="selling" className="overflow-auto">
+      <TabsContent
+        value="selling"
+        className="overflow-auto flex justify-start items-center flex-nowrap"
+      >
         {menuNames(props.menuItems, "selling")}
       </TabsContent>
-      <TabsContent value="buying">
+      <TabsContent
+        value="buying"
+        className="overflow-auto flex justify-start items-center flex-nowrap"
+      >
         {menuNames(props.menuItems, "buying")}
       </TabsContent>
     </Tabs>
