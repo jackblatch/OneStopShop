@@ -13,8 +13,11 @@ Key features:
 - Using React Server Components for data queries with Drizzle ORM
 - Using UploadThing for typesafe file uploads (e.g., product images)
 
+Home page
 ![Home page](/.github/images/home.jpeg?raw=0)
-![Home page](/.github/images/product-admin.jpeg?raw=0)
+
+Admin Product Page Editor
+![Admin Product Page Editor](/.github/images/product-admin.jpeg?raw=0)
 
 ## Running the app
 
