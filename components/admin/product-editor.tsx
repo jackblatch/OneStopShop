@@ -13,6 +13,8 @@ import {
 import { createProduct } from "@/lib/apiTypes";
 import { toast } from "../ui/use-toast";
 import { HeadingAndSubheading } from "./heading-and-subheading";
+import { ProductImageUploader } from "./product-image-uploader";
+import { ProductImages } from "@/lib/types";
 
 const defaultValues = {
   name: "",
@@ -25,14 +27,17 @@ const defaultValues = {
 export const ProductEditor = (props: {
   displayType?: "page" | "modal";
   productStatus: "new-product" | "existing-product";
-  initialValues?: Omit<Product, "id" | "storeId">;
+  initialValues?: Product;
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [newImages, setNewImages] = useState([] as ProductImages[]);
 
   const [formValues, setFormValues] = useState<Omit<Product, "id" | "storeId">>(
     props.initialValues ?? defaultValues
   );
+
+  console.log([...(props.initialValues?.images as []), ...(newImages ?? [])]);
 
   const dismissModal = useCallback(() => {
     if (props.displayType === "modal") {
@@ -69,6 +74,10 @@ export const ProductEditor = (props: {
       const res = await mutateProduct({
         values: formValues,
         action,
+        newImages,
+        initialValues: props.initialValues as Omit<Product, "images"> & {
+          images: ProductImages[];
+        },
       });
       return await res?.json();
     };
@@ -112,6 +121,7 @@ export const ProductEditor = (props: {
             : "Edit the details of your product below and click save."
         }
       />
+
       <form onSubmit={handleProductUpdate}>
         <div className="flex flex-col gap-8 mt-2 mb-6">
           <TextInputWithLabel
@@ -127,8 +137,18 @@ export const ProductEditor = (props: {
             label="Description"
             type="text"
             inputType="textarea"
+            rows={8}
             state={formValues}
             setState={setFormValues}
+          />
+          <ProductImageUploader
+            product={
+              props.initialValues as Omit<Product, "images"> & {
+                images: ProductImages[];
+              }
+            }
+            newImages={newImages}
+            setNewImages={setNewImages}
           />
           <div className="grid grid-cols-2 gap-4">
             <TextInputWithLabel
@@ -174,6 +194,8 @@ export const ProductEditor = (props: {
 const mutateProduct = async (props: {
   values: Omit<Product, "id" | "storeId"> & { id?: number };
   action: "create" | "update" | "delete";
+  newImages?: ProductImages[];
+  initialValues?: Omit<Product, "images"> & { images: ProductImages[] };
 }) => {
   if (props.action === "create") {
     return await fetch(apiRoutes.product, {
@@ -182,16 +204,7 @@ const mutateProduct = async (props: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        productValues: {
-          ...props.values,
-          images: [
-            {
-              id: "1",
-              alt: "descriptive alt tag",
-              url: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-            },
-          ],
-        },
+        productValues: props.values,
       }),
     });
   } else if (props.action === "update") {
@@ -203,6 +216,10 @@ const mutateProduct = async (props: {
       body: JSON.stringify({
         productValues: {
           ...props.values,
+          images: [
+            ...(props.initialValues?.images as []),
+            ...(props.newImages ?? []),
+          ],
         },
       }),
     });
