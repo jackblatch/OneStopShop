@@ -38,8 +38,6 @@ export const ProductEditor = (props: {
     props.initialValues ?? defaultValues
   );
 
-  console.log([...(props.initialValues?.images as []), ...(newImages ?? [])]);
-
   const dismissModal = useCallback(() => {
     if (props.displayType === "modal") {
       router.back();
@@ -143,17 +141,19 @@ export const ProductEditor = (props: {
             state={formValues}
             setState={setFormValues}
           />
-          <ProductImageUploader
-            product={
-              props.initialValues as Omit<Product, "images"> & {
-                images: ProductImages[];
+          {props.productStatus === "existing-product" && (
+            <ProductImageUploader
+              product={
+                props.initialValues as Omit<Product, "images"> & {
+                  images: ProductImages[];
+                }
               }
-            }
-            newImages={newImages}
-            setNewImages={setNewImages}
-            imagesToDelete={imagesToDelete}
-            setImagesToDelete={setImagesToDelete}
-          />
+              newImages={newImages}
+              setNewImages={setNewImages}
+              imagesToDelete={imagesToDelete}
+              setImagesToDelete={setImagesToDelete}
+            />
+          )}
           <div className="grid grid-cols-2 gap-4">
             <TextInputWithLabel
               id="price"
