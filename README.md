@@ -12,6 +12,7 @@ Key features:
 - Intercepted routes (with parallel routing) on new product creation in admin
 - Using React Server Components for data queries with Drizzle ORM
 - Using UploadThing for typesafe file uploads (e.g., product images)
+- User authentication with Clerk
 
 Home page
 ![Home page](/.github/images/home.jpeg?raw=0)
