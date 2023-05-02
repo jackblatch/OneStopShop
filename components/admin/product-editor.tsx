@@ -31,6 +31,7 @@ export const ProductEditor = (props: {
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [imagesToDelete, setImagesToDelete] = useState([] as ProductImages[]);
   const [newImages, setNewImages] = useState([] as ProductImages[]);
 
   const [formValues, setFormValues] = useState<Omit<Product, "id" | "storeId">>(
@@ -78,6 +79,7 @@ export const ProductEditor = (props: {
         initialValues: props.initialValues as Omit<Product, "images"> & {
           images: ProductImages[];
         },
+        imagesToDelete,
       });
       return await res?.json();
     };
@@ -149,6 +151,8 @@ export const ProductEditor = (props: {
             }
             newImages={newImages}
             setNewImages={setNewImages}
+            imagesToDelete={imagesToDelete}
+            setImagesToDelete={setImagesToDelete}
           />
           <div className="grid grid-cols-2 gap-4">
             <TextInputWithLabel
@@ -196,6 +200,7 @@ const mutateProduct = async (props: {
   action: "create" | "update" | "delete";
   newImages?: ProductImages[];
   initialValues?: Omit<Product, "images"> & { images: ProductImages[] };
+  imagesToDelete?: ProductImages[];
 }) => {
   if (props.action === "create") {
     return await fetch(apiRoutes.product, {
@@ -219,7 +224,10 @@ const mutateProduct = async (props: {
           images: [
             ...(props.initialValues?.images as []),
             ...(props.newImages ?? []),
-          ],
+          ].filter(
+            (item) =>
+              props.imagesToDelete && !props.imagesToDelete.includes(item)
+          ),
         },
       }),
     });

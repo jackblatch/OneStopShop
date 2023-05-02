@@ -6,6 +6,8 @@ import { Label } from "../ui/label";
 import { ProductImages } from "@/lib/types";
 import Image from "next/image";
 import { Product } from "@/db/schema";
+import { useState } from "react";
+import { XIcon } from "lucide-react";
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
@@ -13,11 +15,12 @@ export function ProductImageUploader(props: {
   product: Omit<Product, "images"> & { images: ProductImages[] };
   newImages: ProductImages[];
   setNewImages: React.Dispatch<React.SetStateAction<ProductImages[]>>;
+  imagesToDelete: ProductImages[];
+  setImagesToDelete: React.Dispatch<React.SetStateAction<ProductImages[]>>;
 }) {
+  const [isUploading, setIsUploading] = useState(false);
   const { getRootProps, getInputProps, files, startUpload } =
     useUploadThing("productUploader");
-
-  console.log(files);
 
   return (
     <div {...getRootProps()}>
@@ -25,16 +28,29 @@ export function ProductImageUploader(props: {
       <div className="mt-2 border border-border p-4 rounded-md flex items-center justify-start gap-2 flex-wrap">
         {props.product.images &&
           props.product.images.length > 0 &&
-          [...props.product.images, ...props.newImages].map((image) => (
-            <li key={image.id} className="relative w-36 h-36">
-              <Image
-                src={image.url}
-                alt={image.alt ?? ""}
-                fill
-                className="object-cover w-36 h-36"
-              />
-            </li>
-          ))}
+          [...props.product.images, ...props.newImages]
+            .filter((item) => !props.imagesToDelete.includes(item))
+            .map((image) => (
+              <div key={image.id}>
+                <li className="relative w-36 h-36">
+                  <Image
+                    src={image.url}
+                    alt={image.alt ?? ""}
+                    fill
+                    className="object-cover w-36 h-36"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      props.setImagesToDelete((prev) => [...prev, image]);
+                    }}
+                    className="relative -top-4 ml-28 bg-white rounded-full w-6 h-6 flex items-center justify-center"
+                  >
+                    <XIcon className="w-5 h-5" />
+                  </button>
+                </li>
+              </div>
+            ))}
         <div className="border-border border-2 rounded-md border-dashed w-36 h-36">
           <p className="items-center justify-center flex relative top-[50px] flex-col text-sm">
             <span className="font-semibold mr-1">Click to upload</span>
@@ -68,6 +84,7 @@ export function ProductImageUploader(props: {
           <Button
             className="mt-2"
             onClick={async () => {
+              setIsUploading(true);
               const res = startUpload();
               const data = await res;
               props.setNewImages(
@@ -79,10 +96,13 @@ export function ProductImageUploader(props: {
                   };
                 })
               );
+              setIsUploading(false);
             }}
             type="button"
           >
-            Upload {files.length} file{files.length > 1 ? "s" : ""}
+            {`${isUploading ? "Uploading" : "Upload"} ${files.length} file${
+              files.length > 1 ? "s" : ""
+            }${isUploading ? "..." : ""}`}
           </Button>
         </div>
       )}
