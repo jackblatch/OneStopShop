@@ -7,7 +7,10 @@ import { currencyFormatter } from "@/lib/currency";
 import { Button } from "../ui/button";
 import { ProductAndStore } from "@/app/(storefront)/products/page";
 
-export const ProductCard = (props: { storeAndProduct: ProductAndStore }) => {
+export const ProductCard = (props: {
+  storeAndProduct: ProductAndStore;
+  hideButtonActions?: boolean;
+}) => {
   const productPageLink = `${routes.product}/${props.storeAndProduct.product.id}`;
 
   return (
@@ -36,21 +39,23 @@ export const ProductCard = (props: { storeAndProduct: ProductAndStore }) => {
           {currencyFormatter(Number(props.storeAndProduct.product.price))}
         </Text>
       </Link>
-      <div className="flex gap-2 items-center justify-between mt-4 mb-8">
-        <Link
-          href={`${routes.productQuickView}/${[
-            props.storeAndProduct.product.id,
-          ]}`}
-          className="w-full"
-        >
-          <Button variant="outline" size="sm" className="flex gap-2 w-full">
-            <span>Quick View</span>
+      {!props.hideButtonActions && (
+        <div className="flex gap-2 items-center justify-between mt-4 mb-8">
+          <Link
+            href={`${routes.productQuickView}/${[
+              props.storeAndProduct.product.id,
+            ]}`}
+            className="w-full"
+          >
+            <Button variant="outline" size="sm" className="flex gap-2 w-full">
+              <span>Quick View</span>
+            </Button>
+          </Link>
+          <Button className="flex gap-2 w-full" size="sm">
+            <span>Add to Cart</span>
           </Button>
-        </Link>
-        <Button className="flex gap-2 w-full" size="sm">
-          <span>Add to Cart</span>
-        </Button>
-      </div>
+        </div>
+      )}
     </div>
   );
 };

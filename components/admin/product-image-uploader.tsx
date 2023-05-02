@@ -82,21 +82,23 @@ export function ProductImageUploader(props: {
             </li>
           ))}
           <Button
+            disabled={isUploading}
             className="mt-2"
-            onClick={async () => {
+            onClick={() => {
               setIsUploading(true);
               const res = startUpload();
-              const data = await res;
-              props.setNewImages(
-                data.map((item) => {
-                  return {
-                    url: item.fileUrl,
-                    alt: item.fileKey.split("_")[1],
-                    id: item.fileKey,
-                  };
-                })
-              );
-              setIsUploading(false);
+              res.then((data) => {
+                props.setNewImages(
+                  data.map((item) => {
+                    return {
+                      url: item.fileUrl,
+                      alt: item.fileKey.split("_")[1],
+                      id: item.fileKey,
+                    };
+                  })
+                );
+                setIsUploading(false);
+              });
             }}
             type="button"
           >

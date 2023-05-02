@@ -13,6 +13,10 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        sport:
+          "url('https://uploadthing.com/f/afe0d65b-df4c-4feb-83e0-e3cd00c5a6cb_lindsay-henwood-7_kRuX1hSXM-unsplash-min.jpg')",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
