@@ -11,7 +11,7 @@ export const ourFileRouter = {
   productUploader: f
     // Set permissions and file types for this FileRoute
     .fileTypes(["image"])
-    .maxSize("4MB")
+    .maxSize("1MB")
     .middleware(async (req) => {
       // This code runs on your server before upload
       const user = await getUser();

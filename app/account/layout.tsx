@@ -31,7 +31,7 @@ export default async function AdminLayout({ children }: PropsWithChildren) {
         <Line />
       </div>
 
-      <ContentWrapper className="w-full flex items-start flex-col flex-1">
+      <ContentWrapper className="w-full flex items-start flex-col flex-1 mb-8">
         <SignedIn>
           <div className="w-full">{children}</div>
         </SignedIn>
