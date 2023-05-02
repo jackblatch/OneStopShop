@@ -1,10 +1,10 @@
 import { HeadingAndSubheading } from "@/components/admin/heading-and-subheading";
 
-export default function OrdersPage() {
+export default function PurchasesPage() {
   return (
     <HeadingAndSubheading
-      heading="Orders"
-      subheading="View and manage your orders"
+      heading="Your purchases"
+      subheading="View and manage purchases you've made"
     />
   );
 }

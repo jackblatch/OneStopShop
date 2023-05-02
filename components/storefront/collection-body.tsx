@@ -21,8 +21,8 @@ export const CollectionBody = (props: {
   }, [props.storeAndProduct]);
 
   return (
-    <div className="grid grid-cols-12 mt-12 gap-12">
-      <div className="col-span-3">
+    <div className="md:grid md:grid-cols-12 mt-12 md:gap-12">
+      <div className="hidden md:block sm:col-span-3">
         <ProductSidebar
           uniqueStoresList={uniqueStoresList}
           setSelectedSellers={setSelectedSellers}

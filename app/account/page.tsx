@@ -1,3 +1,12 @@
+import { HeadingAndSubheading } from "@/components/admin/heading-and-subheading";
+
 export default function Account() {
-  return <div>Account Home Page</div>;
+  return (
+    <>
+      <HeadingAndSubheading
+        heading="Account"
+        subheading="Manage your account"
+      />
+    </>
+  );
 }

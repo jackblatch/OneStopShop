@@ -1,14 +1,24 @@
-import { Dispatch, Fragment, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  Fragment,
+  PropsWithChildren,
+  SetStateAction,
+  useState,
+} from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CrossIcon, X } from "lucide-react";
+import ProductsPage from "@/app/account/selling/products/page";
 
-export default function MobileMenuSlideOut({
+export default function Sheet({
   open,
   setOpen,
-}: {
+  title,
+  children,
+}: PropsWithChildren<{
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-}) {
+  title: string;
+}>) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -31,7 +41,7 @@ export default function MobileMenuSlideOut({
                     <div className="px-4 sm:px-6">
                       <div className="flex items-start justify-between">
                         <Dialog.Title className="text-base font-semibold leading-6 text-gray-900">
-                          Panel title
+                          {title}
                         </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button
@@ -49,7 +59,7 @@ export default function MobileMenuSlideOut({
                       </div>
                     </div>
                     <div className="relative mt-6 flex-1 px-4 sm:px-6">
-                      {/* Your content */}
+                      {children}
                     </div>
                   </div>
                 </Dialog.Panel>

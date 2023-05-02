@@ -67,7 +67,7 @@ export function MenuItems() {
                       <div className="mb-2 mt-4 text-lg font-medium text-white">
                         Here to help
                       </div>
-                      <p className="text-sm leading-tight text-muted-foreground text-gray-300">
+                      <p className="text-sm leading-tight text-muted-foreground text-gray-100">
                         Contact our customer support team 24/7
                       </p>
                     </div>

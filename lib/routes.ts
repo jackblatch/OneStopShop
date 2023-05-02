@@ -6,6 +6,7 @@ export const routes = {
   product: "/product",
   productQuickView: "/quickview/product",
   seller: "/seller",
+  cart: "/cart",
 };
 
 export const productsQueryParams = {
