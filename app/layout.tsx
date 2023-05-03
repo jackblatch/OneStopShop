@@ -16,6 +16,13 @@ export default async function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <script
+            defer
+            data-domain="onestopshop.jackblatch.com"
+            src="https://plausible.io/js/script.js"
+          ></script>
+        </head>
         <body>
           <main>{children}</main>
           <Toaster />
