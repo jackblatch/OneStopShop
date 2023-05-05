@@ -18,7 +18,7 @@ export const CollectionPagePagination = async (props: {
   return (
     <div className="flex items-center justify-center gap-2">
       {Array.from(Array(numberOfPages)).map((_, i) => (
-        <Link href={`${routes.products}?page=${i + 1}`}>
+        <Link href={`${routes.products}?page=${i + 1}`} key={i}>
           <PaginationButton pageNumber={i + 1} searchParamName="page" />
         </Link>
       ))}
