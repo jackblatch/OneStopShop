@@ -2,6 +2,7 @@ import SiteDescription from "../../(content)/site-description.mdx";
 import { ContentWrapper } from "@/components/content-wrapper";
 import { CollectionBody } from "@/components/storefront/collection-body";
 import { CollectionHeaderWrapper } from "@/components/storefront/collection-header-wrapper";
+import { CollectionPagePagination } from "@/components/storefront/collection-page-pagination";
 import { db } from "@/db/db";
 import { Product, Store, stores } from "@/db/schema";
 import { products } from "@/db/schema";
@@ -14,7 +15,12 @@ export type ProductAndStore = {
   store: Omit<Store, "description" | "industry">;
 };
 
-export default async function StorefrontProductsPage() {
+const PRODUCTS_PER_PAGE = 9;
+
+export default async function StorefrontProductsPage(context: {
+  params: { slug: string };
+  searchParams: { page: string; seller: string };
+}) {
   const storeAndProduct = (await db
     .select({
       product: products,
@@ -25,14 +31,44 @@ export default async function StorefrontProductsPage() {
       },
     })
     .from(products)
-    .leftJoin(stores, eq(products.storeId, stores.id))) as ProductAndStore[];
+    .where(() => {
+      if (
+        context.searchParams.seller === undefined ||
+        context.searchParams.seller === ""
+      )
+        return;
+      return eq(stores.slug, context.searchParams.seller);
+    })
+    .leftJoin(stores, eq(products.storeId, stores.id))
+    .limit(PRODUCTS_PER_PAGE)
+    .offset(
+      !isNaN(Number(context.searchParams.page))
+        ? (Number(context.searchParams.page) - 1) * PRODUCTS_PER_PAGE
+        : 0
+    )) as ProductAndStore[];
 
   return (
     <ContentWrapper>
       <CollectionHeaderWrapper heading="Products">
         <SiteDescription />
       </CollectionHeaderWrapper>
-      <CollectionBody storeAndProduct={storeAndProduct} />
+      <CollectionBody
+        storeAndProduct={storeAndProduct}
+        activeSellers={await getActiveSellers()}
+      >
+        {/* @ts-expect-error Async Server Component */}
+        <CollectionPagePagination productsPerPage={PRODUCTS_PER_PAGE} />
+      </CollectionBody>
     </ContentWrapper>
   );
 }
+
+const getActiveSellers = async () => {
+  return await db
+    .select({
+      id: stores.id,
+      name: stores.name,
+      slug: stores.slug,
+    })
+    .from(stores);
+};
