@@ -11,7 +11,11 @@ export const PaginationButton = (props: {
 
   return (
     <Button
-      variant={Number(param) === props.pageNumber ? "default" : "secondary"}
+      variant={
+        Number(param) === props.pageNumber || (!param && props.pageNumber === 1)
+          ? "default"
+          : "secondary"
+      }
       className="w-fit"
       key={props.pageNumber}
     >

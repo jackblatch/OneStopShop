@@ -13,7 +13,8 @@ export const CollectionPagePagination = async (props: {
     })
     .from(products);
 
-  const numberOfPages = Math.round(productIds.length / props.productsPerPage);
+  const numberOfPages =
+    Math.floor(productIds.length / props.productsPerPage) + 1;
 
   return (
     <div className="flex items-center justify-center gap-2">
