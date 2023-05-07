@@ -15,7 +15,7 @@ export type ProductAndStore = {
   store: Omit<Store, "description" | "industry">;
 };
 
-const PRODUCTS_PER_PAGE = 3;
+const PRODUCTS_PER_PAGE = 6;
 
 export default async function StorefrontProductsPage(context: {
   params: { slug: string };

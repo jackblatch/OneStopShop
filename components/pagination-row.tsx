@@ -17,12 +17,9 @@ export const PaginationRow = (props: { pagesArray: number[] }) => {
         </Link>
       )}
       {props.pagesArray.length <= 4
-        ? props.pagesArray.map((item, i) => (
-            <Link href={`${routes.products}?page=${Number(item)}`} key={i}>
-              <PaginationButton
-                pageNumber={Number(item)}
-                searchParamName="page"
-              />
+        ? props.pagesArray.map((_, i) => (
+            <Link href={`${routes.products}?page=${i + 1}`} key={i}>
+              <PaginationButton pageNumber={i + 1} searchParamName="page" />
             </Link>
           ))
         : [
@@ -57,7 +54,7 @@ export const PaginationRow = (props: { pagesArray: number[] }) => {
         Number(pageParam) + 1 <= props.pagesArray.length && (
           <Link
             href={`${routes.products}?page=${
-              !isNaN(Number(pageParam)) ? 2 : Number(pageParam) + 1
+              !isNaN(Number(pageParam)) ? Number(pageParam) + 1 : 2
             }`}
           >
             <Button variant="secondary">Next</Button>
