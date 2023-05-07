@@ -35,9 +35,9 @@ export const PaginationRow = (props: { pagesArray: number[] }) => {
             props.pagesArray.length,
           ].map((item, i) => (
             <div className="flex items-center justify-between gap-2" key={i}>
-              {item === props.pagesArray.length - 1 && (
-                <div className="h-10 py-2 px-2">...</div>
-              )}
+              {item === props.pagesArray.length - 1 &&
+                (!!okToApplyPageCommand ? Number(pageParam) : 2) !==
+                  item - 1 && <div className="h-10 py-2 px-2">...</div>}
               <Link href={`${routes.products}?page=${Number(item)}`} key={i}>
                 <PaginationButton
                   pageNumber={Number(item)}
