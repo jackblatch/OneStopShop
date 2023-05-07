@@ -2,29 +2,39 @@
 import { ProductAndStore } from "@/app/(storefront)/products/page";
 import { ProductSidebar } from "./product-sidebar";
 import { ProductCard } from "./product-card";
-import { useMemo, useState } from "react";
+import { PropsWithChildren, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { CollectionPagePagination } from "./collection-page-pagination";
 
-export const CollectionBody = (props: {
-  storeAndProduct: ProductAndStore[];
-}) => {
+export const CollectionBody = (
+  props: PropsWithChildren<{
+    storeAndProduct: ProductAndStore[];
+    activeSellers: {
+      id: number;
+      name: string | null;
+      slug: string | null;
+    }[];
+  }>
+) => {
   const searchParams = useSearchParams();
   const seller = searchParams.get("seller");
   const [selectedSellers, setSelectedSellers] = useState<string[]>(
     seller ? [...seller?.split("_")] : []
   );
 
-  const uniqueStoresList = useMemo(() => {
-    return Array.from(
-      new Set(props.storeAndProduct.map((product) => product.store.name))
-    ).filter(Boolean) as string[];
-  }, [props.storeAndProduct]);
+  // const uniqueStoresList = useMemo(() => {
+  //   return Array.from(
+  //     new Set(props.storeAndProduct.map((product) => product.store.name))
+  //   ).filter(Boolean) as string[];
+  // }, [props.storeAndProduct]);
 
   return (
     <div className="md:grid md:grid-cols-12 mt-12 md:gap-12">
       <div className="hidden md:block sm:col-span-3">
         <ProductSidebar
-          uniqueStoresList={uniqueStoresList}
+          uniqueStoresList={props.activeSellers
+            .map((item) => item.name ?? "")
+            .filter((item) => item !== "")}
           setSelectedSellers={setSelectedSellers}
           selectedSellers={selectedSellers}
         />
@@ -37,6 +47,7 @@ export const CollectionBody = (props: {
               <ProductCard storeAndProduct={product} key={i} />
             )
         )}
+        <div className="col-span-3">{props.children}</div>
       </div>
     </div>
   );
