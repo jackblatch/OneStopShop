@@ -9,6 +9,12 @@ export const PaginationRow = (props: { pagesArray: number[] }) => {
   const searchParams = useSearchParams();
   const pageParam = searchParams.get("page");
 
+  const okToApplyPageCommand =
+    !isNaN(Number(pageParam)) &&
+    Number(pageParam) - 1 >= 1 &&
+    Number(pageParam) !== props.pagesArray.length &&
+    Number(pageParam) !== props.pagesArray.length - 1;
+
   return (
     <div className="flex items-center justify-center gap-2">
       {!isNaN(Number(pageParam)) && Number(pageParam) - 1 >= 1 && (
@@ -23,18 +29,8 @@ export const PaginationRow = (props: { pagesArray: number[] }) => {
             </Link>
           ))
         : [
-            !isNaN(Number(pageParam)) &&
-            Number(pageParam) - 1 >= 1 &&
-            Number(pageParam) !== props.pagesArray.length &&
-            Number(pageParam) !== props.pagesArray.length - 1
-              ? Number(pageParam) - 1
-              : 1,
-            !isNaN(Number(pageParam)) &&
-            Number(pageParam) - 1 >= 1 &&
-            Number(pageParam) !== props.pagesArray.length &&
-            Number(pageParam) !== props.pagesArray.length - 1
-              ? Number(pageParam)
-              : 2,
+            !!okToApplyPageCommand ? Number(pageParam) - 1 : 1,
+            !!okToApplyPageCommand ? Number(pageParam) : 2,
             props.pagesArray.length - 1,
             props.pagesArray.length,
           ].map((item, i) => (
