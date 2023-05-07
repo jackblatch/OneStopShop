@@ -3,6 +3,8 @@ import { products } from "@/db/schema";
 import Link from "next/link";
 import { routes } from "@/lib/routes";
 import { PaginationButton } from "../pagination-button";
+import { Button } from "../ui/button";
+import { PaginationRow } from "../pagination-row";
 
 export const CollectionPagePagination = async (props: {
   productsPerPage: number;
@@ -17,12 +19,6 @@ export const CollectionPagePagination = async (props: {
     Math.floor(productIds.length / props.productsPerPage) + 1;
 
   return (
-    <div className="flex items-center justify-center gap-2">
-      {Array.from(Array(numberOfPages)).map((_, i) => (
-        <Link href={`${routes.products}?page=${i + 1}`} key={i}>
-          <PaginationButton pageNumber={i + 1} searchParamName="page" />
-        </Link>
-      ))}
-    </div>
+    <PaginationRow pagesArray={Array.from(Array(numberOfPages).fill(0))} />
   );
 };
