@@ -1,7 +1,7 @@
 import { db } from "@/db/db";
 import { products } from "@/db/schema";
 import type { createProduct, UpdateProduct } from "@/lib/apiTypes";
-import { currentUser } from "@clerk/nextjs/app-beta";
+import { currentUser } from "@clerk/nextjs";
 import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { z } from "zod";

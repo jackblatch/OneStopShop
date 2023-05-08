@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer";
 import { NavBar } from "@/components/navbar";
 import { Heading } from "@/components/ui/heading";
 import { PropsWithChildren } from "react";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs/app-beta";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import SignInWrapper from "@/components/sign-in";
 import { singleLevelNestedRoutes } from "@/lib/routes";
 import { MenuItems, SecondaryMenu } from "@/components/secondary-menu";

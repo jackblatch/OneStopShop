@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import { ClerkProvider } from "@clerk/nextjs/app-beta";
+import { ClerkProvider } from "@clerk/nextjs";
 import React from "react";
 import { Toaster } from "@/components/ui/Toaster";
 

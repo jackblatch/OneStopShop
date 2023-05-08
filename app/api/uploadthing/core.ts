@@ -1,5 +1,5 @@
 /** app/api/uploadthing/core.ts */
-import { currentUser } from "@clerk/nextjs/app-beta";
+import { currentUser } from "@clerk/nextjs";
 import { createFilething, type FileRouter } from "uploadthing/server";
 const f = createFilething();
 
