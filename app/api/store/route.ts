@@ -2,7 +2,7 @@ import type { updateStoreDetails } from "@/lib/apiTypes";
 import { db } from "@/db/db";
 import { stores } from "@/db/schema";
 import { createStore } from "@/lib/apiTypes";
-import { currentUser } from "@clerk/nextjs/app-beta";
+import { currentUser } from "@clerk/nextjs";
 import { users } from "@clerk/nextjs/dist/api";
 import { eq, or } from "drizzle-orm";
 import { NextResponse } from "next/server";

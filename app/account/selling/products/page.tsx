@@ -5,7 +5,7 @@ import Link from "next/link";
 import { db } from "@/db/db";
 import { products } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { currentUser } from "@clerk/nextjs/app-beta";
+import { currentUser } from "@clerk/nextjs";
 import Table from "@/components/admin/table";
 import { secondLevelNestedRoutes } from "@/lib/routes";
 import { currencyFormatter } from "@/lib/currency";
