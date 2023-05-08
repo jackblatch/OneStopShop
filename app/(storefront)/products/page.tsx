@@ -47,6 +47,8 @@ export default async function StorefrontProductsPage(context: {
         : 0
     )) as ProductAndStore[];
 
+  console.log(storeAndProduct.length);
+
   return (
     <ContentWrapper>
       <CollectionHeaderWrapper heading="Products">
@@ -57,7 +59,10 @@ export default async function StorefrontProductsPage(context: {
         activeSellers={await getActiveSellers()}
       >
         {/* @ts-expect-error Async Server Component */}
-        <CollectionPagePagination productsPerPage={PRODUCTS_PER_PAGE} />
+        <CollectionPagePagination
+          productsPerPage={PRODUCTS_PER_PAGE}
+          sellerParams={context.searchParams.seller as string}
+        />
       </CollectionBody>
     </ContentWrapper>
   );

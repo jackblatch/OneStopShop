@@ -22,27 +22,37 @@ export const PaginationRow = (props: { pagesArray: number[] }) => {
           <Button variant="secondary">Prev</Button>
         </Link>
       )}
-      {[
-        !!okToApplyPageCommand ? Number(pageParam) - 1 : 1,
-        !!okToApplyPageCommand ? Number(pageParam) : 2,
-        props.pagesArray.length - 1,
-        props.pagesArray.length,
-      ].map((item, i) => (
-        <div className="flex items-center justify-between gap-2" key={i}>
-          {item === props.pagesArray.length - 1 &&
-            (!!okToApplyPageCommand ? Number(pageParam) : 2) !== item - 1 && (
-              <div className="h-10 py-2 px-2">...</div>
-            )}
-          <Link href={`${routes.products}?page=${Number(item)}`} key={i}>
-            <PaginationButton
-              pageNumber={Number(item)}
-              searchParamName="page"
-            />
-          </Link>
-        </div>
-      ))}
+      {props.pagesArray.length <= 4
+        ? props.pagesArray.length > 1 && (
+            <div>
+              {props.pagesArray.map((_, i) => (
+                <Link href={`${routes.products}?page=${i + 1}`} key={i}>
+                  <PaginationButton pageNumber={i + 1} searchParamName="page" />
+                </Link>
+              ))}
+            </div>
+          )
+        : [
+            !!okToApplyPageCommand ? Number(pageParam) - 1 : 1,
+            !!okToApplyPageCommand ? Number(pageParam) : 2,
+            props.pagesArray.length - 1,
+            props.pagesArray.length,
+          ].map((item, i) => (
+            <div className="flex items-center justify-between gap-2" key={i}>
+              {item === props.pagesArray.length - 1 &&
+                (!!okToApplyPageCommand ? Number(pageParam) : 2) !==
+                  item - 1 && <div className="h-10 py-2 px-2">...</div>}
+              <Link href={`${routes.products}?page=${Number(item)}`} key={i}>
+                <PaginationButton
+                  pageNumber={Number(item)}
+                  searchParamName="page"
+                />
+              </Link>
+            </div>
+          ))}
       {!isNaN(Number(pageParam)) &&
-        Number(pageParam) + 1 <= props.pagesArray.length && (
+        Number(pageParam) + 1 <= props.pagesArray.length &&
+        props.pagesArray.length > 1 && (
           <Link
             href={`${routes.products}?page=${
               !isNaN(Number(pageParam)) && Number(pageParam) + 1 > 2

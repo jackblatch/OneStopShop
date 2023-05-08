@@ -26,8 +26,6 @@ export default async function Home() {
     .leftJoin(stores, eq(products.storeId, stores.id))
     .limit(4)) as ProductAndStore[];
 
-  console.log(storeAndProduct);
-
   return (
     <>
       <SlideShow />
