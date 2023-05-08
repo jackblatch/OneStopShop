@@ -2,9 +2,8 @@
 import { ProductAndStore } from "@/app/(storefront)/products/page";
 import { ProductSidebar } from "./product-sidebar";
 import { ProductCard } from "./product-card";
-import { PropsWithChildren, useMemo, useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { CollectionPagePagination } from "./collection-page-pagination";
 
 export const CollectionBody = (
   props: PropsWithChildren<{
@@ -21,12 +20,6 @@ export const CollectionBody = (
   const [selectedSellers, setSelectedSellers] = useState<string[]>(
     seller ? [...seller?.split("_")] : []
   );
-
-  // const uniqueStoresList = useMemo(() => {
-  //   return Array.from(
-  //     new Set(props.storeAndProduct.map((product) => product.store.name))
-  //   ).filter(Boolean) as string[];
-  // }, [props.storeAndProduct]);
 
   return (
     <div className="md:grid md:grid-cols-12 mt-12 md:gap-12">

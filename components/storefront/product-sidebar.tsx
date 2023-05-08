@@ -1,8 +1,9 @@
+"use client";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Heading } from "../ui/heading";
-import { ProductAndStore } from "@/app/(storefront)/products/page";
 import React from "react";
 import { createSlug } from "@/lib/createSlug";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export const ProductSidebar = (props: {
   uniqueStoresList: string[];
@@ -42,6 +43,12 @@ const FilterCheckbox = (props: {
   setSelectedSellers: React.Dispatch<React.SetStateAction<string[]>>;
   selectedSellers: string[];
 }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const page = searchParams.get("page");
+  const seller = searchParams.get("seller");
+  const pathname = usePathname();
+
   return (
     <div className="flex items-center space-x-2 my-2 py-1">
       <Checkbox
@@ -50,9 +57,24 @@ const FilterCheckbox = (props: {
         onCheckedChange={(checked) => {
           if (checked) {
             props.setSelectedSellers((prev) => [...prev, props.id]);
+            router.push(
+              `${pathname}?page=${page}&seller=${
+                seller ? `${seller}_${props.id}` : props.id
+              }`
+            );
           } else {
             props.setSelectedSellers((prev) =>
               prev.filter((item) => item !== props.id)
+            );
+            const filteredSellers = seller
+              ?.split("_")
+              .filter((seller) => seller !== props.id);
+            router.push(
+              `${pathname}?page=${page}${
+                filteredSellers?.length
+                  ? `&seller=${filteredSellers.join("_")}`
+                  : ""
+              }`
             );
           }
         }}

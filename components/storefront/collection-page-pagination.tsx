@@ -1,7 +1,7 @@
 import { db } from "@/db/db";
 import { products, stores } from "@/db/schema";
 import { PaginationRow } from "../pagination-row";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 export const CollectionPagePagination = async (props: {
   productsPerPage: number;
@@ -22,13 +22,17 @@ export const CollectionPagePagination = async (props: {
       .where(() => {
         if (props.sellerParams === undefined || props.sellerParams === "")
           return;
-        return eq(stores.slug, props.sellerParams);
+        return inArray(stores.slug, props.sellerParams.split("_"));
       })
       .leftJoin(stores, eq(products.storeId, stores.id))
   ).length;
 
   const numberOfPages =
-    Math.floor(numberOfProducts / props.productsPerPage) + 1;
+    numberOfProducts / props.productsPerPage === 1
+      ? 1
+      : Math.floor(numberOfProducts / props.productsPerPage) + 1;
+
+  console.log("d", Math.floor(numberOfProducts / props.productsPerPage));
 
   return (
     <PaginationRow pagesArray={Array.from(Array(numberOfPages).fill(0))} />

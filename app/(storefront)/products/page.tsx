@@ -6,7 +6,7 @@ import { CollectionPagePagination } from "@/components/storefront/collection-pag
 import { db } from "@/db/db";
 import { Product, Store, stores } from "@/db/schema";
 import { products } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 export type ProductAndStore = {
   product: Omit<Product, "images"> & {
@@ -21,6 +21,8 @@ export default async function StorefrontProductsPage(context: {
   params: { slug: string };
   searchParams: { page: string; seller: string };
 }) {
+  console.log(context.searchParams.seller);
+
   const storeAndProduct = (await db
     .select({
       product: products,
@@ -37,7 +39,7 @@ export default async function StorefrontProductsPage(context: {
         context.searchParams.seller === ""
       )
         return;
-      return eq(stores.slug, context.searchParams.seller);
+      return inArray(stores.slug, context.searchParams.seller.split("_"));
     })
     .leftJoin(stores, eq(products.storeId, stores.id))
     .limit(PRODUCTS_PER_PAGE)
