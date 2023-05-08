@@ -54,7 +54,7 @@ const FilterCheckbox = (props: {
         onCheckedChange={(checked) => {
           if (checked) {
             router.push(
-              `${pathname}?page=${page}&seller=${
+              `${pathname}?page=${page ? page : "1"}&seller=${
                 seller ? `${seller}_${props.id}` : props.id
               }`
             );
@@ -63,7 +63,7 @@ const FilterCheckbox = (props: {
               ?.split("_")
               .filter((seller) => seller !== props.id);
             router.push(
-              `${pathname}?page=${page}${
+              `${pathname}?page=${page ? page : "1"}${
                 filteredSellers?.length
                   ? `&seller=${filteredSellers.join("_")}`
                   : ""
