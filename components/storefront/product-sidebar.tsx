@@ -12,10 +12,29 @@ export const ProductSidebar = (props: {
   selectedSellers: string[];
 }) => {
   const [isSellerListExpanded, setIsSellerListExpanded] = useState(false);
+  const searchParams = useSearchParams();
+  const seller = searchParams.get("seller");
+  const page = searchParams.get("page");
+  const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <div>
-      <Heading size="h3">Filters</Heading>
+      <div className="flex items-center justify-between gap-2 w-full">
+        <Heading size="h3">Filters</Heading>
+        {seller && (
+          <Button
+            size="sm"
+            variant="link"
+            className="text-muted-foreground"
+            onClick={() => {
+              router.push(`${pathname}`);
+            }}
+          >
+            Clear filters
+          </Button>
+        )}
+      </div>
       <div className="mt-4">
         <Heading size="h4">Sellers</Heading>
         {props.uniqueStoresList.slice(0, 5).map((store, i) => (

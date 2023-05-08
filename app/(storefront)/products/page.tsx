@@ -21,8 +21,6 @@ export default async function StorefrontProductsPage(context: {
   params: { slug: string };
   searchParams: { page: string; seller: string };
 }) {
-  console.log(context.searchParams.seller);
-
   const storeAndProduct = (await db
     .select({
       product: products,
@@ -48,8 +46,6 @@ export default async function StorefrontProductsPage(context: {
         ? (Number(context.searchParams.page) - 1) * PRODUCTS_PER_PAGE
         : 0
     )) as ProductAndStore[];
-
-  console.log(storeAndProduct.length);
 
   return (
     <ContentWrapper>

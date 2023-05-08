@@ -7,7 +7,6 @@ export const CollectionPagePagination = async (props: {
   productsPerPage: number;
   sellerParams: string;
 }) => {
-  // console.log(context.searchParams);
   const numberOfProducts = (
     await db
       .select({
@@ -31,8 +30,6 @@ export const CollectionPagePagination = async (props: {
     numberOfProducts / props.productsPerPage === 1
       ? 1
       : Math.floor(numberOfProducts / props.productsPerPage) + 1;
-
-  console.log("d", Math.floor(numberOfProducts / props.productsPerPage));
 
   return (
     <PaginationRow pagesArray={Array.from(Array(numberOfPages).fill(0))} />
