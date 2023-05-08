@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { PaginationButton } from "./pagination-button";
 import { Button } from "./ui/button";
-import { routes } from "@/lib/routes";
 import { usePathname, useSearchParams } from "next/navigation";
 
 export const PaginationRow = (props: { pagesArray: number[] }) => {

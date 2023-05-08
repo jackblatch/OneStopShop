@@ -7,7 +7,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export const ProductSidebar = (props: {
   uniqueStoresList: string[];
-  setSelectedSellers: React.Dispatch<React.SetStateAction<string[]>>;
   selectedSellers: string[];
 }) => {
   return (
@@ -20,7 +19,6 @@ export const ProductSidebar = (props: {
             key={i}
             label={store}
             id={createSlug(store)}
-            setSelectedSellers={props.setSelectedSellers}
             selectedSellers={props.selectedSellers}
           />
         ))}
@@ -40,7 +38,6 @@ const FilterGroup = (props: { heading: string }) => {
 const FilterCheckbox = (props: {
   label: string;
   id: string;
-  setSelectedSellers: React.Dispatch<React.SetStateAction<string[]>>;
   selectedSellers: string[];
 }) => {
   const router = useRouter();
@@ -56,16 +53,12 @@ const FilterCheckbox = (props: {
         checked={props.selectedSellers.includes(props.id)}
         onCheckedChange={(checked) => {
           if (checked) {
-            props.setSelectedSellers((prev) => [...prev, props.id]);
             router.push(
               `${pathname}?page=${page}&seller=${
                 seller ? `${seller}_${props.id}` : props.id
               }`
             );
           } else {
-            props.setSelectedSellers((prev) =>
-              prev.filter((item) => item !== props.id)
-            );
             const filteredSellers = seller
               ?.split("_")
               .filter((seller) => seller !== props.id);

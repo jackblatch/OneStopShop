@@ -2,7 +2,7 @@
 import { ProductAndStore } from "@/app/(storefront)/products/page";
 import { ProductSidebar } from "./product-sidebar";
 import { ProductCard } from "./product-card";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren } from "react";
 import { useSearchParams } from "next/navigation";
 
 export const CollectionBody = (
@@ -17,9 +17,7 @@ export const CollectionBody = (
 ) => {
   const searchParams = useSearchParams();
   const seller = searchParams.get("seller");
-  const [selectedSellers, setSelectedSellers] = useState<string[]>(
-    seller ? [...seller?.split("_")] : []
-  );
+  const selectedSellers = seller ? [...seller?.split("_")] : [];
 
   return (
     <div className="md:grid md:grid-cols-12 mt-12 md:gap-12">
@@ -28,7 +26,6 @@ export const CollectionBody = (
           uniqueStoresList={props.activeSellers
             .map((item) => item.name ?? "")
             .filter((item) => item !== "")}
-          setSelectedSellers={setSelectedSellers}
           selectedSellers={selectedSellers}
         />
       </div>
