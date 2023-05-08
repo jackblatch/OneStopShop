@@ -4,6 +4,7 @@ import { ProductSidebar } from "./product-sidebar";
 import { ProductCard } from "./product-card";
 import { PropsWithChildren } from "react";
 import { useSearchParams } from "next/navigation";
+import { Heading } from "../ui/heading";
 
 export const CollectionBody = (
   props: PropsWithChildren<{
@@ -29,16 +30,23 @@ export const CollectionBody = (
           selectedSellers={selectedSellers}
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-between col-span-9">
-        {props.storeAndProduct.map(
-          (product, i) =>
-            (selectedSellers.includes(product.store.slug ?? "") ||
-              selectedSellers.length === 0) && (
-              <ProductCard storeAndProduct={product} key={i} />
-            )
-        )}
-        <div className="col-span-3">{props.children}</div>
-      </div>
+      {props.storeAndProduct.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-between col-span-9 h-fit">
+          {props.storeAndProduct.map(
+            (product, i) =>
+              (selectedSellers.includes(product.store.slug ?? "") ||
+                selectedSellers.length === 0) && (
+                <ProductCard storeAndProduct={product} key={i} />
+              )
+          )}
+          <div className="col-span-3">{props.children}</div>
+        </div>
+      ) : (
+        <div className="col-span-9 mt-4 gap-2 rounded-md border-2 border-dashed border-gray-200 p-6 text-center h-[200px] flex items-center justify-center flex-col">
+          <Heading size="h4">No products match your filters</Heading>
+          <p>Change your filters or try again later</p>
+        </div>
+      )}
     </div>
   );
 };
