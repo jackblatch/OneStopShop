@@ -6,7 +6,7 @@ import { CollectionPagePagination } from "@/components/storefront/collection-pag
 import { db } from "@/db/db";
 import { Product, Store, stores } from "@/db/schema";
 import { products } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 export type ProductAndStore = {
   product: Omit<Product, "images"> & {
@@ -21,6 +21,8 @@ export default async function StorefrontProductsPage(context: {
   params: { slug: string };
   searchParams: { page: string; seller: string };
 }) {
+  console.log(context.searchParams.seller);
+
   const storeAndProduct = (await db
     .select({
       product: products,
@@ -37,7 +39,7 @@ export default async function StorefrontProductsPage(context: {
         context.searchParams.seller === ""
       )
         return;
-      return eq(stores.slug, context.searchParams.seller);
+      return inArray(stores.slug, context.searchParams.seller.split("_"));
     })
     .leftJoin(stores, eq(products.storeId, stores.id))
     .limit(PRODUCTS_PER_PAGE)
@@ -46,6 +48,8 @@ export default async function StorefrontProductsPage(context: {
         ? (Number(context.searchParams.page) - 1) * PRODUCTS_PER_PAGE
         : 0
     )) as ProductAndStore[];
+
+  console.log(storeAndProduct.length);
 
   return (
     <ContentWrapper>
@@ -57,7 +61,10 @@ export default async function StorefrontProductsPage(context: {
         activeSellers={await getActiveSellers()}
       >
         {/* @ts-expect-error Async Server Component */}
-        <CollectionPagePagination productsPerPage={PRODUCTS_PER_PAGE} />
+        <CollectionPagePagination
+          productsPerPage={PRODUCTS_PER_PAGE}
+          sellerParams={context.searchParams.seller as string}
+        />
       </CollectionBody>
     </ContentWrapper>
   );
