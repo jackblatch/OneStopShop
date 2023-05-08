@@ -1,20 +1,24 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Heading } from "../ui/heading";
-import React from "react";
+import React, { useState } from "react";
 import { createSlug } from "@/lib/createSlug";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button } from "../ui/button";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export const ProductSidebar = (props: {
   uniqueStoresList: string[];
   selectedSellers: string[];
 }) => {
+  const [isSellerListExpanded, setIsSellerListExpanded] = useState(false);
+
   return (
     <div>
       <Heading size="h3">Filters</Heading>
       <div className="mt-4">
         <Heading size="h4">Sellers</Heading>
-        {props.uniqueStoresList.map((store, i) => (
+        {props.uniqueStoresList.slice(0, 5).map((store, i) => (
           <ProductSidebar.Checkbox
             key={i}
             label={store}
@@ -22,6 +26,33 @@ export const ProductSidebar = (props: {
             selectedSellers={props.selectedSellers}
           />
         ))}
+        {isSellerListExpanded &&
+          props.uniqueStoresList
+            .slice(5)
+            .map((store, i) => (
+              <ProductSidebar.Checkbox
+                key={i}
+                label={store}
+                id={createSlug(store)}
+                selectedSellers={props.selectedSellers}
+              />
+            ))}
+        <Button
+          variant="secondary"
+          size="sm"
+          className="w-full mt-2"
+          onClick={() => setIsSellerListExpanded((prev) => !prev)}
+        >
+          {isSellerListExpanded ? (
+            <div className="flex items-center justify-center gap-2">
+              Collapse sellers <ChevronUp size={18} className="mt-[2px]" />
+            </div>
+          ) : (
+            <div className="flex items-center justify-center gap-2">
+              Show more sellers <ChevronDown size={18} className="mt-[2px]" />
+            </div>
+          )}
+        </Button>
       </div>
     </div>
   );
