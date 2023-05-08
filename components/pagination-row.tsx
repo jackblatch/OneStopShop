@@ -45,7 +45,9 @@ export const PaginationRow = (props: { pagesArray: number[] }) => {
         Number(pageParam) + 1 <= props.pagesArray.length && (
           <Link
             href={`${routes.products}?page=${
-              !isNaN(Number(pageParam)) ? Number(pageParam) + 1 : 2
+              !isNaN(Number(pageParam)) && Number(pageParam) + 1 > 2
+                ? Number(pageParam) + 1
+                : 2
             }`}
           >
             <Button variant="secondary">Next</Button>
