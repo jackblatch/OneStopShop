@@ -40,7 +40,7 @@ export const ProductCard = (props: {
         </Text>
       </Link>
       {!props.hideButtonActions && (
-        <div className="flex gap-2 items-center justify-between mt-4 mb-8">
+        <div className="flex flex-col sm:flex-row gap-2 items-center justify-between mt-4 mb-8">
           <Link
             href={`${routes.productQuickView}/${[
               props.storeAndProduct.product.id,
