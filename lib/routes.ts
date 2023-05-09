@@ -9,6 +9,10 @@ export const routes = {
   cart: "/cart",
 };
 
+export const anchorTags = {
+  collectionHeader: "collection-header",
+};
+
 export const productsQueryParams = {
   seller: "seller=",
 };

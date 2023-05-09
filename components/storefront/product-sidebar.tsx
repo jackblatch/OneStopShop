@@ -6,6 +6,7 @@ import { createSlug } from "@/lib/createSlug";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { anchorTags } from "@/lib/routes";
 
 export const ProductSidebar = (props: {
   uniqueStoresList: string[];
@@ -106,7 +107,7 @@ const FilterCheckbox = (props: {
             router.push(
               `${pathname}?page=1&seller=${
                 seller ? `${seller}_${props.id}` : props.id
-              }`
+              }#${anchorTags.collectionHeader}`
             );
           } else {
             const filteredSellers = seller
@@ -117,7 +118,7 @@ const FilterCheckbox = (props: {
                 filteredSellers?.length
                   ? `&seller=${filteredSellers.join("_")}`
                   : ""
-              }`
+              }#${anchorTags.collectionHeader}`
             );
           }
         }}
