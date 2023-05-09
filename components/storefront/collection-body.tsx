@@ -31,15 +31,20 @@ export const CollectionBody = (
         />
       </div>
       {props.storeAndProduct.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-between col-span-9 h-fit">
+        <div className="grid col-span-9 grid-cols-12 gap-6">
           {props.storeAndProduct.map(
             (product, i) =>
               (selectedSellers.includes(product.store.slug ?? "") ||
                 selectedSellers.length === 0) && (
-                <ProductCard storeAndProduct={product} key={i} />
+                <div
+                  className="sm:col-span-6 md:col-span-6 lg:col-span-4 col-span-12"
+                  key={i}
+                >
+                  <ProductCard storeAndProduct={product} />
+                </div>
               )
           )}
-          <div className="col-span-3">{props.children}</div>
+          <div className="col-span-12">{props.children}</div>
         </div>
       ) : (
         <div className="col-span-9 mt-4 gap-2 rounded-md border-2 border-dashed border-gray-200 p-6 text-center h-[200px] flex items-center justify-center flex-col">
