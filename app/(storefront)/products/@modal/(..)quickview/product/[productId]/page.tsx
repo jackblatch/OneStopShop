@@ -68,13 +68,13 @@ export default async function StorefrontProductQuickView(props: {
                 )}
               </div>
               <div className="md:col-span-5 w-full flex flex-col gap-2">
-                <Heading size="h2">{product.name}</Heading>
-                <Text className="text-xl">
+                <Heading size="h3">{product.name}</Heading>
+                <Text className="text-lg">
                   {currencyFormatter(Number(product.price))}
                 </Text>
                 <div className="my-2 flex items-start flex-col gap-2 justify-center">
                   <Link href={`${routes.product}/${props.params.productId}`}>
-                    <Button variant="default" className="w-fit">
+                    <Button variant="default" className="w-fit" size="sm">
                       View Product
                     </Button>
                   </Link>
