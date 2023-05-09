@@ -8,16 +8,11 @@ import { Heading } from "../ui/heading";
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { FilterIcon, SlidersHorizontal } from "lucide-react";
-import { ContentWrapper } from "../content-wrapper";
+import { SlidersHorizontal } from "lucide-react";
 
 export const CollectionBody = (
   props: PropsWithChildren<{
