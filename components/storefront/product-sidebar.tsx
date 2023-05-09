@@ -15,7 +15,6 @@ export const ProductSidebar = (props: {
   const [isSellerListExpanded, setIsSellerListExpanded] = useState(false);
   const searchParams = useSearchParams();
   const seller = searchParams.get("seller");
-  const page = searchParams.get("page");
   const pathname = usePathname();
   const router = useRouter();
 

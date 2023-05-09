@@ -4,7 +4,7 @@ import { Logo } from "./logo";
 
 export const Footer = () => {
   return (
-    <footer className="p-6 text-primary-foreground bg-primary">
+    <footer className="p-6 text-primary-foreground bg-primary pb-12">
       <ContentWrapper className="flex items-start md:items-end justify-start md:justify-between gap-2 flex-col md:flex-row">
         <div>
           <Logo />
