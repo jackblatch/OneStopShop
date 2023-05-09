@@ -21,13 +21,13 @@ export const QuickViewModalWrapper = (props: PropsWithChildren) => {
   }, [onKeyDown]);
 
   return (
-    <>
+    <div className="mb-2">
       <div className="flex items-center justify-end gap-2">
         <button onClick={() => router.back()}>
           <XIcon />
         </button>
       </div>
       {props.children}
-    </>
+    </div>
   );
 };
