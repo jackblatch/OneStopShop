@@ -1,4 +1,4 @@
-"use client"; // has to be use client for it to work with intercepted routes
+"use client";
 
 import { ProductEditor } from "@/components/admin/product-editor";
 import { AlertDialogContent } from "@/components/ui/alert-dialog";

@@ -1,3 +1,8 @@
-export default function QuickViewPage() {
-  return <div>Quick view page - REDIRECT TO PRODUCT PAGE</div>;
+import { routes } from "@/lib/routes";
+import { redirect } from "next/navigation";
+
+export default function QuickViewPage(context: {
+  params: { productId: string };
+}) {
+  redirect(`${routes.product}/${context.params.productId}`);
 }

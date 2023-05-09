@@ -5,6 +5,7 @@ export default authMiddleware({
     "/",
     "/collection(.*)",
     "/product(.*)",
+    "/quickview(.*)",
     "/seller(.*)",
     "/products(.*)",
     "/auth(.*)",

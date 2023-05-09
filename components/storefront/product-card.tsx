@@ -41,20 +41,16 @@ export const ProductCard = (props: {
       </Link>
       {!props.hideButtonActions && (
         <div className="flex gap-2 items-center justify-between mt-4 mb-8">
-          {/* <Link
+          <Link
             href={`${routes.productQuickView}/${[
               props.storeAndProduct.product.id,
             ]}`}
             className="w-full"
-          > */}
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex gap-2 w-full cursor-not-allowed"
           >
-            <span>Quick View</span>
-          </Button>
-          {/* </Link> */}
+            <Button variant="outline" size="sm" className="flex gap-2 w-full">
+              <span>Quick View</span>
+            </Button>
+          </Link>
           <Button className="flex gap-2 w-full" size="sm">
             <span>Add to Cart</span>
           </Button>
