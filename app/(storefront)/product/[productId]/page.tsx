@@ -14,7 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { productsQueryParams, routes } from "@/lib/routes";
 
-export default async function StorefrontProductPage(props: {
+export default async function StorefrontProductDetails(props: {
   params: { productId: string };
 }) {
   const product = (await db
