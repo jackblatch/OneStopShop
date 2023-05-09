@@ -5,6 +5,7 @@ import { Heading } from "../ui/heading";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { anchorTags } from "@/lib/routes";
 
 const mockImage =
   "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80";
@@ -15,7 +16,10 @@ export const CollectionHeaderWrapper = (
   const [showMore, setShowMore] = useState(false);
 
   return (
-    <div className="border-border rounded-md border overflow-hidden">
+    <div
+      className="border-border rounded-md border overflow-hidden"
+      id={anchorTags.collectionHeader}
+    >
       <div className="relative w-full h-36">
         <Image
           src={mockImage}
