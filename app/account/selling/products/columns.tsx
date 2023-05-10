@@ -10,7 +10,7 @@ import { ProductImages } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 
-export type Payment = {
+export type Product = {
   id: string;
   name: string;
   price: number;
@@ -18,7 +18,7 @@ export type Payment = {
   images: ProductImages[];
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "name",
     header: "Name",

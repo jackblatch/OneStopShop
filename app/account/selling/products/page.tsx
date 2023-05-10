@@ -7,12 +7,11 @@ import { products } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { currentUser } from "@clerk/nextjs";
 import { secondLevelNestedRoutes } from "@/lib/routes";
-import { currencyFormatter } from "@/lib/currency";
 import { InfoCard } from "@/components/admin/info-card";
 import { DataTable } from "../../../../components/admin/data-table";
-import { Payment, columns } from "./columns";
+import { type Product, columns } from "./columns";
 
-async function getData(): Promise<Payment[]> {
+async function getData(): Promise<Product[]> {
   const user = await currentUser();
   // ternary required here as while the layout won't render children if not authed, RSC still seems to run regardless
   return !isNaN(Number(user?.privateMetadata.storeId))
