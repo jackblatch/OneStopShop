@@ -61,7 +61,7 @@ export default async function ProductsPage() {
         />
       ) : (
         <>
-          <div className="container mx-auto py-10">
+          <div className="pt-4">
             <DataTable columns={columns} data={productsList} />
           </div>
         </>

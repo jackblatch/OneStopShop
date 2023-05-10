@@ -1,11 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/lib/currency";
-import {
-  routes,
-  secondLevelNestedRoutes,
-  singleLevelNestedRoutes,
-} from "@/lib/routes";
+import { ArrowUpDown } from "lucide-react";
+import { secondLevelNestedRoutes } from "@/lib/routes";
 import { ProductImages } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
@@ -21,7 +18,17 @@ export type Product = {
 export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "name",
-    header: "Name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const name = row.original.name;
       const id = row.original.id;
@@ -36,7 +43,17 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: "price",
-    header: "Price",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Price
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const price = parseFloat(row.getValue("price"));
       return currencyFormatter(price);
@@ -44,7 +61,17 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: "inventory",
-    header: "Inventory",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Inventory
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "images",
