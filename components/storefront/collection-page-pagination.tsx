@@ -26,10 +26,12 @@ export const CollectionPagePagination = async (props: {
       .leftJoin(stores, eq(products.storeId, stores.id))
   ).length;
 
+  const unroundedNumberOfPages = numberOfProducts / props.productsPerPage;
+
   const numberOfPages =
-    numberOfProducts / props.productsPerPage === 1
-      ? 1
-      : Math.floor(numberOfProducts / props.productsPerPage) + 1;
+    unroundedNumberOfPages === Math.floor(unroundedNumberOfPages)
+      ? unroundedNumberOfPages
+      : Math.floor(unroundedNumberOfPages) + 1;
 
   return (
     <PaginationRow pagesArray={Array.from(Array(numberOfPages).fill(0))} />
