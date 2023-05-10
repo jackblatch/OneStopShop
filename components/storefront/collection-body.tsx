@@ -38,11 +38,11 @@ export const CollectionBody = (
   );
 
   return (
-    <div className="md:grid md:grid-cols-12 mt-12 md:gap-12">
+    <div className="md:grid md:grid-cols-12 md:mt-0 lg:mt-12 mt-12 md:gap-12">
       <div className="hidden p-6 rounded-md border-border border lg:block md:col-span-3">
         {Sidebar}
       </div>
-      <div className="md:hidden">
+      <div className="lg:hidden">
         <AlertDialog>
           <AlertDialogTrigger className="bg-white py-4 px-6 w-full fixed left-0 bottom-0 z-10 flex items-center justify-end gap-2">
             <p>Filters</p>
