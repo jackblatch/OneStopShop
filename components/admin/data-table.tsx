@@ -8,6 +8,8 @@ import {
   useReactTable,
   getSortedRowModel,
   SortingState,
+  ColumnFiltersState,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -18,7 +20,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "../ui/button";
+import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { XIcon } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -30,6 +34,7 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     data,
@@ -39,13 +44,35 @@ export function DataTable<TData, TValue>({
     initialState: { pagination: { pageSize: 25 } },
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
+      columnFilters,
     },
   });
-
   return (
     <div>
+      <div className="flex items-center pb-4 pt-2 gap-2">
+        <Input
+          placeholder="Filter products..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+        {(table.getColumn("name")?.getFilterValue() as string) && (
+          <Button
+            variant="link"
+            className="flex items-center justify-start gap-1"
+            onClick={() => setColumnFilters([{ id: "name", value: "" }])}
+          >
+            <XIcon size={18} />
+            <p>Clear</p>
+          </Button>
+        )}
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader className="bg-secondary">

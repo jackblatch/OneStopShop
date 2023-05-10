@@ -1,11 +1,18 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/lib/currency";
-import { ArrowUpDown } from "lucide-react";
-import { secondLevelNestedRoutes } from "@/lib/routes";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { routes, secondLevelNestedRoutes } from "@/lib/routes";
 import { ProductImages } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export type Product = {
   id: string;
@@ -46,6 +53,7 @@ export const columns: ColumnDef<Product>[] = [
     header: ({ column }) => {
       return (
         <Button
+          className="px-0"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -64,6 +72,7 @@ export const columns: ColumnDef<Product>[] = [
     header: ({ column }) => {
       return (
         <Button
+          className="px-0"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -82,16 +91,32 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: "actions",
-    header: "Actions",
+    id: "actions",
     cell: ({ row }) => {
       const id = row.original.id;
+
       return (
-        <Button variant="link" size="sm">
-          <Link href={`${secondLevelNestedRoutes.product.base}/${id}`}>
-            Edit
-          </Link>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <Link href={`${secondLevelNestedRoutes.product.base}/${id}`}>
+              <DropdownMenuItem>Edit</DropdownMenuItem>
+            </Link>
+            <a
+              href={`${routes.product}/${id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <DropdownMenuItem>View on storefront</DropdownMenuItem>
+            </a>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },
