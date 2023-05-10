@@ -6,18 +6,24 @@ import { db } from "@/db/db";
 import { products } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { currentUser } from "@clerk/nextjs";
-import Table from "@/components/admin/table";
 import { secondLevelNestedRoutes } from "@/lib/routes";
 import { currencyFormatter } from "@/lib/currency";
 import { InfoCard } from "@/components/admin/info-card";
+import { DataTable } from "../../../../components/admin/data-table";
+import { Payment, columns } from "./columns";
 
-export default async function ProductsPage() {
+async function getData(): Promise<Payment[]> {
   const user = await currentUser();
-
   // ternary required here as while the layout won't render children if not authed, RSC still seems to run regardless
-  const productsList = !isNaN(Number(user?.privateMetadata.storeId))
+  return !isNaN(Number(user?.privateMetadata.storeId))
     ? ((await db
-        .select()
+        .select({
+          id: products.id,
+          name: products.name,
+          price: products.price,
+          inventory: products.inventory,
+          images: products.images,
+        })
         .from(products)
         .where(eq(products.storeId, Number(user?.privateMetadata.storeId)))
         .catch((err) => {
@@ -25,6 +31,10 @@ export default async function ProductsPage() {
           return [];
         })) as any[])
     : [];
+}
+
+export default async function ProductsPage() {
+  const productsList = await getData();
 
   return (
     <>
@@ -51,32 +61,11 @@ export default async function ProductsPage() {
           }
         />
       ) : (
-        <Table columnNames={["Name", "Price", "Inventory", "Images"]}>
-          {productsList.map((product) => (
-            <tr key={product.id}>
-              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-primary sm:pl-6">
-                {product.name}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-                {currencyFormatter(product.price)}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-                {product.inventory}
-              </td>
-              <td className="whitespace-nowrap px-3 py-4 text-sm text-muted-foreground">
-                {product.images.length}
-              </td>
-              <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                <a
-                  href={`${secondLevelNestedRoutes.product.base}/${product.id}`}
-                  className="text-primary hover:text-muted-foreground"
-                >
-                  Edit<span className="sr-only">, {product.name}</span>
-                </a>
-              </td>
-            </tr>
-          ))}
-        </Table>
+        <>
+          <div className="container mx-auto py-10">
+            <DataTable columns={columns} data={productsList} />
+          </div>
+        </>
       )}
     </>
   );
