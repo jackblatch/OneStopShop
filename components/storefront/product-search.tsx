@@ -25,6 +25,7 @@ export function ProductSearch() {
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && e.metaKey) {
+        e.preventDefault();
         setOpen((open) => !open);
       }
     };
