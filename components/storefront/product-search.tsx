@@ -113,6 +113,7 @@ export function ProductSearch() {
                       <Image
                         src={product.images[0].url}
                         alt={product.images[0].alt}
+                        sizes="50px"
                         fill
                         className="w-14 h-12 object-cover rounded-md"
                       />
