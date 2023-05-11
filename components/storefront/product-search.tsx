@@ -17,6 +17,8 @@ import { Button } from "../ui/button";
 export function ProductSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState<Pick<Product, "id" | "name">[]>([]);
+  const [isLoadingResults, setIsLoadingResults] = useState(false);
+  const [confirmedHasNoResults, setConfirmedHasNoResults] = useState(false);
 
   const [open, setOpen] = useState(false);
 
@@ -31,9 +33,19 @@ export function ProductSearch() {
   }, []);
 
   useEffect(() => {
+    if (searchTerm === "") return setResults([]);
     const getData = setTimeout(async () => {
       if (searchTerm === "") return;
-      setResults(await getProductsBySearchTerm(searchTerm).then((res) => res));
+      setIsLoadingResults(true);
+      setConfirmedHasNoResults(false);
+      setResults(
+        await getProductsBySearchTerm(searchTerm)
+          .then((res) => {
+            if (!res.length) setConfirmedHasNoResults(true);
+            return res;
+          })
+          .finally(() => setIsLoadingResults(false))
+      );
     }, 500);
     return () => clearTimeout(getData);
   }, [searchTerm]);
@@ -53,33 +65,48 @@ export function ProductSearch() {
           </p>
         </button>
       </div>
-      <Dialog onOpenChange={(isOpen) => setOpen(isOpen)}>
-        <DialogTrigger>Open</DialogTrigger>
+      <Dialog
+        open={open}
+        onOpenChange={(isOpen) => {
+          setOpen(isOpen);
+        }}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Search for a product</DialogTitle>
-            <Input
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <DialogDescription className="flex flex-col gap-2 items-start justify-start">
-              {results.map((product) => (
-                <Link
-                  href={`${routes.product}/${product.id}`}
-                  key={product.id}
-                  className="w-full"
-                >
-                  <Button
-                    variant="secondary"
-                    className="flex items-center justify-start w-full text-left"
-                  >
-                    {product.name}
-                  </Button>
-                </Link>
-              ))}
+            <DialogDescription>
+              Search our entire product catalogue
             </DialogDescription>
           </DialogHeader>
+          <Input
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <div className="flex flex-col gap-2 items-start justify-start">
+            {isLoadingResults && (
+              <div className="animate-pulse h-10 bg-secondary rounded-md w-full" />
+            )}
+            {!results.length &&
+              searchTerm !== "" &&
+              !isLoadingResults &&
+              confirmedHasNoResults && <p>No results found.</p>}
+            {results.map((product) => (
+              <Link
+                href={`${routes.product}/${product.id}`}
+                onClick={() => setOpen(false)}
+                key={product.id}
+                className="w-full"
+              >
+                <Button
+                  variant="secondary"
+                  className="flex items-center justify-start w-full text-left"
+                >
+                  {product.name}
+                </Button>
+              </Link>
+            ))}
+          </div>
         </DialogContent>
       </Dialog>
     </>
