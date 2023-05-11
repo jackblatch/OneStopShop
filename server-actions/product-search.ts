@@ -9,6 +9,8 @@ export async function getProductsBySearchTerm(searchTerm: string) {
     .select({
       id: products.id,
       name: products.name,
+      images: products.images,
+      price: products.price,
     })
     .from(products)
     .where(like(products.name, `%${searchTerm}%`));
