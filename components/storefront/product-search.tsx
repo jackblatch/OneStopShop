@@ -14,9 +14,15 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import Image from "next/image";
+import { ProductImages } from "@/lib/types";
+import { ImageOff } from "lucide-react";
+import { currencyFormatter } from "@/lib/currency";
 export function ProductSearch() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState<Pick<Product, "id" | "name">[]>([]);
+  const [results, setResults] = useState<
+    (Pick<Product, "id" | "name" | "price"> & { images: ProductImages[] })[]
+  >([]);
   const [isLoadingResults, setIsLoadingResults] = useState(false);
   const [confirmedHasNoResults, setConfirmedHasNoResults] = useState(false);
 
@@ -43,7 +49,9 @@ export function ProductSearch() {
         await getProductsBySearchTerm(searchTerm)
           .then((res) => {
             if (!res.length) setConfirmedHasNoResults(true);
-            return res;
+            return res as unknown as (Pick<Product, "id" | "name" | "price"> & {
+              images: ProductImages[];
+            })[];
           })
           .finally(() => setIsLoadingResults(false))
       );
@@ -97,14 +105,35 @@ export function ProductSearch() {
                 href={`${routes.product}/${product.id}`}
                 onClick={() => setOpen(false)}
                 key={product.id}
-                className="w-full"
+                className="w-full bg-secondary p-2 rounded-md"
               >
-                <Button
-                  variant="secondary"
-                  className="flex items-center justify-start w-full text-left"
-                >
-                  {product.name}
-                </Button>
+                <div className="flex items-center justify-start gap-2">
+                  <div className="relative w-14 h-12">
+                    {product?.images?.length > 0 ? (
+                      <Image
+                        src={product.images[0].url}
+                        alt={product.images[0].alt}
+                        fill
+                        className="w-14 h-12 object-cover rounded-md"
+                      />
+                    ) : (
+                      <div className="w-11 h-12 bg-secondary flex justify-center items-center rounded-md">
+                        <ImageOff />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between w-full pr-4">
+                    <Button
+                      variant="link"
+                      className="flex items-center justify-start w-full text-left"
+                    >
+                      {product.name}
+                    </Button>
+                    <p className="text-muted-foreground text-sm">
+                      {currencyFormatter(Number(product.price))}
+                    </p>
+                  </div>
+                </div>
               </Link>
             ))}
           </div>
