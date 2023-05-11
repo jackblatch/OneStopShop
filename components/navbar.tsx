@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Logo } from "./logo";
 import { ContentWrapper } from "./content-wrapper";
 import { ShoppingCart, Truck } from "lucide-react";
-import { Search } from "./search";
 import { MenuItems } from "./menu-items";
 import { Line } from "./line";
 import { AnnouncementBar } from "./announcement-bar";
@@ -11,6 +10,7 @@ import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { MobileNavigation } from "./mobile-navigation";
 import { ShoppingCartHeader } from "./shopping-cart-header";
+import { ProductSearch } from "./storefront/product-search";
 
 export const NavBar = ({
   showSecondAnnouncementBar,
@@ -56,7 +56,7 @@ export const NavBar = ({
               </Link>
             </li>
             <li className="flex-1">
-              <Search />
+              <ProductSearch />
             </li>
             <li className="hidden lg:block">
               <Link href="/">
