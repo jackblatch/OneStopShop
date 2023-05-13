@@ -1,5 +1,4 @@
 import SiteDescription from "../../(content)/site-description.mdx";
-import { ContentWrapper } from "@/components/content-wrapper";
 import { CollectionBody } from "@/components/storefront/collection-body";
 import { CollectionHeaderWrapper } from "@/components/storefront/collection-header-wrapper";
 import { CollectionPagePagination } from "@/components/storefront/collection-page-pagination";
@@ -48,7 +47,7 @@ export default async function StorefrontProductsPage(context: {
     )) as ProductAndStore[];
 
   return (
-    <ContentWrapper>
+    <>
       <CollectionHeaderWrapper heading="Products">
         <SiteDescription />
       </CollectionHeaderWrapper>
@@ -62,7 +61,7 @@ export default async function StorefrontProductsPage(context: {
           sellerParams={context.searchParams.seller as string}
         />
       </CollectionBody>
-    </ContentWrapper>
+    </>
   );
 }
 

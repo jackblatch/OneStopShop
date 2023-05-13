@@ -23,7 +23,7 @@ export const SlideShow = () => {
     <div className="mb-4">
       <div
         key={currentImageIndex}
-        className="relative w-full h-[400px] animate-fade-in"
+        className="relative w-full h-96 animate-fade-in"
       >
         <Image
           src={images[currentImageIndex]}
