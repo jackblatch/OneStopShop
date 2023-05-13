@@ -91,7 +91,10 @@ export default async function StorefrontProductDetails(props: {
           <Text className="text-xl mt-4">
             {currencyFormatter(Number(product.price))}
           </Text>
-          <ProductForm availableInventory={product.inventory} />
+          <ProductForm
+            availableInventory={product.inventory}
+            productId={product.id}
+          />
           <FeatureIcons className="mt-8" />
         </div>
       </div>
