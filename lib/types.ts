@@ -3,3 +3,5 @@ export type ProductImages = {
   alt: string;
   url: string;
 };
+
+export type CartItem = { id: number; qty: number };

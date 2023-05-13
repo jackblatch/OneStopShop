@@ -1,8 +1,7 @@
 "use server";
 
+import { CartItem } from "@/lib/types";
 import { cookies } from "next/headers";
-
-type CartItem = { id: number; qty: number };
 
 export async function addToCart(newCartItem: CartItem) {
   console.log("adding to cart");

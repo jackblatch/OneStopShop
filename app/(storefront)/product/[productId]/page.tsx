@@ -92,6 +92,7 @@ export default async function StorefrontProductDetails(props: {
             {currencyFormatter(Number(product.price))}
           </Text>
           <ProductForm
+            productName={product.name}
             availableInventory={product.inventory}
             productId={product.id}
           />
