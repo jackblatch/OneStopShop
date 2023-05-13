@@ -2,7 +2,7 @@ import { LoadingSkeleton } from "@/components/ui/loading-skeleton";
 
 export default function Loading() {
   return (
-    <>
+    <div>
       <LoadingSkeleton.HeadingAndSubheading />
       <div className="mt-4 flex flex-col gap-8">
         <LoadingSkeleton className="w-full h-10" />
@@ -14,6 +14,6 @@ export default function Loading() {
           <LoadingSkeleton className="w-full h-10" key={i} />
         ))}
       </div>
-    </>
+    </div>
   );
 }

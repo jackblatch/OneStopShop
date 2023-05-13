@@ -3,7 +3,7 @@ import { LoadingSkeleton } from "@/components/ui/loading-skeleton";
 
 export default function Loading() {
   return (
-    <>
+    <div>
       <LoadingSkeleton className="w-full h-96" />
       <div className="flex gap-2 items-center justify-center mt-2 mb-6">
         {Array.from(Array(3)).map((_, i) => (
@@ -23,6 +23,6 @@ export default function Loading() {
           <LoadingSkeleton className="w-full h-48" key={i} />
         ))}
       </ContentWrapper>
-    </>
+    </div>
   );
 }

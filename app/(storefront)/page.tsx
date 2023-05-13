@@ -27,7 +27,7 @@ export default async function Home() {
     .limit(4)) as ProductAndStore[];
 
   return (
-    <>
+    <div>
       <SlideShow />
       <ContentWrapper>
         <Tabs defaultValue="for-buyers">
@@ -76,7 +76,7 @@ export default async function Home() {
           </TabsContent>
         </Tabs>
       </ContentWrapper>
-    </>
+    </div>
   );
 }
 
