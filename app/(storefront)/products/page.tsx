@@ -47,7 +47,7 @@ export default async function StorefrontProductsPage(context: {
     )) as ProductAndStore[];
 
   return (
-    <>
+    <div>
       <CollectionHeaderWrapper heading="Products">
         <SiteDescription />
       </CollectionHeaderWrapper>
@@ -61,7 +61,7 @@ export default async function StorefrontProductsPage(context: {
           sellerParams={context.searchParams.seller as string}
         />
       </CollectionBody>
-    </>
+    </div>
   );
 }
 

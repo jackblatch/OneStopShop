@@ -2,7 +2,7 @@ import { LoadingSkeleton } from "@/components/ui/loading-skeleton";
 
 export default function Loading() {
   return (
-    <>
+    <div>
       <LoadingSkeleton.CollectionHeaderWrapper />
       <div className="md:grid md:grid-cols-12 gap-12 mt-8">
         <LoadingSkeleton className="hidden md:block w-full md:col-span-3 md:h-full" />
@@ -12,6 +12,6 @@ export default function Loading() {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }
