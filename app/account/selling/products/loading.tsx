@@ -8,7 +8,7 @@ export default function Loading() {
         <LoadingSkeleton.Button />
       </div>
       <div className="mt-4">
-        <LoadingSkeleton className="w-96 h-10" />
+        <LoadingSkeleton className="w-1/4 h-10" />
       </div>
       <div className="flex flex-col gap-2">
         {Array.from(Array(6)).map((_, i) => (

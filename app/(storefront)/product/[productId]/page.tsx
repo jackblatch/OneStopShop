@@ -1,4 +1,3 @@
-import { ContentWrapper } from "@/components/content-wrapper";
 import { ParagraphFormatter } from "@/components/paragraph-formatter";
 import { ProductForm } from "@/components/storefront/product-form";
 import { FeatureIcons } from "@/components/storefront/feature-icons";
@@ -13,7 +12,6 @@ import { ImageOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { productsQueryParams, routes } from "@/lib/routes";
-import { LoadingSkeleton } from "@/components/ui/loading-skeleton";
 
 export default async function StorefrontProductDetails(props: {
   params: { productId: string };
