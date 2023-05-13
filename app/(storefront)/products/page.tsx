@@ -3,6 +3,7 @@ import { ContentWrapper } from "@/components/content-wrapper";
 import { CollectionBody } from "@/components/storefront/collection-body";
 import { CollectionHeaderWrapper } from "@/components/storefront/collection-header-wrapper";
 import { CollectionPagePagination } from "@/components/storefront/collection-page-pagination";
+import { LoadingSkeleton } from "@/components/ui/loading-skeleton";
 import { db } from "@/db/db";
 import { Product, Store, stores } from "@/db/schema";
 import { products } from "@/db/schema";
@@ -48,7 +49,7 @@ export default async function StorefrontProductsPage(context: {
     )) as ProductAndStore[];
 
   return (
-    <ContentWrapper>
+    <>
       <CollectionHeaderWrapper heading="Products">
         <SiteDescription />
       </CollectionHeaderWrapper>
@@ -62,7 +63,7 @@ export default async function StorefrontProductsPage(context: {
           sellerParams={context.searchParams.seller as string}
         />
       </CollectionBody>
-    </ContentWrapper>
+    </>
   );
 }
 

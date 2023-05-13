@@ -18,6 +18,7 @@ import Image from "next/image";
 import { ProductImages } from "@/lib/types";
 import { ImageOff } from "lucide-react";
 import { currencyFormatter } from "@/lib/currency";
+import { LoadingSkeleton } from "../ui/loading-skeleton";
 export function ProductSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState<
@@ -93,9 +94,7 @@ export function ProductSearch() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <div className="flex flex-col gap-2 items-start justify-start">
-            {isLoadingResults && (
-              <div className="animate-pulse h-10 bg-secondary rounded-md w-full" />
-            )}
+            {isLoadingResults && <LoadingSkeleton className="w-full h-12" />}
             {!results.length &&
               searchTerm !== "" &&
               !isLoadingResults &&

@@ -1,11 +1,10 @@
 import { HeadingAndSubheading } from "@/components/admin/heading-and-subheading";
 import { EditStoreFields } from "@/components/admin/edit-store-fields";
-import { Heading } from "@/components/ui/heading";
-import { Text } from "@/components/ui/text";
 import { db } from "@/db/db";
 import { stores } from "@/db/schema";
 import { currentUser } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
+import { LoadingSkeleton } from "@/components/ui/loading-skeleton";
 
 export default async function SellerProfile() {
   const user = await currentUser();
