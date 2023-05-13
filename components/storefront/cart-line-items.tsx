@@ -9,13 +9,17 @@ import {
 import { Product } from "@/db/schema";
 import { currencyFormatter } from "@/lib/currency";
 import { routes } from "@/lib/routes";
-import { CartItem } from "@/lib/types";
+import { CartItem, ProductImages } from "@/lib/types";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 export const CartLineItems = (props: {
   cartItems: CartItem[];
-  products: Omit<Product, "description">[];
+  products: (Omit<Product, "description" | "images"> & {
+    storeName: string | null;
+    images: ProductImages[];
+  })[];
 }) => {
   return (
     <Table>
@@ -31,7 +35,17 @@ export const CartLineItems = (props: {
       <TableBody>
         {props.products.map((product) => (
           <TableRow key={product.id}>
-            <TableCell className="font-medium">INV001</TableCell>
+            <TableCell className="font-medium">
+              <div className="relative w-[50px] h-[50px]">
+                <Image
+                  src={product.images[0].url}
+                  alt={product.images[0].alt}
+                  fill
+                  sizes="50px"
+                  className="object-cover w-[50px] h-[50px] rounded-md"
+                />
+              </div>
+            </TableCell>
             <TableCell className="max-w-[200px] w-[200px] truncate">
               <Link href={`${routes.product}/${product.id}`}>
                 <Button className="m-0 p-0 h-auto" variant="link">

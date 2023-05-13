@@ -1,9 +1,9 @@
 import { CartLineItems } from "@/components/storefront/cart-line-items";
 import { Heading } from "@/components/ui/heading";
 import { db } from "@/db/db";
-import { products } from "@/db/schema";
-import { CartItem } from "@/lib/types";
-import { inArray } from "drizzle-orm";
+import { Product, products, stores } from "@/db/schema";
+import { CartItem, ProductImages } from "@/lib/types";
+import { eq, inArray } from "drizzle-orm";
 import { cookies } from "next/headers";
 
 async function getCartItemDetails(productIds: number[]) {
@@ -15,11 +15,16 @@ async function getCartItemDetails(productIds: number[]) {
       inventory: products.inventory,
       storeId: products.storeId,
       images: products.images,
+      storeName: stores.name,
     })
     .from(products)
+    .leftJoin(stores, eq(products.storeId, stores.id))
     .where(inArray(products.id, productIds));
   console.log(vals);
-  return vals;
+  return vals as (Omit<Product, "description" | "images"> & {
+    storeName: string | null;
+    images: ProductImages[];
+  })[];
 }
 
 export default async function Cart() {
@@ -45,7 +50,12 @@ export default async function Cart() {
         <div className="col-span-6 flex flex-col gap-8">
           {uniqueStoreIds.map((storeId) => (
             <div>
-              <Heading size="h3">Store {storeId}</Heading>
+              <Heading size="h4">
+                {
+                  cartItemDetails?.find((item) => item.storeId === storeId)
+                    ?.storeName
+                }
+              </Heading>
               <CartLineItems
                 cartItems={cartItems && JSON.parse(cartItems.value)}
                 products={
