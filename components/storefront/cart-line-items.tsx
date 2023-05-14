@@ -13,6 +13,7 @@ import { CartItem, ProductImages } from "@/lib/types";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { ProductImage } from "../product-image";
 
 export const CartLineItems = (props: {
   cartItems: CartItem[];
@@ -36,15 +37,13 @@ export const CartLineItems = (props: {
         {props.products.map((product) => (
           <TableRow key={product.id}>
             <TableCell className="font-medium">
-              <div className="relative w-[50px] h-[50px]">
-                <Image
-                  src={product.images[0].url}
-                  alt={product.images[0].alt}
-                  fill
-                  sizes="50px"
-                  className="object-cover w-[50px] h-[50px] rounded-md"
-                />
-              </div>
+              <ProductImage
+                src={product.images[0]?.url}
+                alt={product.images[0]?.alt}
+                sizes="50px"
+                height="h-[50px]"
+                width="w-[50px]"
+              />
             </TableCell>
             <TableCell className="max-w-[200px] w-[200px] truncate">
               <Link href={`${routes.product}/${product.id}`}>

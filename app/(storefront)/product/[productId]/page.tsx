@@ -12,6 +12,7 @@ import { ImageOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { productsQueryParams, routes } from "@/lib/routes";
+import { ProductImage } from "@/components/product-image";
 
 export default async function StorefrontProductDetails(props: {
   params: { productId: string };
@@ -47,16 +48,14 @@ export default async function StorefrontProductDetails(props: {
     <div className="flex flex-col gap-8">
       <div className="flex flex-col items-center md:items-start justify-start md:grid md:grid-cols-9 gap-8">
         <div className="col-span-4 w-full">
-          {product.images.length > 0 ? (
+          <ProductImage
+            src={product.images[0]?.url}
+            alt={product.images[0]?.alt}
+            height="h-96"
+            width="w-full"
+          />
+          {product.images.length > 1 && (
             <>
-              <div className="relative h-96 w-full">
-                <Image
-                  src={product.images[0].url}
-                  alt={product.images[0].alt}
-                  fill
-                  className="object-cover h-96 w-full"
-                />
-              </div>
               <div className="flex items-center justify-start gap-2 mt-2 overflow-auto flex-nowrap">
                 {product.images.slice(1).map((image) => (
                   <div key={image.id} className="relative h-24 w-24">
@@ -70,10 +69,6 @@ export default async function StorefrontProductDetails(props: {
                 ))}
               </div>
             </>
-          ) : (
-            <div className="h-96 w-full bg-secondary flex justify-center items-center">
-              <ImageOff />
-            </div>
           )}
         </div>
         <div className="md:col-span-5 w-full">

@@ -19,6 +19,7 @@ import { ProductImages } from "@/lib/types";
 import { ImageOff } from "lucide-react";
 import { currencyFormatter } from "@/lib/currency";
 import { LoadingSkeleton } from "../ui/loading-skeleton";
+import { ProductImage } from "../product-image";
 export function ProductSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState<
@@ -107,21 +108,13 @@ export function ProductSearch() {
                 className="w-full bg-secondary p-2 rounded-md"
               >
                 <div className="flex items-center justify-start gap-2">
-                  <div className="relative w-14 h-12">
-                    {product?.images?.length > 0 ? (
-                      <Image
-                        src={product.images[0].url}
-                        alt={product.images[0].alt}
-                        sizes="50px"
-                        fill
-                        className="w-14 h-12 object-cover rounded-md"
-                      />
-                    ) : (
-                      <div className="w-11 h-12 bg-secondary flex justify-center items-center rounded-md">
-                        <ImageOff />
-                      </div>
-                    )}
-                  </div>
+                  <ProductImage
+                    src={product.images[0]?.url}
+                    alt={product.images[0]?.alt}
+                    sizes="50px"
+                    height="h-12"
+                    width="w-14"
+                  />
                   <div className="flex items-center justify-between w-full pr-4">
                     <Button
                       variant="link"
