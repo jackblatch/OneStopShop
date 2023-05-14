@@ -1,7 +1,6 @@
 import { CartLineItems } from "@/components/storefront/cart-line-items";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
-import { LoadingSkeleton } from "@/components/ui/loading-skeleton";
 import { db } from "@/db/db";
 import { Product, products, stores } from "@/db/schema";
 import { routes } from "@/lib/routes";

@@ -7,6 +7,7 @@ import { currencyFormatter } from "@/lib/currency";
 import { Button } from "../ui/button";
 import { ProductAndStore } from "@/app/(storefront)/products/page";
 import { ProductImage } from "../product-image";
+import { ProductForm } from "./product-form";
 
 export const ProductCard = (props: {
   storeAndProduct: ProductAndStore;
@@ -44,9 +45,12 @@ export const ProductCard = (props: {
               <span>Quick View</span>
             </Button>
           </Link>
-          <Button className="flex gap-2 w-full" size="sm">
-            <span>Add to Cart</span>
-          </Button>
+          <ProductForm
+            disableQuantitySelector={true}
+            availableInventory={props.storeAndProduct.product.inventory}
+            productId={props.storeAndProduct.product.id}
+            productName={props.storeAndProduct.product.name}
+          />
         </div>
       )}
     </div>

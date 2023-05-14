@@ -83,7 +83,7 @@ export default async function StorefrontProductDetails(props: {
               </span>
             </Link>
           </Text>
-          <Text className="text-xl mt-4">
+          <Text className="text-xl my-4">
             {currencyFormatter(Number(product.price))}
           </Text>
           <ProductForm
