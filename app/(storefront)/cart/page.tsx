@@ -1,6 +1,7 @@
 import { CartLineItems } from "@/components/storefront/cart-line-items";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { LoadingSkeleton } from "@/components/ui/loading-skeleton";
 import { db } from "@/db/db";
 import { Product, products, stores } from "@/db/schema";
 import { routes } from "@/lib/routes";
@@ -47,7 +48,7 @@ export default async function Cart() {
 
   if (!cartItemDetails) {
     return (
-      <div className="col-span-9 mt-4 gap-4 rounded-md border-2 border-dashed border-gray-200 p-6 text-center h-[200px] flex items-center justify-center flex-col">
+      <div className="mt-4 gap-4 rounded-md border-2 border-dashed border-gray-200 p-6 text-center h-[200px] flex items-center justify-center flex-col">
         <Heading size="h3">Your cart is empty</Heading>
         <Link href={routes.products}>
           <Button>Start shopping</Button>
@@ -63,7 +64,7 @@ export default async function Cart() {
         <Link href={routes.products}>
           <Button
             variant="link"
-            className="flex items-center justify-center m-0 p-0 text-muted-foreground"
+            className="flex items-end justify-center m-0 p-0 text-muted-foreground"
           >
             <p>Continue shopping</p>
             <ChevronRight size={16} />
