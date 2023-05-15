@@ -2,15 +2,16 @@ import { CartLineItems } from "@/components/storefront/cart-line-items";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { db } from "@/db/db";
-import { Product, products, stores } from "@/db/schema";
+import { products, stores } from "@/db/schema";
 import { routes } from "@/lib/routes";
-import { CartItem, ProductImages } from "@/lib/types";
+import { CartItem, CartLineItemDetails } from "@/lib/types";
 import { eq, inArray } from "drizzle-orm";
 import { ChevronRight } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
 async function getCartItemDetails(productIds: number[]) {
+  console.log("inside running");
   const vals = await db
     .select({
       id: products.id,
@@ -24,15 +25,13 @@ async function getCartItemDetails(productIds: number[]) {
     .from(products)
     .leftJoin(stores, eq(products.storeId, stores.id))
     .where(inArray(products.id, productIds));
-  console.log(vals);
-  return vals as (Omit<Product, "description" | "images"> & {
-    storeName: string | null;
-    images: ProductImages[];
-  })[];
+  return vals as CartLineItemDetails[];
 }
 
 export default async function Cart() {
+  console.log("RUNNING CART PAGE");
   const cartItems = cookies().get("cartItems");
+  console.log("cartItems", cartItems?.value);
   const cartItemDetails =
     cartItems &&
     (await getCartItemDetails(
@@ -42,8 +41,6 @@ export default async function Cart() {
   const uniqueStoreIds = [
     ...(new Set(cartItemDetails?.map((item) => item.storeId)) as any),
   ] as number[];
-
-  console.log(cartItemDetails);
 
   if (!cartItemDetails) {
     return (

@@ -38,6 +38,6 @@ export async function addToCart(newCartItem: CartItem) {
         ])
       : JSON.stringify([newCartItem])
   );
-  revalidatePath("cart");
+  // revalidatePath("/cart");
   return true;
 }

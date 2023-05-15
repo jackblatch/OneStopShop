@@ -6,21 +6,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Product } from "@/db/schema";
 import { currencyFormatter } from "@/lib/currency";
 import { routes } from "@/lib/routes";
-import { CartItem, ProductImages } from "@/lib/types";
+import { CartItem, CartLineItemDetails, ProductImages } from "@/lib/types";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import Image from "next/image";
 import { ProductImage } from "../product-image";
+import { EditCartLineItem } from "./edit-cart-line-item";
 
 export const CartLineItems = (props: {
   cartItems: CartItem[];
-  products: (Omit<Product, "description" | "images"> & {
-    storeName: string | null;
-    images: ProductImages[];
-  })[];
+  products: CartLineItemDetails[];
 }) => {
   return (
     <Table>
@@ -63,7 +59,9 @@ export const CartLineItems = (props: {
                 ) * Number(product.price)
               )}
             </TableCell>
-            <TableCell className="text-right">Edit</TableCell>
+            <TableCell className="text-right">
+              <EditCartLineItem product={product} />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

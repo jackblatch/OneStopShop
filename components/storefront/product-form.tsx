@@ -9,7 +9,7 @@ import { toast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
 import Link from "next/link";
 import { routes } from "@/lib/routes";
-import { revalidateTag } from "next/cache";
+import { handleInputQuantity } from "@/lib/utils";
 
 export const ProductForm = (props: {
   availableInventory: string | null;
@@ -32,16 +32,7 @@ export const ProductForm = (props: {
               id="quantity"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              onBlur={(e) => {
-                if (
-                  Number(e.target.value) < 1 ||
-                  isNaN(Number(e.target.value))
-                ) {
-                  setQuantity(1);
-                  return;
-                }
-                setQuantity(() => Number(e.target.value.split(".")[0]));
-              }}
+              onBlur={(e) => handleInputQuantity(e, setQuantity)}
               type="number"
             />
           </div>
