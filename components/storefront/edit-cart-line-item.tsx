@@ -9,7 +9,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "../ui/button";
 import { CartItem, CartLineItemDetails } from "@/lib/types";
@@ -28,8 +27,6 @@ export const EditCartLineItem = (props: {
   const [quantity, setQuantity] = useState<string | number>(
     props.productInCart?.qty ?? 1
   );
-
-  console.log(props.productInCart?.qty);
 
   return (
     <>

@@ -12,7 +12,6 @@ import Link from "next/link";
 
 async function getCartItemDetails(productIds: number[]) {
   if (!productIds.length) return [];
-  console.log("inside running");
   const vals = await db
     .select({
       id: products.id,
@@ -30,14 +29,12 @@ async function getCartItemDetails(productIds: number[]) {
 }
 
 export default async function Cart() {
-  console.log("RUNNING CART PAGE");
   const cartItems = cookies().get("cartItems");
-  console.log("cartItems", cartItems?.value);
-  const cartItemDetails =
-    cartItems &&
-    (await getCartItemDetails(
-      JSON.parse(cartItems.value).map((item: CartItem) => Number(item.id))
-    ));
+  const cartItemDetails = await getCartItemDetails(
+    JSON.parse(cartItems?.value ?? JSON.stringify([])).map((item: CartItem) =>
+      Number(item.id)
+    )
+  );
 
   const uniqueStoreIds = [
     ...(new Set(cartItemDetails?.map((item) => item.storeId)) as any),

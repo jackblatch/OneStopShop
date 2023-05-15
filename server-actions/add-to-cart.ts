@@ -1,11 +1,9 @@
 "use server";
 
 import { CartItem } from "@/lib/types";
-import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export async function addToCart(newCartItem: CartItem) {
-  console.log("adding to cart");
   const cookieStore = cookies();
   let existingCartItems;
   let itemAlreadyExists;
@@ -38,6 +36,4 @@ export async function addToCart(newCartItem: CartItem) {
         ])
       : JSON.stringify([newCartItem])
   );
-  // revalidatePath("/cart");
-  return true;
 }
