@@ -8,10 +8,11 @@ export function cn(...inputs: ClassValue[]) {
 
 export function handleInputQuantity(
   e: React.FocusEvent<HTMLInputElement, Element>,
-  setQuantity: React.Dispatch<React.SetStateAction<string | number>>
+  setQuantity: React.Dispatch<React.SetStateAction<string | number>>,
+  defaultFallbackQuantity?: number
 ) {
   if (Number(e.target.value) < 1 || isNaN(Number(e.target.value))) {
-    setQuantity(1);
+    setQuantity(defaultFallbackQuantity ?? 1);
     return;
   }
   setQuantity(() => Number(e.target.value.split(".")[0]));

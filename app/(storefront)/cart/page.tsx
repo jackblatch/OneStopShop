@@ -11,6 +11,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 
 async function getCartItemDetails(productIds: number[]) {
+  if (!productIds.length) return [];
   console.log("inside running");
   const vals = await db
     .select({
@@ -42,7 +43,7 @@ export default async function Cart() {
     ...(new Set(cartItemDetails?.map((item) => item.storeId)) as any),
   ] as number[];
 
-  if (!cartItemDetails) {
+  if (!cartItemDetails?.length) {
     return (
       <div className="mt-4 gap-4 rounded-md border-2 border-dashed border-gray-200 p-6 text-center h-[200px] flex items-center justify-center flex-col">
         <Heading size="h3">Your cart is empty</Heading>

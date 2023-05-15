@@ -30,40 +30,44 @@ export const CartLineItems = (props: {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {props.products.map((product) => (
-          <TableRow key={product.id}>
-            <TableCell className="font-medium">
-              <ProductImage
-                src={product.images[0]?.url}
-                alt={product.images[0]?.alt}
-                sizes="50px"
-                height="h-[50px]"
-                width="w-[50px]"
-              />
-            </TableCell>
-            <TableCell className="max-w-[200px] w-[200px] truncate">
-              <Link href={`${routes.product}/${product.id}`}>
-                <Button className="m-0 p-0 h-auto" variant="link">
-                  {product.name}
-                </Button>
-              </Link>
-            </TableCell>
-            <TableCell>{currencyFormatter(Number(product.price))}</TableCell>
-            <TableCell>
-              {props.cartItems.find((item) => item.id === product.id)?.qty}
-            </TableCell>
-            <TableCell>
-              {currencyFormatter(
-                Number(
-                  props.cartItems.find((item) => item.id === product.id)?.qty
-                ) * Number(product.price)
-              )}
-            </TableCell>
-            <TableCell className="text-right">
-              <EditCartLineItem product={product} />
-            </TableCell>
-          </TableRow>
-        ))}
+        {props.products.map((product) => {
+          const currentProductInCart = props.cartItems.find(
+            (item) => item.id === product.id
+          );
+          return (
+            <TableRow key={product.id}>
+              <TableCell className="font-medium">
+                <ProductImage
+                  src={product.images[0]?.url}
+                  alt={product.images[0]?.alt}
+                  sizes="50px"
+                  height="h-[50px]"
+                  width="w-[50px]"
+                />
+              </TableCell>
+              <TableCell className="max-w-[200px] w-[200px] truncate">
+                <Link href={`${routes.product}/${product.id}`}>
+                  <Button className="m-0 p-0 h-auto" variant="link">
+                    {product.name}
+                  </Button>
+                </Link>
+              </TableCell>
+              <TableCell>{currencyFormatter(Number(product.price))}</TableCell>
+              <TableCell>{currentProductInCart?.qty}</TableCell>
+              <TableCell>
+                {currencyFormatter(
+                  Number(currentProductInCart?.qty) * Number(product.price)
+                )}
+              </TableCell>
+              <TableCell className="text-right">
+                <EditCartLineItem
+                  productInCart={currentProductInCart}
+                  product={product}
+                />
+              </TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );
