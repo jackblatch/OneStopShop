@@ -11,7 +11,7 @@ Key features:
 
 - Next.js App Router with React Server Components
 - Intercepted routes (with parallel routing) for product quick view and new product creation in admin
-- Server actions for mutations
+- Server Actions for mutations
 - Planetscale MySQL database with Drizzle ORM
 - UploadThing for typesafe file uploads (e.g., product images)
 - User authentication with Clerk
