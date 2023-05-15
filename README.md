@@ -1,17 +1,19 @@
 ## One Stop Shop
 
 > **Warning**
-> This app is a work in progress and shouldn't be considered production ready. It uses new technologies that are yet to be stable such as the Next 13 App Router with RSC's and Drizzle ORM.
+> This app is a work in progress and shouldn't be considered production ready. It uses new technologies that are yet to be stable such as the Server Actions and Drizzle ORM.
 
 ## About
 
-Online marketplace allowing users to purchase products as well as sign up and list their own products for sale. Users can create a seller profile, manage products and collect payment.
+Online marketplace built using Next.js App Router, which allows users to purchase products, sign up and list their own products for sale. Users can create a seller profile, manage products and collect payment.
 
 Key features:
 
-- Intercepted routes (with parallel routing) on new product creation in admin
-- Using React Server Components for data queries with Drizzle ORM
-- Using UploadThing for typesafe file uploads (e.g., product images)
+- Next.js App Router with React Server Components
+- Intercepted routes (with parallel routing) for product quick view and new product creation in admin
+- Server actions for mutations
+- Planetscale MySQL database with Drizzle ORM
+- UploadThing for typesafe file uploads (e.g., product images)
 - User authentication with Clerk
 
 Home page
