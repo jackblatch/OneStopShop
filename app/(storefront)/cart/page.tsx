@@ -85,7 +85,7 @@ export default async function Cart() {
             </div>
           ))}
         </div>
-        <div className="bg-secondary col-span-3 rounded-md border border-border p-6">
+        <div className="bg-secondary col-span-3 rounded-md border border-border p-6 h-fit">
           <Heading size="h3">Cart Summary</Heading>
         </div>
       </div>
