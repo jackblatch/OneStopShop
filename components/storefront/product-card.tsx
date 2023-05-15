@@ -6,6 +6,8 @@ import Link from "next/link";
 import { currencyFormatter } from "@/lib/currency";
 import { Button } from "../ui/button";
 import { ProductAndStore } from "@/app/(storefront)/products/page";
+import { ProductImage } from "../product-image";
+import { ProductForm } from "./product-form";
 
 export const ProductCard = (props: {
   storeAndProduct: ProductAndStore;
@@ -16,20 +18,12 @@ export const ProductCard = (props: {
   return (
     <div key={props.storeAndProduct.product.id}>
       <Link href={productPageLink}>
-        {props.storeAndProduct.product.images.length > 0 ? (
-          <div className="relative w-full h-48">
-            <Image
-              src={props.storeAndProduct.product.images[0].url}
-              alt={props.storeAndProduct.product.images[0].alt}
-              fill
-              className="object-cover w-full h-48"
-            />
-          </div>
-        ) : (
-          <div className="w-full h-48 bg-secondary flex justify-center items-center">
-            <ImageOff />
-          </div>
-        )}
+        <ProductImage
+          src={props.storeAndProduct.product.images[0]?.url}
+          alt={props.storeAndProduct.product.images[0]?.alt}
+          height="h-48"
+          width="w-full"
+        />
       </Link>
       <Link href={productPageLink}>
         <Text className="line-clamp-1 w-full mt-2">
@@ -51,9 +45,12 @@ export const ProductCard = (props: {
               <span>Quick View</span>
             </Button>
           </Link>
-          <Button className="flex gap-2 w-full" size="sm">
-            <span>Add to Cart</span>
-          </Button>
+          <ProductForm
+            disableQuantitySelector={true}
+            availableInventory={props.storeAndProduct.product.inventory}
+            productId={props.storeAndProduct.product.id}
+            productName={props.storeAndProduct.product.name}
+          />
         </div>
       )}
     </div>
