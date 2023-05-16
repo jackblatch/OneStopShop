@@ -2,7 +2,7 @@ import { CartLineItems } from "@/components/storefront/cart-line-items";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { db } from "@/db/db";
-import { products, stores } from "@/db/schema";
+import { carts, products, stores } from "@/db/schema";
 import { routes } from "@/lib/routes";
 import { CartItem, CartLineItemDetails } from "@/lib/types";
 import { eq, inArray } from "drizzle-orm";
@@ -10,7 +10,12 @@ import { ChevronRight } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
-async function getCartItemDetails(productIds: number[]) {
+async function getCartItemDetails(
+  cartId: number | null,
+  cartItems: CartItem[]
+) {
+  if (!cartId) return [];
+  const productIds = cartItems.map((item) => Number(item.id));
   if (!productIds.length) return [];
   const vals = await db
     .select({
@@ -29,18 +34,9 @@ async function getCartItemDetails(productIds: number[]) {
 }
 
 export default async function Cart() {
-  const cartItems = cookies().get("cartItems");
-  const cartItemDetails = await getCartItemDetails(
-    JSON.parse(cartItems?.value ?? JSON.stringify([])).map((item: CartItem) =>
-      Number(item.id)
-    )
-  );
+  const cartId = cookies().get("cartId")?.value;
 
-  const uniqueStoreIds = [
-    ...(new Set(cartItemDetails?.map((item) => item.storeId)) as any),
-  ] as number[];
-
-  if (!cartItemDetails?.length) {
+  if (isNaN(Number(cartId))) {
     return (
       <div className="mt-4 gap-4 rounded-md border-2 border-dashed border-gray-200 p-6 text-center h-[200px] flex items-center justify-center flex-col">
         <Heading size="h3">Your cart is empty</Heading>
@@ -50,6 +46,21 @@ export default async function Cart() {
       </div>
     );
   }
+
+  const dbCartItemsObj = await db
+    .select()
+    .from(carts)
+    .where(eq(carts.id, Number(cartId)));
+  const cartItems = dbCartItemsObj
+    ? (JSON.parse(dbCartItemsObj[0].items as string) as CartItem[])
+    : [];
+  const cartItemDetails = !!cartItems
+    ? await getCartItemDetails(cartId ? Number(cartId) : null, cartItems)
+    : [];
+
+  const uniqueStoreIds = [
+    ...(new Set(cartItemDetails?.map((item) => item.storeId)) as any),
+  ] as number[];
 
   return (
     <div className="flex flex-col gap-6">
@@ -76,7 +87,7 @@ export default async function Cart() {
                 }
               </Heading>
               <CartLineItems
-                cartItems={cartItems && JSON.parse(cartItems.value)}
+                cartItems={cartItems}
                 products={
                   cartItemDetails?.filter((item) => item.storeId === storeId) ??
                   []

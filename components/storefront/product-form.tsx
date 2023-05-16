@@ -15,6 +15,7 @@ export const ProductForm = (props: {
   productId: number;
   productName: string | null;
   disableQuantitySelector?: boolean;
+  buttonSize?: "default" | "sm";
 }) => {
   const [quantity, setQuantity] = useState<string | number>(1);
   let [isPending, startTransition] = useTransition();
@@ -38,6 +39,7 @@ export const ProductForm = (props: {
         )}
       {props.availableInventory && Number(props.availableInventory) > 0 ? (
         <Button
+          size={props.buttonSize ?? "default"}
           className="w-36"
           onClick={() => {
             startTransition(

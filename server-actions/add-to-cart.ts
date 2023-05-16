@@ -1,39 +1,55 @@
 "use server";
 
+import { db } from "@/db/db";
+import { carts } from "@/db/schema";
 import { CartItem } from "@/lib/types";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export async function addToCart(newCartItem: CartItem) {
   const cookieStore = cookies();
-  let existingCartItems;
-  let itemAlreadyExists;
-  const storedCookies = cookieStore.get("cartItems");
 
-  if (storedCookies) {
-    const parsedItems: CartItem[] = JSON.parse(storedCookies.value);
-    console.log({ parsedItems });
-    itemAlreadyExists = parsedItems.find(
+  // get cookie id from cookies
+  const cartId = cookieStore.get("cartId")?.value;
+  // if no cookie id, create new entry in DB with item vals and set cookie id in cookies
+  if (cartId) {
+    const dbItems = await db
+      .select()
+      .from(carts)
+      .where(eq(carts.id, Number(cartId)));
+    const allItemsInCart = JSON.parse(dbItems[0].items as string) as CartItem[];
+    const newCartItemInCart = allItemsInCart.find(
       (item) => item.id === newCartItem.id
     ) as CartItem | undefined;
-    existingCartItems =
-      Array.isArray(parsedItems) && parsedItems.length > 0
-        ? parsedItems.filter((item) => item.id !== newCartItem.id)
-        : null;
+    const cartItemsWithOutCurrentItem = allItemsInCart.filter(
+      (item) => item.id !== newCartItem.id
+    );
+    await db
+      .update(carts)
+      .set({
+        items: allItemsInCart
+          ? JSON.stringify([
+              ...cartItemsWithOutCurrentItem,
+              {
+                ...newCartItem,
+                qty: newCartItemInCart
+                  ? newCartItem.qty + newCartItemInCart.qty
+                  : newCartItem.qty,
+              },
+            ])
+          : JSON.stringify([newCartItem]),
+      })
+      .where(eq(carts.id, Number(cartId)));
+    revalidatePath("/");
+    return;
+  } else {
+    const newCart = await db
+      .insert(carts)
+      .values({ items: JSON.stringify([newCartItem]) });
+    // @ts-ignore
+    cookieStore.set("cartId", String(newCart.insertId));
+    revalidatePath("/");
+    return;
   }
-
-  // @ts-ignore
-  cookieStore.set(
-    "cartItems",
-    existingCartItems
-      ? JSON.stringify([
-          ...existingCartItems,
-          {
-            ...newCartItem,
-            qty: itemAlreadyExists
-              ? newCartItem.qty + itemAlreadyExists.qty
-              : newCartItem.qty,
-          },
-        ])
-      : JSON.stringify([newCartItem])
-  );
 }

@@ -33,6 +33,5 @@ export async function updateCart(updateCartItem: CartItem) {
         : JSON.stringify([])
     );
   }
-  console.log("UPDATE CART--------", cookieStore.get("cartItems")?.value);
   return true;
 }
