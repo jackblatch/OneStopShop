@@ -29,3 +29,9 @@ export const products = mysqlTable("products", {
   storeId: int("store_id"),
 });
 export type Product = InferModel<typeof products>;
+
+export const carts = mysqlTable("carts", {
+  id: serial("id").primaryKey(),
+  items: json("items"),
+});
+export type Cart = InferModel<typeof carts>;

@@ -50,6 +50,7 @@ export const ProductCard = (props: {
             availableInventory={props.storeAndProduct.product.inventory}
             productId={props.storeAndProduct.product.id}
             productName={props.storeAndProduct.product.name}
+            buttonSize="sm"
           />
         </div>
       )}

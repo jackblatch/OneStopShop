@@ -9,12 +9,14 @@ import { toast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
 import { routes } from "@/lib/routes";
 import { handleInputQuantity } from "@/lib/utils";
+import Link from "next/link";
 
 export const ProductForm = (props: {
   availableInventory: string | null;
   productId: number;
   productName: string | null;
   disableQuantitySelector?: boolean;
+  buttonSize?: "default" | "sm";
 }) => {
   const [quantity, setQuantity] = useState<string | number>(1);
   let [isPending, startTransition] = useTransition();
@@ -38,6 +40,7 @@ export const ProductForm = (props: {
         )}
       {props.availableInventory && Number(props.availableInventory) > 0 ? (
         <Button
+          size={props.buttonSize ?? "default"}
           className="w-36"
           onClick={() => {
             startTransition(
@@ -51,9 +54,9 @@ export const ProductForm = (props: {
               title: "Added to cart",
               description: `${quantity}x ${props.productName} has been added to your cart.`,
               action: (
-                <a href={routes.cart}>
+                <Link href={routes.cart}>
                   <ToastAction altText="View cart">View</ToastAction>
-                </a>
+                </Link>
               ),
             });
           }}
