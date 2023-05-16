@@ -54,6 +54,8 @@ export async function addToCart(newCartItem: CartItem) {
     // @ts-ignore
     cookieStore.set("cartId", String(newCart.insertId));
     revalidatePath("/");
+    revalidatePath("/(storefront)/cart");
+    revalidatePath("/cart");
     return;
   }
 }
