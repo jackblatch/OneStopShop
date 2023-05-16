@@ -33,8 +33,28 @@ async function getCartItemDetails(
   return vals as CartLineItemDetails[];
 }
 
+async function getItemsInCart(cartId: number) {
+  if (isNaN(cartId)) return [];
+  return await db
+    .select()
+    .from(carts)
+    .where(eq(carts.id, Number(cartId)));
+}
+
 export default async function Cart() {
   const cartId = cookies().get("cartId")?.value;
+
+  const dbCartItemsObj = await getItemsInCart(Number(cartId));
+  const cartItems = dbCartItemsObj.length
+    ? (JSON.parse(dbCartItemsObj[0].items as string) as CartItem[])
+    : [];
+  const cartItemDetails = !!cartItems
+    ? await getCartItemDetails(cartId ? Number(cartId) : null, cartItems)
+    : [];
+
+  const uniqueStoreIds = [
+    ...(new Set(cartItemDetails?.map((item) => item.storeId)) as any),
+  ] as number[];
 
   if (isNaN(Number(cartId))) {
     return (
@@ -46,21 +66,6 @@ export default async function Cart() {
       </div>
     );
   }
-
-  const dbCartItemsObj = await db
-    .select()
-    .from(carts)
-    .where(eq(carts.id, Number(cartId)));
-  const cartItems = dbCartItemsObj
-    ? (JSON.parse(dbCartItemsObj[0].items as string) as CartItem[])
-    : [];
-  const cartItemDetails = !!cartItems
-    ? await getCartItemDetails(cartId ? Number(cartId) : null, cartItems)
-    : [];
-
-  const uniqueStoreIds = [
-    ...(new Set(cartItemDetails?.map((item) => item.storeId)) as any),
-  ] as number[];
 
   return (
     <div className="flex flex-col gap-6">

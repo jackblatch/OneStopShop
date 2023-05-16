@@ -10,21 +10,24 @@ import { cookies } from "next/headers";
 export async function addToCart(newCartItem: CartItem) {
   const cookieStore = cookies();
 
-  // get cookie id from cookies
   const cartId = cookieStore.get("cartId")?.value;
-  // if no cookie id, create new entry in DB with item vals and set cookie id in cookies
+
   if (cartId) {
     const dbItems = await db
       .select()
       .from(carts)
       .where(eq(carts.id, Number(cartId)));
+
     const allItemsInCart = JSON.parse(dbItems[0].items as string) as CartItem[];
+
     const newCartItemInCart = allItemsInCart.find(
       (item) => item.id === newCartItem.id
     ) as CartItem | undefined;
+
     const cartItemsWithOutCurrentItem = allItemsInCart.filter(
       (item) => item.id !== newCartItem.id
     );
+
     await db
       .update(carts)
       .set({
@@ -41,6 +44,7 @@ export async function addToCart(newCartItem: CartItem) {
           : JSON.stringify([newCartItem]),
       })
       .where(eq(carts.id, Number(cartId)));
+
     revalidatePath("/");
     return;
   } else {

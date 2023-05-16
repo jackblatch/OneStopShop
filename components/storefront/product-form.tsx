@@ -9,6 +9,7 @@ import { toast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
 import { routes } from "@/lib/routes";
 import { handleInputQuantity } from "@/lib/utils";
+import Link from "next/link";
 
 export const ProductForm = (props: {
   availableInventory: string | null;
@@ -53,9 +54,9 @@ export const ProductForm = (props: {
               title: "Added to cart",
               description: `${quantity}x ${props.productName} has been added to your cart.`,
               action: (
-                <a href={routes.cart}>
+                <Link href={routes.cart}>
                   <ToastAction altText="View cart">View</ToastAction>
-                </a>
+                </Link>
               ),
             });
           }}
