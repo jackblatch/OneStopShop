@@ -17,7 +17,7 @@ export const SheetWrapper = (
   return (
     <Sheet onOpenChange={() => setIsOpen((prev) => !prev)} open={isOpen}>
       {props.trigger}
-      <SheetContent>
+      <SheetContent className="overflow-auto">
         {props.children}
         <div
           className="mt-8"
