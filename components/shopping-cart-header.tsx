@@ -29,11 +29,11 @@ export const ShoppingCartHeader = async () => {
       trigger={
         <SheetTrigger className="flex items-center justify-center relative -left-2">
           <ShoppingCart size={26} />
-          {numberOfCartItems && numberOfCartItems > 0 && (
+          {numberOfCartItems && numberOfCartItems > 0 ? (
             <span className="bg-primary rounded-full w-6 h-6 text-white flex items-center justify-center text-sm absolute -top-2 -right-3">
               {numberOfCartItems}
             </span>
-          )}
+          ) : null}
         </SheetTrigger>
       }
       buttonRoute={routes.cart}
