@@ -1,58 +1,17 @@
 import { CartLineItems } from "@/components/storefront/cart-line-items";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
-import { db } from "@/db/db";
-import { carts, products, stores } from "@/db/schema";
 import { routes } from "@/lib/routes";
-import { CartItem, CartLineItemDetails } from "@/lib/types";
-import { eq, inArray } from "drizzle-orm";
+import { getCart } from "@/server-actions/get-cart-details";
 import { ChevronRight } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
-async function getCartItemDetails(
-  cartId: number | null,
-  cartItems: CartItem[]
-) {
-  if (!cartId) return [];
-  const productIds = cartItems.map((item) => Number(item.id));
-  if (!productIds.length) return [];
-  const vals = await db
-    .select({
-      id: products.id,
-      name: products.name,
-      price: products.price,
-      inventory: products.inventory,
-      storeId: products.storeId,
-      images: products.images,
-      storeName: stores.name,
-    })
-    .from(products)
-    .leftJoin(stores, eq(products.storeId, stores.id))
-    .where(inArray(products.id, productIds));
-  return vals as CartLineItemDetails[];
-}
-
 export default async function Cart() {
   const cartId = cookies().get("cartId")?.value;
-
-  const dbCartItemsObj = isNaN(Number(cartId))
-    ? []
-    : await db
-        .select()
-        .from(carts)
-        .where(eq(carts.id, Number(cartId)));
-  const cartItems = dbCartItemsObj.length
-    ? (JSON.parse(dbCartItemsObj[0].items as string) as CartItem[])
-    : [];
-
-  const cartItemDetails = !!cartItems
-    ? await getCartItemDetails(cartId ? Number(cartId) : null, cartItems)
-    : [];
-
-  const uniqueStoreIds = [
-    ...(new Set(cartItemDetails?.map((item) => item.storeId)) as any),
-  ] as number[];
+  const { cartItems, uniqueStoreIds, cartItemDetails } = await getCart(
+    Number(cartId)
+  );
 
   if (isNaN(Number(cartId))) {
     return (
