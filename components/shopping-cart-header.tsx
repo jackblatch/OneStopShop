@@ -5,7 +5,6 @@ import { CartItem } from "@/lib/types";
 import { eq } from "drizzle-orm";
 import { ShoppingCart } from "lucide-react";
 import { cookies } from "next/headers";
-import Link from "next/link";
 
 export const ShoppingCartHeader = async () => {
   const cartId = cookies().get("cartId")?.value;
@@ -21,7 +20,7 @@ export const ShoppingCartHeader = async () => {
     !!cartItems &&
     cartItems.reduce((acc, item) => (acc += Number(item.qty)), 0);
   return (
-    <Link
+    <a
       href={routes.cart}
       className="flex items-center justify-center relative -left-2"
     >
@@ -31,6 +30,6 @@ export const ShoppingCartHeader = async () => {
           {numberOfCartItems}
         </span>
       )}
-    </Link>
+    </a>
   );
 };
