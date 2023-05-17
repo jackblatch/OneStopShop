@@ -1,13 +1,6 @@
-import {
-  Dispatch,
-  Fragment,
-  PropsWithChildren,
-  SetStateAction,
-  useState,
-} from "react";
+import { Dispatch, Fragment, PropsWithChildren, SetStateAction } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { CrossIcon, X } from "lucide-react";
-import ProductsPage from "@/app/account/selling/products/page";
+import { X } from "lucide-react";
 
 export default function Sheet({
   open,
