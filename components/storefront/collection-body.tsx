@@ -13,6 +13,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { SlidersHorizontal } from "lucide-react";
+import { EmptyStateWrapper } from "../ui/empty-state-wrapper";
 
 export const CollectionBody = (
   props: PropsWithChildren<{
@@ -73,10 +74,10 @@ export const CollectionBody = (
           <div className="col-span-12">{props.children}</div>
         </div>
       ) : (
-        <div className="col-span-9 mt-4 gap-2 rounded-md border-2 border-dashed border-gray-200 p-6 text-center h-[200px] flex items-center justify-center flex-col">
+        <EmptyStateWrapper height="h-[200px]">
           <Heading size="h4">No products match your filters</Heading>
           <p>Change your filters or try again later</p>
-        </div>
+        </EmptyStateWrapper>
       )}
     </div>
   );

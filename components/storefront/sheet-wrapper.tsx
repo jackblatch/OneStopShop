@@ -17,7 +17,10 @@ export const SheetWrapper = (
   return (
     <Sheet onOpenChange={() => setIsOpen((prev) => !prev)} open={isOpen}>
       {props.trigger}
-      <SheetContent className="overflow-auto">
+      <SheetContent
+        size="full"
+        className="overflow-auto lg:max-w-[600px] sm:max-w-[400px] xl:max-w-[650px]"
+      >
         {props.children}
         <div
           className="mt-8"

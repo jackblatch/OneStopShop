@@ -13,6 +13,7 @@ import { Button } from "./ui/button";
 import { routes } from "@/lib/routes";
 import Link from "next/link";
 import { SheetWrapper } from "./storefront/sheet-wrapper";
+import { EmptyStateWrapper } from "./ui/empty-state-wrapper";
 
 export const ShoppingCartHeader = async () => {
   const cartId = cookies().get("cartId")?.value;
@@ -36,11 +37,17 @@ export const ShoppingCartHeader = async () => {
           ) : null}
         </SheetTrigger>
       }
-      buttonRoute={routes.cart}
+      buttonRoute={
+        numberOfCartItems && numberOfCartItems > 0
+          ? routes.cart
+          : routes.products
+      }
       insideButton={
-        <Link href={routes.cart}>
-          <Button className="w-full">View full cart</Button>
-        </Link>
+        <Button className="w-full">
+          {numberOfCartItems && numberOfCartItems > 0
+            ? "View full cart"
+            : "Start shopping"}
+        </Button>
       }
     >
       <SheetHeader>
@@ -54,25 +61,31 @@ export const ShoppingCartHeader = async () => {
           Free shipping on all orders over $50
         </SheetDescription>
       </SheetHeader>
-      <div className="flex flex-col gap-6 mt-6">
-        {uniqueStoreIds.map((storeId, i) => (
-          <div key={i}>
-            <Heading size="h4">
-              {
-                cartItemDetails?.find((item) => item.storeId === storeId)
-                  ?.storeName
-              }
-            </Heading>
-            <CartLineItems
-              cartItems={cartItems}
-              products={
-                cartItemDetails?.filter((item) => item.storeId === storeId) ??
-                []
-              }
-            />
-          </div>
-        ))}
-      </div>
+      {numberOfCartItems && numberOfCartItems > 0 ? (
+        <div className="flex flex-col gap-6 mt-6">
+          {uniqueStoreIds.map((storeId, i) => (
+            <div key={i}>
+              <Heading size="h4">
+                {
+                  cartItemDetails?.find((item) => item.storeId === storeId)
+                    ?.storeName
+                }
+              </Heading>
+              <CartLineItems
+                cartItems={cartItems}
+                products={
+                  cartItemDetails?.filter((item) => item.storeId === storeId) ??
+                  []
+                }
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <EmptyStateWrapper height="h-[150px]">
+          <Heading size="h4">Your cart is empty</Heading>
+        </EmptyStateWrapper>
+      )}
     </SheetWrapper>
   );
 };

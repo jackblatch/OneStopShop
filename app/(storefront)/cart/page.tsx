@@ -13,7 +13,7 @@ export default async function Cart() {
     Number(cartId)
   );
 
-  if (isNaN(Number(cartId))) {
+  if (isNaN(Number(cartId)) || !cartItems.length) {
     return (
       <div className="mt-4 gap-4 rounded-md border-2 border-dashed border-gray-200 p-6 text-center h-[200px] flex items-center justify-center flex-col">
         <Heading size="h3">Your cart is empty</Heading>
@@ -38,7 +38,7 @@ export default async function Cart() {
           </Button>
         </Link>
       </div>
-      <div className="grid grid-cols-9 gap-24">
+      <div className="lg:grid lg:grid-cols-9 lg:gap-24 flex flex-col-reverse gap-6">
         <div className="col-span-6 flex flex-col gap-8">
           {uniqueStoreIds.map((storeId, i) => (
             <div key={i}>
