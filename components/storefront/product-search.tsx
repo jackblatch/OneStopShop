@@ -20,6 +20,7 @@ import { ImageOff } from "lucide-react";
 import { currencyFormatter } from "@/lib/currency";
 import { LoadingSkeleton } from "../ui/loading-skeleton";
 import { ProductImage } from "../product-image";
+
 export function ProductSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState<
@@ -69,7 +70,7 @@ export function ProductSearch() {
           onClick={() => setOpen((prev) => !prev)}
         >
           <p className="text-muted-foreground text-sm">Search...</p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground hidden md:block">
             <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
               <span className="text-xs">⌘</span>K
             </kbd>

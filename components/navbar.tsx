@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Logo } from "./logo";
 import { ContentWrapper } from "./content-wrapper";
-import { ShoppingCart, Truck } from "lucide-react";
+import { Truck } from "lucide-react";
 import { MenuItems } from "./menu-items";
 import { Line } from "./line";
 import { AnnouncementBar } from "./announcement-bar";
