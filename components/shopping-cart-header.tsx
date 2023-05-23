@@ -11,7 +11,6 @@ import { CartLineItems } from "./storefront/cart-line-items";
 import { Heading } from "./ui/heading";
 import { Button } from "./ui/button";
 import { routes } from "@/lib/routes";
-import Link from "next/link";
 import { SheetWrapper } from "./storefront/sheet-wrapper";
 import { EmptyStateWrapper } from "./ui/empty-state-wrapper";
 

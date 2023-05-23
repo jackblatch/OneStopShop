@@ -1,6 +1,7 @@
 import { CartLineItems } from "@/components/storefront/cart-line-items";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { currencyFormatter } from "@/lib/currency";
 import { routes } from "@/lib/routes";
 import { getCart } from "@/server-actions/get-cart-details";
 import { ChevronRight } from "lucide-react";
@@ -12,6 +13,8 @@ export default async function Cart() {
   const { cartItems, uniqueStoreIds, cartItemDetails } = await getCart(
     Number(cartId)
   );
+
+  console.log({ cartItemDetails, cartItems });
 
   if (isNaN(Number(cartId)) || !cartItems.length) {
     return (
@@ -58,8 +61,33 @@ export default async function Cart() {
             </div>
           ))}
         </div>
-        <div className="bg-secondary col-span-3 rounded-md border border-border p-6 h-fit">
+        <div className="bg-secondary col-span-3 rounded-md border border-border p-6 h-fit flex flex-col gap-4">
           <Heading size="h3">Cart Summary</Heading>
+          {uniqueStoreIds.map((storeId, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between border-b border-border pb-2"
+            >
+              <p>
+                {
+                  cartItemDetails?.find((item) => item.storeId === storeId)
+                    ?.storeName
+                }
+              </p>
+              <p>
+                {currencyFormatter(
+                  cartItemDetails
+                    .filter((item) => item.storeId === storeId)
+                    .reduce((accum, curr) => {
+                      const quantityInCart = cartItems.find(
+                        (item) => item.id === curr.id
+                      )?.qty;
+                      return accum + Number(curr.price) * (quantityInCart ?? 0);
+                    }, 0)
+                )}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
