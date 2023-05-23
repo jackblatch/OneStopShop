@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.17.1",
-    "@headlessui/react": "^1.7.14",
     "@next/mdx": "^13.3.1",
     "@planetscale/database": "^1.7.0",
     "@radix-ui/react-alert-dialog": "^1.0.3",
