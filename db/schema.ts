@@ -35,3 +35,9 @@ export const carts = mysqlTable("carts", {
   items: json("items"),
 });
 export type Cart = InferModel<typeof carts>;
+
+export const payments = mysqlTable("payments", {
+  id: serial("id").primaryKey(),
+  storeId: int("store_id"),
+  stripeAccountId: text("stripe_account_id"),
+});
