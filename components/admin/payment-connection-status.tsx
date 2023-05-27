@@ -7,10 +7,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { singleLevelNestedRoutes } from "@/lib/routes";
+import { hasValidStripeAccount } from "@/server-actions/stripe";
 import { AlertCircle, ChevronDown } from "lucide-react";
 import Link from "next/link";
 
-export const PaymentConnectionStatus = () => {
+export const PaymentConnectionStatus = async () => {
+  const validStripeAccount = await hasValidStripeAccount();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-1 justify-center rounded-md bg-yellow-100 border border-yellow-500 text-yellow-700 py-1 px-3 text-sm text-center">
