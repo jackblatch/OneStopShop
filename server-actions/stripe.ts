@@ -2,33 +2,69 @@
 import { db } from "@/db/db";
 import { payments } from "@/db/schema";
 import { singleLevelNestedRoutes } from "@/lib/routes";
-import { currentUser } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import stripeDetails from "stripe";
 import { getStoreId } from "./storeid";
 
-export async function hasValidStripeAccount() {
-  const user = await currentUser();
+export async function hasConnectedStripeAccount() {
   const payment = await db
     .select()
     .from(payments)
-    .where(eq(payments.storeId, Number(user?.privateMetadata.storeId)));
+    .where(eq(payments.storeId, Number(await getStoreId())));
 
   return payment.length ? payment[0]?.details_submitted : false;
 }
 
-export async function createConnectedAccount() {
+export async function createAccountLink() {
   try {
+    if (await hasConnectedStripeAccount()) {
+      throw new Error("Stripe account already exists");
+    }
     // @ts-ignore
     const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
-    const account = await stripe.accounts.create({
-      type: "standard",
-    });
 
-    console.log(account);
+    const storeId = Number(await getStoreId());
+
+    if (isNaN(storeId)) {
+      throw new Error("Store ID not found");
+    }
+
+    const paymentRecord = await db
+      .select()
+      .from(payments)
+      .where(eq(payments.storeId, storeId));
+
+    let stripeAccountId;
+    // check if paymentRecord exists in db with stripeAccountId
+    if (paymentRecord.length && paymentRecord[0].stripeAccountId) {
+      stripeAccountId = paymentRecord[0].stripeAccountId;
+      // otherwise, create new stripeAccountId
+    } else {
+      const { id } = await stripe.accounts.create({
+        type: "standard",
+      });
+      // Stripe api failed, throw error
+      if (!id) throw new Error("Stripe account not created");
+      // if paymentRecord exists, update stripeAccountId to valid one
+      if (paymentRecord.length) {
+        await db
+          .update(payments)
+          .set({
+            stripeAccountId: id,
+          })
+          .where(eq(payments.storeId, storeId));
+        // otherwise, insert new record into DB
+      } else {
+        await db.insert(payments).values({
+          storeId,
+          stripeAccountId: id,
+        });
+      }
+      stripeAccountId = id;
+    }
 
     const accountLink = await stripe.accountLinks.create({
-      account: account.id,
+      account: stripeAccountId,
       refresh_url:
         process.env.NEXT_PUBLIC_APP_URL +
         singleLevelNestedRoutes.account.payments,
@@ -38,22 +74,18 @@ export async function createConnectedAccount() {
       type: "account_onboarding",
     });
 
+    console.log({ accountLink });
+
     return accountLink.url;
   } catch (err) {
     console.log("Error", err);
   }
-
-  //   console.log({ accountLink });
-  // save account id in database
-
-  //   return account;
 }
 
 // change function name to be more descriptive
-export async function getStripeAccount() {
+export async function updateStripeAccountStatus() {
   try {
-    const storeIdFromDB = await getStoreId();
-    const storeId = Number(storeIdFromDB);
+    const storeId = Number(await getStoreId());
 
     if (isNaN(storeId)) {
       throw new Error("Store ID not found");
@@ -70,12 +102,18 @@ export async function getStripeAccount() {
 
     // checks if stripe account has been successfully created. If so, updates database with status.
     if (account.details_submitted) {
-      await db.update(payments).set({
-        stripeAccountCreatedAt: account.created,
-      });
+      await db
+        .update(payments)
+        .set({
+          details_submitted: account.details_submitted,
+          stripeAccountCreatedAt: account.created,
+        })
+        .where(eq(payments.storeId, storeId));
     }
 
-    // return something here
+    console.log("RESULT", account.details_submitted);
+
+    return account.details_submitted;
   } catch (err) {
     console.log("Error", err);
     return false;

@@ -41,7 +41,7 @@ export const payments = mysqlTable("payments", {
   id: serial("id").primaryKey(),
   storeId: int("store_id"),
   stripeAccountId: text("stripe_account_id"),
-  stripeAccountCreatedAt: text("stripe_account_created_at"),
-  stripeAccountExpiresAt: text("stripe_account_expires_at"),
+  stripeAccountCreatedAt: int("stripe_account_created_at"),
+  stripeAccountExpiresAt: int("stripe_account_expires_at"),
   details_submitted: boolean("details_submitted").default(false),
 });
