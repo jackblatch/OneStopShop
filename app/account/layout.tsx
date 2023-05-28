@@ -27,6 +27,7 @@ export default async function AdminLayout({ children }: PropsWithChildren) {
         <div>
           <ContentWrapper className="w-full py-2 flex items-center justify-between">
             <SecondaryMenu menuItems={menuItems} />
+            {/* @ts-expect-error Async Server Component */}
             <PaymentConnectionStatus />
           </ContentWrapper>
         </div>
