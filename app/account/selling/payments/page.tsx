@@ -4,13 +4,19 @@ import { CreditCard } from "lucide-react";
 import { CreateConnectedAccount } from "./components/create-connected-account";
 import {
   createAccountLink,
+  getStripeAccountDetails,
   hasConnectedStripeAccount,
   updateStripeAccountStatus,
 } from "@/server-actions/stripe";
+import { getStoreId } from "@/server-actions/storeid";
+import { Heading } from "@/components/ui/heading";
+import { Button } from "@/components/ui/button";
 
 export default async function PaymentsPage() {
   await updateStripeAccountStatus();
   const connectedStripeAccount = await hasConnectedStripeAccount();
+  const storeId = Number(await getStoreId());
+  const stripeAccountDetails = await getStripeAccountDetails(storeId);
 
   return (
     <>
@@ -19,7 +25,29 @@ export default async function PaymentsPage() {
         subheading="View your payouts and manage your payment settings"
       />
       {connectedStripeAccount ? (
-        "Account connected"
+        <div>
+          <div className="p-2 px-4 border bg-secondary border-border text-gray-700 rounded-md">
+            <span className="font-semibold">Payment status:</span> Stripe
+            account connected
+          </div>
+          <div className="border border-border p-4 rounded-md mt-4">
+            <p className="font-semibold text-gray-700">Stripe Details</p>
+            <p>
+              Currency: {stripeAccountDetails.default_currency.toUpperCase()}
+            </p>
+            <p>Country: {stripeAccountDetails.country}</p>
+            <p>Account Email: {stripeAccountDetails.email}</p>
+            <a
+              href="https://www.stripe.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button size="sm" className="mt-4">
+                Update in Stripe
+              </Button>
+            </a>
+          </div>
+        </div>
       ) : (
         <InfoCard
           heading="Payments aren't setup yet"

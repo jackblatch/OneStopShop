@@ -7,18 +7,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { singleLevelNestedRoutes } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 import { hasConnectedStripeAccount } from "@/server-actions/stripe";
 import { AlertCircle, ChevronDown } from "lucide-react";
 import Link from "next/link";
 
 export const PaymentConnectionStatus = async () => {
   const connectedStripeAccount = await hasConnectedStripeAccount();
-  const connectColor = connectedStripeAccount ? "green" : "yellow";
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className={`flex items-center gap-1 justify-center rounded-md border py-1 px-3 text-sm text-center bg-${connectColor}-100 border-${connectColor}-500 text-${connectColor}-700`}
+        className={cn(
+          "flex items-center gap-1 justify-center rounded-md border py-1 px-3 text-sm text-center",
+          connectedStripeAccount
+            ? "bg-green-100 border-green-500 text-green-700"
+            : "bg-yellow-100 border-yellow-500 text-yellow-700"
+        )}
       >
         <AlertCircle size={16} />
         <p className="font-bold">Payments:</p>

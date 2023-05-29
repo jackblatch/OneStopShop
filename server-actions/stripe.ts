@@ -5,6 +5,7 @@ import { singleLevelNestedRoutes } from "@/lib/routes";
 import { eq } from "drizzle-orm";
 import stripeDetails from "stripe";
 import { getStoreId } from "./storeid";
+import { StripeAccount } from "@/lib/types";
 
 export async function hasConnectedStripeAccount() {
   const payment = await db
@@ -82,6 +83,18 @@ export async function createAccountLink() {
   }
 }
 
+export async function getStripeAccountDetails(storeId: number) {
+  const payment = await db
+    .select()
+    .from(payments)
+    .where(eq(payments.storeId, storeId));
+
+  // @ts-ignore
+  const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
+  const account = await stripe.accounts.retrieve(payment[0].stripeAccountId);
+  return account as StripeAccount;
+}
+
 // change function name to be more descriptive
 export async function updateStripeAccountStatus() {
   try {
@@ -91,14 +104,7 @@ export async function updateStripeAccountStatus() {
       throw new Error("Store ID not found");
     }
 
-    const payment = await db
-      .select()
-      .from(payments)
-      .where(eq(payments.storeId, storeId));
-
-    // @ts-ignore
-    const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
-    const account = await stripe.accounts.retrieve(payment[0].stripeAccountId);
+    const account = await getStripeAccountDetails(storeId);
 
     // checks if stripe account has been successfully created. If so, updates database with status.
     if (account.details_submitted) {
@@ -110,8 +116,6 @@ export async function updateStripeAccountStatus() {
         })
         .where(eq(payments.storeId, storeId));
     }
-
-    console.log("RESULT", account.details_submitted);
 
     return account.details_submitted;
   } catch (err) {
