@@ -12,3 +12,11 @@ export type CartLineItemDetails = Omit<Product, "description" | "images"> & {
   storeName: string | null;
   images: ProductImages[];
 };
+
+export type StripeAccount = {
+  details_submitted: boolean;
+  created: number;
+  default_currency: string;
+  country: string;
+  email: string;
+};

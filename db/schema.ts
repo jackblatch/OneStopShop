@@ -1,6 +1,7 @@
 // schema.ts
 import { InferModel } from "drizzle-orm";
 import {
+  boolean,
   decimal,
   int,
   json,
@@ -35,3 +36,12 @@ export const carts = mysqlTable("carts", {
   items: json("items"),
 });
 export type Cart = InferModel<typeof carts>;
+
+export const payments = mysqlTable("payments", {
+  id: serial("id").primaryKey(),
+  storeId: int("store_id"),
+  stripeAccountId: text("stripe_account_id"),
+  stripeAccountCreatedAt: int("stripe_account_created_at"),
+  stripeAccountExpiresAt: int("stripe_account_expires_at"),
+  details_submitted: boolean("details_submitted").default(false),
+});
