@@ -111,7 +111,7 @@ export async function updateStripeAccountStatus() {
     const account = await getStripeAccountDetails(storeId);
 
     // checks if stripe account has been successfully created. If so, updates database with status.
-    if (account && account.details_submitted) {
+    if (account?.details_submitted) {
       await db
         .update(payments)
         .set({
