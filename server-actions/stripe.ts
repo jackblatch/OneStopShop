@@ -84,15 +84,19 @@ export async function createAccountLink() {
 }
 
 export async function getStripeAccountDetails(storeId: number) {
-  const payment = await db
-    .select()
-    .from(payments)
-    .where(eq(payments.storeId, storeId));
+  try {
+    const payment = await db
+      .select()
+      .from(payments)
+      .where(eq(payments.storeId, storeId));
 
-  // @ts-ignore
-  const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
-  const account = await stripe.accounts.retrieve(payment[0].stripeAccountId);
-  return account as StripeAccount;
+    // @ts-ignore
+    const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
+    const account = await stripe.accounts.retrieve(payment[0].stripeAccountId);
+    return account as StripeAccount;
+  } catch (err) {
+    console.log("Error", err);
+  }
 }
 
 // change function name to be more descriptive
@@ -107,7 +111,7 @@ export async function updateStripeAccountStatus() {
     const account = await getStripeAccountDetails(storeId);
 
     // checks if stripe account has been successfully created. If so, updates database with status.
-    if (account.details_submitted) {
+    if (account?.details_submitted) {
       await db
         .update(payments)
         .set({
@@ -117,7 +121,7 @@ export async function updateStripeAccountStatus() {
         .where(eq(payments.storeId, storeId));
     }
 
-    return account.details_submitted;
+    return account?.details_submitted ?? false;
   } catch (err) {
     console.log("Error", err);
     return false;

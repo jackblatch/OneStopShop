@@ -9,7 +9,6 @@ import {
   updateStripeAccountStatus,
 } from "@/server-actions/stripe";
 import { getStoreId } from "@/server-actions/storeid";
-import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 
 export default async function PaymentsPage() {
@@ -33,10 +32,10 @@ export default async function PaymentsPage() {
           <div className="border border-border p-4 rounded-md mt-4">
             <p className="font-semibold text-gray-700">Stripe Details</p>
             <p>
-              Currency: {stripeAccountDetails.default_currency.toUpperCase()}
+              Currency: {stripeAccountDetails?.default_currency.toUpperCase()}
             </p>
-            <p>Country: {stripeAccountDetails.country}</p>
-            <p>Account Email: {stripeAccountDetails.email}</p>
+            <p>Country: {stripeAccountDetails?.country}</p>
+            <p>Account Email: {stripeAccountDetails?.email}</p>
             <a
               href="https://www.stripe.com"
               target="_blank"
