@@ -96,18 +96,18 @@ export default function CheckoutForm() {
       onSubmit={handleSubmit}
       className="flex flex-col gap-6"
     >
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 bg-secondary border-border border rounded-md md:p-6 p-4 md:pb-7 pb-5">
         <Heading size="h4">Contact Info</Heading>
         <LinkAuthenticationElement
           id="link-authentication-element"
           onChange={(e: any) => setEmail(e.target.value)}
         />
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 bg-secondary border-border border rounded-md md:p-6 p-4 md:pb-7 pb-5">
         <Heading size="h4">Shipping</Heading>
         <AddressElement options={{ mode: "shipping" }} />
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 bg-secondary border-border border rounded-md md:p-6 p-4 md:pb-7 pb-5">
         <Heading size="h4">Payment</Heading>
         <PaymentElement id="payment-element" options={paymentElementOptions} />
       </div>

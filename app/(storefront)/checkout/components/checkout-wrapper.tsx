@@ -3,12 +3,13 @@
 import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
-import CheckoutForm from "./CheckoutForm";
-import { ChevronRight } from "lucide-react";
+import CheckoutForm from "./checkout-form";
+import { ChevronRight, Plus } from "lucide-react";
 import { routes } from "@/lib/routes";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { OrderSummaryAccordion } from "./order-summary-accordion";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -48,14 +49,19 @@ export default function CheckoutWrapper(props: {
         </Button>
       </div>
       {clientSecret && (
-        <div className="grid grid-cols-12 gap-8 mt-4">
-          <div className="col-span-8 bg-secondary rounded-md p-6 border-border border">
+        <div className="md:grid md:grid-cols-12 md:gap-8 mt-4 flex flex-col-reverse gap-6">
+          <div className="col-span-8">
             <Elements options={options} stripe={stripePromise}>
               <CheckoutForm />
             </Elements>
           </div>
-          <div className="col-span-4 bg-secondary rounded-md p-6 h-fit border-border border">
-            <p>test</p>
+          <div className="col-span-4 bg-secondary rounded-md md:p-6 h-fit border-border border p-1 px-4">
+            <div className="hidden md:block">
+              <Heading size="h4">Order Summary</Heading>
+            </div>
+            <OrderSummaryAccordion title="Order Summary" className="md:hidden">
+              Summary
+            </OrderSummaryAccordion>
           </div>
         </div>
       )}

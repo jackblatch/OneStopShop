@@ -1,5 +1,5 @@
 import { createPaymentIntent } from "@/server-actions/stripe/payment";
-import CheckoutWrapper from "./components/CheckoutWrapper";
+import CheckoutWrapper from "./components/checkout-wrapper";
 
 export default function Page() {
   const paymentIntent = createPaymentIntent({ items: [{ id: 1, qty: 4 }] });

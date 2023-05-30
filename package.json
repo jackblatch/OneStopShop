@@ -15,6 +15,7 @@
     "@clerk/nextjs": "^4.17.1",
     "@next/mdx": "^13.3.1",
     "@planetscale/database": "^1.7.0",
+    "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.3",
     "@radix-ui/react-checkbox": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.3",
