@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
 // https://stripe.com/docs/payments/quickstart
 
 import {
@@ -89,18 +91,35 @@ export default function CheckoutForm() {
   } as StripePaymentElementOptions;
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
-      <LinkAuthenticationElement
-        id="link-authentication-element"
-        onChange={(e: any) => setEmail(e.target.value)}
-      />
-      <AddressElement options={{ mode: "shipping" }} />
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <button disabled={isLoading || !stripe || !elements} id="submit">
+    <form
+      id="payment-form"
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-6"
+    >
+      <div className="flex flex-col gap-2">
+        <Heading size="h4">Contact Info</Heading>
+        <LinkAuthenticationElement
+          id="link-authentication-element"
+          onChange={(e: any) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        <Heading size="h4">Shipping</Heading>
+        <AddressElement options={{ mode: "shipping" }} />
+      </div>
+      <div className="flex flex-col gap-2">
+        <Heading size="h4">Payment</Heading>
+        <PaymentElement id="payment-element" options={paymentElementOptions} />
+      </div>
+      <Button
+        disabled={isLoading || !stripe || !elements}
+        id="submit"
+        className="w-fit"
+      >
         <span id="button-text">
           {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
         </span>
-      </button>
+      </Button>
       {/* Show any error or success messages */}
       {message && <div id="payment-message">{message}</div>}
     </form>
