@@ -7,7 +7,7 @@ import {
   getStripeAccountDetails,
   hasConnectedStripeAccount,
   updateStripeAccountStatus,
-} from "@/server-actions/stripe";
+} from "@/server-actions/stripe/account";
 import { getStoreId } from "@/server-actions/storeid";
 import { Button } from "@/components/ui/button";
 

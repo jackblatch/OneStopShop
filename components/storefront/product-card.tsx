@@ -5,7 +5,7 @@ import { routes } from "@/lib/routes";
 import Link from "next/link";
 import { currencyFormatter } from "@/lib/currency";
 import { Button } from "../ui/button";
-import { ProductAndStore } from "@/app/(storefront)/products/page";
+import { ProductAndStore } from "@/app/(storefront)/(main)/products/page";
 import { ProductImage } from "../product-image";
 import { ProductForm } from "./product-form";
 
