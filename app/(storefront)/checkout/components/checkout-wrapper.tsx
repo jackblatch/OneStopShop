@@ -16,12 +16,17 @@ const stripePromise = loadStripe(
 );
 
 export default function CheckoutWrapper(props: {
-  paymentIntent: Promise<{ clientSecret: string }>;
+  paymentIntent: Promise<{ clientSecret: string } | undefined>;
 }) {
   const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
-    props.paymentIntent.then((data) => setClientSecret(data.clientSecret));
+    props.paymentIntent.then((data) => {
+      if (!data) {
+        return;
+      }
+      setClientSecret(data.clientSecret);
+    });
   }, []);
 
   const options = {

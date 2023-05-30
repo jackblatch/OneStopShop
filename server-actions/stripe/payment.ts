@@ -1,27 +1,61 @@
-import { CartItem } from "@/lib/types";
+import { db } from "@/db/db";
+import { payments } from "@/db/schema";
+import { CheckoutItem } from "@/lib/types";
+import { eq } from "drizzle-orm";
 import stripeDetails from "stripe";
 
-export async function createPaymentIntent({ items }: { items: CartItem[] }) {
-  // This is your test secret API key.
-  // @ts-ignore
-  const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
+export async function createPaymentIntent({
+  items,
+  storeId,
+}: {
+  items: CheckoutItem[];
+  storeId: number;
+}) {
+  try {
+    // This is your test secret API key.
+    // @ts-ignore
+    const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
 
-  // Create a PaymentIntent with the order amount and currency
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount(items),
-    currency: "usd",
-    automatic_payment_methods: {
-      enabled: true,
-    },
-  });
+    const payment = await db
+      .select()
+      .from(payments)
+      .where(eq(payments.storeId, storeId));
 
-  return { clientSecret: paymentIntent.client_secret };
+    const stripeAccountId = payment[0].stripeAccountId;
+
+    if (!stripeAccountId) {
+      throw new Error("Stripe Account Id not found");
+    }
+
+    // Create a PaymentIntent with the order amount and currency
+    const { orderTotal, platformFee } = calculateOrderAmounts(items);
+    const paymentIntent = await stripe.paymentIntents.create(
+      {
+        amount: orderTotal,
+        currency: "usd",
+        automatic_payment_methods: {
+          enabled: true,
+        },
+        application_fee_amount: platformFee,
+      },
+      {
+        stripeAccount: stripeAccountId,
+      }
+    );
+
+    return { clientSecret: paymentIntent.client_secret };
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 // Helper Functions
-const calculateOrderAmount = (items: CartItem[]) => {
+const calculateOrderAmounts = (items: CheckoutItem[]) => {
   // Replace this constant with a calculation of the order's amount
   // Calculate the order total on the server to prevent
   // people from directly manipulating the amount on the client
-  return 1400;
+  return {
+    orderTotal: 1400,
+    platformFee: 123,
+  };
 };

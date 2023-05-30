@@ -8,6 +8,12 @@ export type ProductImages = {
 
 export type CartItem = { id: number; qty: number };
 
+export type CheckoutItem = {
+  id: number;
+  price: number;
+  qty: number;
+};
+
 export type CartLineItemDetails = Omit<Product, "description" | "images"> & {
   storeName: string | null;
   images: ProductImages[];
