@@ -15,6 +15,7 @@ Key features:
 - Planetscale MySQL database with Drizzle ORM
 - UploadThing for typesafe file uploads (e.g., product images)
 - User authentication with Clerk
+- Stripe Connect integration for marketplace payments (including platform fees and seller payouts)
 
 Home page
 ![Home page](/.github/images/home.jpeg?raw=0)
@@ -41,6 +42,7 @@ Storybook:
 ### Drizzle Kit
 
 `npx drizzle-kit generate:mysql` - Generate new schema
+
 `npx drizzle-kit up:mysql` - Push to PlanetScale
 
 ## Contributing

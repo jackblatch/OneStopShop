@@ -1,5 +1,5 @@
 "use client";
-import { ProductAndStore } from "@/app/(storefront)/products/page";
+import { ProductAndStore } from "@/app/(storefront)/(main)/products/page";
 import { ProductSidebar } from "./product-sidebar";
 import { ProductCard } from "./product-card";
 import { PropsWithChildren } from "react";

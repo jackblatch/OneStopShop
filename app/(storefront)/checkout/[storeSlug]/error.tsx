@@ -2,14 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { routes } from "@/lib/routes";
 import Link from "next/link";
 
-export default function ProductPageError(props: {
+export default function CheckoutError(props: {
   error: Error;
   reset: () => void;
 }) {
-  console.log(props.error);
-
   return (
     <div className="flex items-center justify-center flex-col mt-24">
       <Heading size="h2">Sorry, an error occured loading this page.</Heading>
@@ -18,8 +17,8 @@ export default function ProductPageError(props: {
         persists.
       </p>
       <div className="flex gap-2 items-center mt-4">
-        <Link href="/">
-          <Button>Return home</Button>
+        <Link href={routes.cart}>
+          <Button>Return to Cart</Button>
         </Link>
       </div>
     </div>

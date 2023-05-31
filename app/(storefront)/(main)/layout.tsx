@@ -1,5 +1,5 @@
 import { NavBar } from "@/components/navbar";
-import "../../styles/globals.css";
+import "../../../styles/globals.css";
 import { Footer } from "@/components/footer";
 import React from "react";
 
