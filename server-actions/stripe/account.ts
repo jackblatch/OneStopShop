@@ -7,11 +7,19 @@ import stripeDetails from "stripe";
 import { getStoreId } from "../store-details";
 import { StripeAccount } from "@/lib/types";
 
-export async function hasConnectedStripeAccount() {
+export async function hasConnectedStripeAccount(
+  providedStoreId?: number,
+  useProvidedStoreId?: boolean
+) {
+  if (useProvidedStoreId && !providedStoreId) return;
+  const storeId =
+    useProvidedStoreId && providedStoreId
+      ? providedStoreId
+      : Number(await getStoreId());
   const payment = await db
     .select()
     .from(payments)
-    .where(eq(payments.storeId, Number(await getStoreId())));
+    .where(eq(payments.storeId, storeId));
 
   return payment.length ? payment[0]?.details_submitted : false;
 }

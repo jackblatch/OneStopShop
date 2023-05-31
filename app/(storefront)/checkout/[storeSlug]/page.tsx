@@ -12,6 +12,7 @@ import { AlertCircle, Ban, StopCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { routes } from "@/lib/routes";
 import Link from "next/link";
+import { hasConnectedStripeAccount } from "@/server-actions/stripe/account";
 
 export default async function Page({
   params,
@@ -57,7 +58,10 @@ export default async function Page({
     })
     .filter((item) => !item || item.price !== null) as CheckoutItem[];
 
-  if (!storeStripeAccountId) {
+  if (
+    !storeStripeAccountId ||
+    !(await hasConnectedStripeAccount(storeId, true))
+  ) {
     return (
       <InfoCard
         heading="Online payments not setup"
