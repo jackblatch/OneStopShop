@@ -23,7 +23,10 @@ export async function createPaymentIntent({
 
     const stripeAccountId = payment[0].stripeAccountId;
 
+    console.log({ stripeAccountId });
+
     if (!stripeAccountId) {
+      console.log("erro");
       throw new Error("Stripe Account Id not found");
     }
 

@@ -2,31 +2,38 @@
 
 import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CheckoutForm from "./checkout-form";
-import { ChevronRight, Plus } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { routes } from "@/lib/routes";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { OrderSummaryAccordion } from "./order-summary-accordion";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
-
 export default function CheckoutWrapper(props: {
   paymentIntent: Promise<{ clientSecret: string } | undefined>;
+  storeStripeAccountId: string;
 }) {
   const [clientSecret, setClientSecret] = useState("");
+  const stripePromise = useMemo(
+    () =>
+      loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!, {
+        stripeAccount: props.storeStripeAccountId,
+      }),
+    []
+  );
 
   useEffect(() => {
+    let error;
     props.paymentIntent.then((data) => {
-      if (!data) {
+      if (!data || !data.clientSecret) {
+        error = true;
         return;
       }
       setClientSecret(data.clientSecret);
     });
+    if (error) throw new Error("Payment intent not found");
   }, []);
 
   const options = {
