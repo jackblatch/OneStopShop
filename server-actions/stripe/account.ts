@@ -4,7 +4,7 @@ import { payments } from "@/db/schema";
 import { singleLevelNestedRoutes } from "@/lib/routes";
 import { eq } from "drizzle-orm";
 import stripeDetails from "stripe";
-import { getStoreId } from "../storeid";
+import { getStoreId } from "../store-details";
 import { StripeAccount } from "@/lib/types";
 
 export async function hasConnectedStripeAccount() {

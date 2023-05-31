@@ -7,14 +7,13 @@ import { getCart } from "@/server-actions/get-cart-details";
 import { ChevronRight } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { CheckoutButton } from "./components/checkout-button";
 
 export default async function Cart() {
   const cartId = cookies().get("cartId")?.value;
   const { cartItems, uniqueStoreIds, cartItemDetails } = await getCart(
     Number(cartId)
   );
-
-  console.log({ cartItemDetails, cartItems });
 
   if (isNaN(Number(cartId)) || !cartItems.length) {
     return (
@@ -52,6 +51,7 @@ export default async function Cart() {
                 }
               </Heading>
               <CartLineItems
+                variant="cart"
                 cartItems={cartItems}
                 products={
                   cartItemDetails?.filter((item) => item.storeId === storeId) ??
@@ -66,9 +66,9 @@ export default async function Cart() {
           {uniqueStoreIds.map((storeId, i) => (
             <div
               key={i}
-              className="flex items-center justify-between border-b border-border pb-2"
+              className="flex items-center border-b border-border pb-2 gap-4"
             >
-              <p>
+              <p className="font-semibold">
                 {
                   cartItemDetails?.find((item) => item.storeId === storeId)
                     ?.storeName
@@ -86,6 +86,7 @@ export default async function Cart() {
                     }, 0)
                 )}
               </p>
+              <CheckoutButton storeId={storeId} />
             </div>
           ))}
         </div>

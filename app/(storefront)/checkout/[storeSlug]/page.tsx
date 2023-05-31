@@ -6,6 +6,7 @@ import { db } from "@/db/db";
 import { payments, products, stores } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { CheckoutItem } from "@/lib/types";
+import { CartLineItems } from "@/components/storefront/cart-line-items";
 
 export default async function Page({
   params,
@@ -13,7 +14,7 @@ export default async function Page({
   params: { storeSlug: string };
 }) {
   const cartId = cookies().get("cartId")?.value;
-  const { cartItems } = await getCart(Number(cartId));
+  const { cartItems, cartItemDetails } = await getCart(Number(cartId));
 
   const store = await db
     .select({
@@ -69,6 +70,15 @@ export default async function Page({
     <CheckoutWrapper
       paymentIntent={paymentIntent}
       storeStripeAccountId={storeStripeAccountId}
+      cartLineItems={
+        <CartLineItems
+          variant="checkout"
+          cartItems={cartItems}
+          products={
+            cartItemDetails?.filter((item) => item.storeId === storeId) ?? []
+          }
+        />
+      }
     />
   );
 }

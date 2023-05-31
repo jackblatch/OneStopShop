@@ -8,15 +8,17 @@ import {
 } from "@/components/ui/table";
 import { currencyFormatter } from "@/lib/currency";
 import { routes } from "@/lib/routes";
-import { CartItem, CartLineItemDetails, ProductImages } from "@/lib/types";
+import { CartItem, CartLineItemDetails } from "@/lib/types";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { ProductImage } from "../product-image";
 import { EditCartLineItem } from "./edit-cart-line-item";
+import { cn } from "@/lib/utils";
 
 export const CartLineItems = (props: {
   cartItems: CartItem[];
   products: CartLineItemDetails[];
+  variant: "cart" | "checkout";
 }) => {
   return (
     <Table>
@@ -24,7 +26,7 @@ export const CartLineItems = (props: {
         <TableRow>
           <TableHead className="w-[100px]">Image</TableHead>
           <TableHead>Name</TableHead>
-          <TableHead>Price</TableHead>
+          {props.variant === "cart" ? <TableHead>Price</TableHead> : null}
           <TableHead>Quantity</TableHead>
           <TableHead>Total</TableHead>
         </TableRow>
@@ -46,25 +48,40 @@ export const CartLineItems = (props: {
                 />
               </TableCell>
               <TableCell className="max-w-[200px] w-[200px] truncate">
-                <Link href={`${routes.product}/${product.id}`}>
-                  <Button className="m-0 p-0 h-auto" variant="link">
+                {props.variant === "cart" ? (
+                  <Link href={`${routes.product}/${product.id}`}>
+                    <Button className="m-0 p-0 h-auto" variant="link">
+                      {product.name}
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button
+                    className="m-0 p-0 h-auto hover:no-underline hover:cursor-auto"
+                    variant="link"
+                  >
                     {product.name}
                   </Button>
-                </Link>
+                )}
               </TableCell>
-              <TableCell>{currencyFormatter(Number(product.price))}</TableCell>
+              {props.variant === "cart" ? (
+                <TableCell>
+                  {currencyFormatter(Number(product.price))}
+                </TableCell>
+              ) : null}
               <TableCell>{currentProductInCart?.qty}</TableCell>
               <TableCell>
                 {currencyFormatter(
                   Number(currentProductInCart?.qty) * Number(product.price)
                 )}
               </TableCell>
-              <TableCell className="text-right">
-                <EditCartLineItem
-                  productInCart={currentProductInCart}
-                  product={product}
-                />
-              </TableCell>
+              {props.variant === "cart" ? (
+                <TableCell className="text-right">
+                  <EditCartLineItem
+                    productInCart={currentProductInCart}
+                    product={product}
+                  />
+                </TableCell>
+              ) : null}
             </TableRow>
           );
         })}

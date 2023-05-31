@@ -5,7 +5,7 @@ export const FeatureIcons = (props: { className?: string }) => {
   return (
     <div
       className={cn(
-        "text-center flex items-center rounded-md border border-border justify-between gap-8 sm:gap-4 p-4 md:w-fit",
+        "text-center flex items-center rounded-md justify-between gap-8 sm:gap-4 p-4 md:w-fit",
         props.className
       )}
     >

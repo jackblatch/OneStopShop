@@ -12,6 +12,7 @@ import {
   AddressElement,
 } from "@stripe/react-stripe-js";
 import { StripePaymentElementOptions } from "@stripe/stripe-js";
+import { AlertCircle } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function CheckoutForm() {
@@ -96,6 +97,16 @@ export default function CheckoutForm() {
       onSubmit={handleSubmit}
       className="flex flex-col gap-6"
     >
+      {/* Show any error or success messages */}
+      {message && (
+        <div
+          id="payment-message"
+          className="bg-red-100 border border-red-600 text-red-800 rounded-md p-2 flex items-center justify-start gap-2"
+        >
+          <AlertCircle />
+          <p> {message}</p>
+        </div>
+      )}
       <div className="flex flex-col gap-2 bg-secondary border-border border rounded-md md:p-6 p-4 md:pb-7 pb-5">
         <Heading size="h4">Contact Info</Heading>
         <LinkAuthenticationElement
@@ -120,8 +131,6 @@ export default function CheckoutForm() {
           {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
         </span>
       </Button>
-      {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
     </form>
   );
 }

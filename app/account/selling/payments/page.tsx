@@ -8,7 +8,7 @@ import {
   hasConnectedStripeAccount,
   updateStripeAccountStatus,
 } from "@/server-actions/stripe/account";
-import { getStoreId } from "@/server-actions/storeid";
+import { getStoreId } from "@/server-actions/store-details";
 import { Button } from "@/components/ui/button";
 
 export default async function PaymentsPage() {
