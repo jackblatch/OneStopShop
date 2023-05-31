@@ -24,7 +24,7 @@ export default function CheckoutWrapper(props: {
       loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!, {
         stripeAccount: props.storeStripeAccountId,
       }),
-    []
+    [props.storeStripeAccountId]
   );
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function CheckoutWrapper(props: {
       setClientSecret(data.clientSecret);
     });
     if (error) throw new Error("Payment intent not found");
-  }, []);
+  }, [props.paymentIntent]);
 
   const options = {
     clientSecret,
@@ -84,7 +84,7 @@ export default function CheckoutWrapper(props: {
                   {props.cartLineItems}
                 </OrderSummaryAccordion>
               </div>
-              <div className="lg:hidden bg-secondary border border-border p-8 mt-8 rounded-md">
+              <div className="lg:hidden bg-secondary border border-border p-5 pt-8 mt-8 rounded-md">
                 <TrustBadges />
               </div>
               <div className="hidden lg:block">
@@ -107,8 +107,8 @@ export const TrustBadges = () => {
         </p>
         <div className="flex items-center justify-center gap-1">
           {Array.from(Array(5)).map((_, i) => (
-            <div className="max-w-2">
-              <StarSVG key={i} />
+            <div className="max-w-2" key={i}>
+              <StarSVG />
             </div>
           ))}
         </div>
