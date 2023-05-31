@@ -7,6 +7,11 @@ import { payments, products, stores } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { CheckoutItem } from "@/lib/types";
 import { CartLineItems } from "@/components/storefront/cart-line-items";
+import { InfoCard } from "@/components/admin/info-card";
+import { AlertCircle, Ban, StopCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { routes } from "@/lib/routes";
+import Link from "next/link";
 
 export default async function Page({
   params,
@@ -52,10 +57,24 @@ export default async function Page({
     })
     .filter((item) => !item || item.price !== null) as CheckoutItem[];
 
+  if (!storeStripeAccountId) {
+    return (
+      <InfoCard
+        heading="Online payments not setup"
+        subheading="This seller does not have online payments setup yet. Please contact the seller directly to submit your order."
+        icon={<AlertCircle size={24} />}
+        button={
+          <Link href={routes.cart}>
+            <Button>Return to cart</Button>
+          </Link>
+        }
+      />
+    );
+  }
+
   if (
     !storeProducts.length ||
     isNaN(storeId) ||
-    !storeStripeAccountId ||
     !detailsOfProductsInCart.length
   )
     throw new Error("Store not found");

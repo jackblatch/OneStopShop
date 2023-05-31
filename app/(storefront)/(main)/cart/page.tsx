@@ -40,10 +40,13 @@ export default async function Cart() {
           </Button>
         </Link>
       </div>
-      <div className="lg:grid lg:grid-cols-9 lg:gap-24 flex flex-col-reverse gap-6">
+      <div className="lg:grid lg:grid-cols-9 lg:gap-6 flex flex-col-reverse gap-6">
         <div className="col-span-6 flex flex-col gap-8">
           {uniqueStoreIds.map((storeId, i) => (
-            <div key={i}>
+            <div
+              key={i}
+              className="bg-secondary border border-border p-6 rounded-md"
+            >
               <Heading size="h4">
                 {
                   cartItemDetails?.find((item) => item.storeId === storeId)

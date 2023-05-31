@@ -85,7 +85,7 @@ export const NavBar = ({
         <AnnouncementBar
           columns={1}
           description="New summer sale - limited time only!"
-          backgroundColor="bg-secondary"
+          backgroundColor="bg-yellow-100"
           textColor="text-primary"
         />
       )}
