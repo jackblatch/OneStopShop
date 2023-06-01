@@ -4,10 +4,10 @@ import { db } from "@/db/db";
 import { carts } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-const handler = async (
+export async function POST(
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<void> => {
+): Promise<void> {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2022-11-15",
   });
@@ -56,7 +56,7 @@ const handler = async (
     res.setHeader("Allow", "POST");
     res.status(405).end("Method Not Allowed");
   }
-};
+}
 
 const buffer = (req: NextApiRequest) => {
   return new Promise<Buffer>((resolve, reject) => {
@@ -73,5 +73,3 @@ const buffer = (req: NextApiRequest) => {
     req.on("error", reject);
   });
 };
-
-export default handler;
