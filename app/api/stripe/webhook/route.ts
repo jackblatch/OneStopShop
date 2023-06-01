@@ -58,12 +58,6 @@ const handler = async (
   }
 };
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 const buffer = (req: NextApiRequest) => {
   return new Promise<Buffer>((resolve, reject) => {
     const chunks: Buffer[] = [];
