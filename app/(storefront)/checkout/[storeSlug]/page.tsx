@@ -48,15 +48,15 @@ export default async function Page({
   const detailsOfProductsInCart = cartItems
     .map((item) => {
       const product = storeProducts.find((p) => p.id === item.id);
-      if (!product) return null;
       const priceAsNumber = Number(product?.price);
+      if (!product || isNaN(priceAsNumber)) return undefined;
       return {
         id: item.id,
-        price: isNaN(priceAsNumber) ? null : priceAsNumber,
+        price: priceAsNumber,
         qty: item.qty,
       };
     })
-    .filter((item) => !item || item.price !== null) as CheckoutItem[];
+    .filter(Boolean) as CheckoutItem[];
 
   if (
     !storeStripeAccountId ||
@@ -91,6 +91,7 @@ export default async function Page({
   // providing the paymntIntent to the CheckoutWrapper to work around Nextjs bug with authentication not passed to server actions when called in client component
   return (
     <CheckoutWrapper
+      detailsOfProductsInCart={detailsOfProductsInCart}
       paymentIntent={paymentIntent}
       storeStripeAccountId={storeStripeAccountId}
       cartLineItems={

@@ -1,5 +1,6 @@
 import { db } from "@/db/db";
 import { payments } from "@/db/schema";
+import { platformFeeDecimal } from "@/lib/application-constants";
 import { CheckoutItem } from "@/lib/types";
 import { eq } from "drizzle-orm";
 import stripeDetails from "stripe";
@@ -54,11 +55,12 @@ export async function createPaymentIntent({
 
 // Helper Functions
 const calculateOrderAmounts = (items: CheckoutItem[]) => {
-  // Replace this constant with a calculation of the order's amount
-  // Calculate the order total on the server to prevent
-  // people from directly manipulating the amount on the client
+  const total = items.reduce((acc, item) => {
+    return acc + item.price * item.qty;
+  }, 0);
+  const fee = total * platformFeeDecimal;
   return {
-    orderTotal: 1400,
-    platformFee: 123,
+    orderTotal: (total * 100).toFixed(0), // converts to cents which stripe charges in
+    platformFee: (fee * 100).toFixed(0),
   };
 };
