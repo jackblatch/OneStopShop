@@ -10,6 +10,7 @@ export default authMiddleware({
     "/products(.*)",
     "/auth(.*)",
     "/checkout(.*)",
+    "/api/stripe/(.*)",
   ],
 });
 export const config = {
