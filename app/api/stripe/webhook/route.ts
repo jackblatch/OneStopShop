@@ -7,6 +7,12 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import stripeDetails from "stripe";
 
+export const config = {
+  api: {
+    bodyParser: false, // ensures webhook can be verified
+  },
+};
+
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 export async function POST(request: Request) {
