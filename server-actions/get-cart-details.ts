@@ -9,7 +9,10 @@ export async function getCart(cartId: number) {
   const dbCartItemsObj = isNaN(Number(cartId))
     ? []
     : await db
-        .select()
+        .select({
+          id: carts.id,
+          items: carts.items,
+        })
         .from(carts)
         .where(eq(carts.id, Number(cartId)));
   const cartItems = dbCartItemsObj.length

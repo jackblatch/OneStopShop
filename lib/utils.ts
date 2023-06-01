@@ -17,3 +17,9 @@ export function handleInputQuantity(
   }
   setQuantity(() => Number(e.target.value.split(".")[0]));
 }
+
+export function convertSecondsToDate(seconds: number) {
+  const time = new Date(Date.UTC(1970, 0, 1)); // Epoch
+  time.setUTCSeconds(seconds);
+  return time;
+}

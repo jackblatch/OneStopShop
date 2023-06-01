@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { routes } from "@/lib/routes";
 import { getStoreSlug } from "@/server-actions/store-details";
 import { Loader2, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -19,7 +20,7 @@ export const CheckoutButton = (props: { storeId: number }) => {
         setIsLoading(true);
         getStoreSlug(props.storeId)
           .then((slug) => {
-            router.push(`/checkout/${slug}`);
+            router.push(`${routes.checkout}/${slug}`);
           })
           .catch(() => {
             toast({

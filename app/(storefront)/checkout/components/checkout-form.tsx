@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { routes } from "@/lib/routes";
+import { StripeCheckoutFormDetails } from "@/lib/types";
 // https://stripe.com/docs/payments/quickstart
 
 import {
@@ -11,15 +13,33 @@ import {
   useElements,
   AddressElement,
 } from "@stripe/react-stripe-js";
-import { StripePaymentElementOptions } from "@stripe/stripe-js";
+import {
+  StripeAddressElementChangeEvent,
+  StripeLinkAuthenticationElementChangeEvent,
+  StripePaymentElementOptions,
+} from "@stripe/stripe-js";
 import { AlertCircle } from "lucide-react";
+import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function CheckoutForm() {
+  const { storeSlug } = useParams();
   const stripe = useStripe();
   const elements = useElements();
 
-  const [email, setEmail] = useState("");
+  const [customerDetails, setCustomerDetails] =
+    useState<StripeCheckoutFormDetails>({
+      email: "",
+      name: "",
+      address: {
+        line1: "",
+        line2: "",
+        city: "",
+        state: "",
+        postal_code: "",
+        country: "",
+      },
+    });
   const [message, setMessage] = useState<null | string>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -69,7 +89,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000",
+        return_url: `${process.env.NEXT_PUBLIC_APP_URL}/${routes.checkout}/${storeSlug}/${routes.orderConfirmation}`,
       },
     });
 
@@ -91,6 +111,8 @@ export default function CheckoutForm() {
     layout: "tabs",
   } as StripePaymentElementOptions;
 
+  console.log("address", customerDetails);
+
   return (
     <form
       id="payment-form"
@@ -111,12 +133,26 @@ export default function CheckoutForm() {
         <Heading size="h4">Contact Info</Heading>
         <LinkAuthenticationElement
           id="link-authentication-element"
-          onChange={(e: any) => setEmail(e.target.value)}
+          onChange={(e: StripeLinkAuthenticationElementChangeEvent) =>
+            setCustomerDetails((prev) => ({
+              ...prev,
+              email: e.value.email,
+            }))
+          }
         />
       </div>
       <div className="flex flex-col gap-2 bg-secondary border-border border rounded-md md:p-6 p-4 md:pb-7 pb-5">
         <Heading size="h4">Shipping</Heading>
-        <AddressElement options={{ mode: "shipping" }} />
+        <AddressElement
+          onChange={(e: StripeAddressElementChangeEvent) => {
+            setCustomerDetails((prev) => ({
+              ...prev,
+              name: e.value.name,
+              address: e.value.address,
+            }));
+          }}
+          options={{ mode: "shipping" }}
+        />
       </div>
       <div className="flex flex-col gap-2 bg-secondary border-border border rounded-md md:p-6 p-4 md:pb-7 pb-5">
         <Heading size="h4">Payment</Heading>

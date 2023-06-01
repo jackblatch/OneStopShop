@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 import { CheckoutItem } from "@/lib/types";
 import { CartLineItems } from "@/components/storefront/cart-line-items";
 import { InfoCard } from "@/components/admin/info-card";
-import { AlertCircle, Ban, StopCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { routes } from "@/lib/routes";
 import Link from "next/link";
@@ -48,15 +48,15 @@ export default async function Page({
   const detailsOfProductsInCart = cartItems
     .map((item) => {
       const product = storeProducts.find((p) => p.id === item.id);
-      if (!product) return null;
       const priceAsNumber = Number(product?.price);
+      if (!product || isNaN(priceAsNumber)) return undefined;
       return {
         id: item.id,
-        price: isNaN(priceAsNumber) ? null : priceAsNumber,
+        price: priceAsNumber,
         qty: item.qty,
       };
     })
-    .filter((item) => !item || item.price !== null) as CheckoutItem[];
+    .filter(Boolean) as CheckoutItem[];
 
   if (
     !storeStripeAccountId ||
@@ -91,6 +91,7 @@ export default async function Page({
   // providing the paymntIntent to the CheckoutWrapper to work around Nextjs bug with authentication not passed to server actions when called in client component
   return (
     <CheckoutWrapper
+      detailsOfProductsInCart={detailsOfProductsInCart}
       paymentIntent={paymentIntent}
       storeStripeAccountId={storeStripeAccountId}
       cartLineItems={

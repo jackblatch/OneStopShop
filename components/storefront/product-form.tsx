@@ -8,7 +8,7 @@ import { addToCart } from "@/server-actions/add-to-cart";
 import { toast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
 import { routes } from "@/lib/routes";
-import { handleInputQuantity } from "@/lib/utils";
+import { cn, handleInputQuantity } from "@/lib/utils";
 
 export const ProductForm = (props: {
   availableInventory: string | null;
@@ -21,7 +21,12 @@ export const ProductForm = (props: {
   let [isPending, startTransition] = useTransition();
 
   return (
-    <div className="flex items-end justify-start gap-4">
+    <div
+      className={cn(
+        "flex items-end justify-start gap-4",
+        props.disableQuantitySelector && "w-full"
+      )}
+    >
       {props.availableInventory &&
         Number(props.availableInventory) > 0 &&
         !props.disableQuantitySelector && (
@@ -40,7 +45,7 @@ export const ProductForm = (props: {
       {props.availableInventory && Number(props.availableInventory) > 0 ? (
         <Button
           size={props.buttonSize ?? "default"}
-          className="w-36"
+          className={cn(props.disableQuantitySelector ? "w-full" : "w-36")}
           onClick={() => {
             startTransition(
               () =>
@@ -63,7 +68,11 @@ export const ProductForm = (props: {
           Add to Cart
         </Button>
       ) : (
-        <Button variant="secondary" disabled={true} className="w-36">
+        <Button
+          variant="secondary"
+          disabled={true}
+          className={cn(props.disableQuantitySelector ? "w-full" : "w-36")}
+        >
           Sold Out
         </Button>
       )}

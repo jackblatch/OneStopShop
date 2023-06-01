@@ -26,3 +26,27 @@ export type StripeAccount = {
   country: string;
   email: string;
 };
+
+export type StripePaymentIntent = {
+  id: string;
+  amount: number;
+  created: number;
+  currency: string;
+  metadata: {
+    cartId: number;
+  };
+  status: "requires_payment_method" | string;
+};
+
+export type StripeCheckoutFormDetails = {
+  name: string;
+  email: string;
+  address: {
+    line1: string;
+    line2: string | null;
+    city: string;
+    state: string;
+    postal_code: string;
+    country: string;
+  };
+};

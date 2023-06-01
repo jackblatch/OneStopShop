@@ -2,9 +2,7 @@ import { CreateNewStore } from "@/components/admin/create-new-store";
 import { currentUser } from "@clerk/nextjs";
 import { PropsWithChildren } from "react";
 
-export default async function SellerLayout(
-  props: PropsWithChildren<{ modal: any }>
-) {
+export default async function SellerLayout(props: PropsWithChildren) {
   const user = await currentUser();
 
   return (

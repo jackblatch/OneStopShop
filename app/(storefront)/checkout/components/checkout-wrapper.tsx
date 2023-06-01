@@ -12,9 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { OrderSummaryAccordion } from "./order-summary-accordion";
 import { FeatureIcons } from "@/components/storefront/feature-icons";
+import { CheckoutItem } from "@/lib/types";
+import { currencyFormatter } from "@/lib/currency";
 
 export default function CheckoutWrapper(props: {
   paymentIntent: Promise<{ clientSecret: string } | undefined>;
+  detailsOfProductsInCart: CheckoutItem[];
   storeStripeAccountId: string;
   cartLineItems: React.ReactNode;
 }) {
@@ -46,6 +49,15 @@ export default function CheckoutWrapper(props: {
     },
   } as StripeElementsOptions;
 
+  const orderTotal = useMemo(() => {
+    return currencyFormatter(
+      props.detailsOfProductsInCart.reduce(
+        (acc, item) => acc + item.price * item.qty,
+        0
+      )
+    );
+  }, [props.detailsOfProductsInCart]);
+
   return (
     <div>
       <Heading size="h2">Checkout</Heading>
@@ -76,12 +88,14 @@ export default function CheckoutWrapper(props: {
                 <div className="hidden lg:flex flex-col gap-2">
                   <Heading size="h4">Order Summary</Heading>
                   {props.cartLineItems}
+                  <OrderTotalRow total={orderTotal} />
                 </div>
                 <OrderSummaryAccordion
                   title="Order Summary"
                   className="lg:hidden"
                 >
                   {props.cartLineItems}
+                  <OrderTotalRow total={orderTotal} />
                 </OrderSummaryAccordion>
               </div>
               <div className="lg:hidden bg-secondary border border-border p-5 pt-8 mt-8 rounded-md">
@@ -98,7 +112,7 @@ export default function CheckoutWrapper(props: {
   );
 }
 
-export const TrustBadges = () => {
+const TrustBadges = () => {
   return (
     <div className="flex items-center justify-center flex-col gap-6">
       <div className="flex flex-col gap-2 items-center justify-center">
@@ -114,6 +128,15 @@ export const TrustBadges = () => {
         </div>
       </div>
       <FeatureIcons />
+    </div>
+  );
+};
+
+const OrderTotalRow = (props: { total: string }) => {
+  return (
+    <div className="flex items-center justify-between p-4 py-2 border-y border-slate-200">
+      <Heading size="h4">Total</Heading>
+      <p className="text-lg font-semibold">{props.total}</p>
     </div>
   );
 };

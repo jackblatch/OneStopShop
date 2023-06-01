@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 import { currentUser } from "@clerk/nextjs";
 import { secondLevelNestedRoutes } from "@/lib/routes";
 import { InfoCard } from "@/components/admin/info-card";
-import { DataTable } from "../../../../components/admin/data-table";
+import { DataTable } from "./data-table";
 import { type Product, columns } from "./columns";
 
 async function getData(): Promise<Product[]> {

@@ -9,6 +9,7 @@ export default authMiddleware({
     "/cart(.*)",
     "/products(.*)",
     "/auth(.*)",
+    "/checkout(.*)",
   ],
 });
 export const config = {
