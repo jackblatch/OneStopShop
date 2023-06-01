@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
+import { routes } from "@/lib/routes";
 import { StripeCheckoutFormDetails } from "@/lib/types";
 // https://stripe.com/docs/payments/quickstart
 
@@ -18,9 +19,11 @@ import {
   StripePaymentElementOptions,
 } from "@stripe/stripe-js";
 import { AlertCircle } from "lucide-react";
+import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function CheckoutForm() {
+  const { storeSlug } = useParams();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -86,7 +89,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000",
+        return_url: `${process.env.NEXT_PUBLIC_APP_URL}/${routes.checkout}/${storeSlug}/${routes.orderConfirmation}`,
       },
     });
 

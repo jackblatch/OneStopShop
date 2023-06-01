@@ -11,8 +11,15 @@ export async function addToCart(newCartItem: CartItem) {
   const cookieStore = cookies();
 
   const cartId = cookieStore.get("cartId")?.value;
+  const cartDetails =
+    cartId &&
+    (await db
+      .select()
+      .from(carts)
+      .where(eq(carts.id, Number(cartId))));
+  const cartAvailableAndOpen = cartDetails && !cartDetails[0].isClosed;
 
-  if (cartId) {
+  if (cartAvailableAndOpen) {
     const dbItems = await db
       .select()
       .from(carts)

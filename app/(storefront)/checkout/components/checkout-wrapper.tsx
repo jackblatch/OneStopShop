@@ -136,7 +136,7 @@ const OrderTotalRow = (props: { total: string }) => {
   return (
     <div className="flex items-center justify-between p-4 py-2 border-y border-slate-200">
       <Heading size="h4">Total</Heading>
-      <p className="text-lg">{props.total}</p>
+      <p className="text-lg font-semibold">{props.total}</p>
     </div>
   );
 };

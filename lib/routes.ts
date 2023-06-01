@@ -7,6 +7,8 @@ export const routes = {
   productQuickView: "/quickview/product",
   seller: "/seller",
   cart: "/cart",
+  checkout: "/checkout",
+  orderConfirmation: "order-confirmation",
 };
 
 export const anchorTags = {

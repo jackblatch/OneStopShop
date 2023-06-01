@@ -36,7 +36,7 @@ export const carts = mysqlTable("carts", {
   items: json("items"),
   paymentIntentId: text("payment_intent_id"),
   clientSecret: text("client_secret"),
-  complete: boolean("complete").default(false),
+  isClosed: boolean("is_closed").default(false),
 });
 export type Cart = InferModel<typeof carts>;
 
