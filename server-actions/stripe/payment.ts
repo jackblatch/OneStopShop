@@ -1,9 +1,11 @@
 import { db } from "@/db/db";
 import { payments } from "@/db/schema";
 import { platformFeeDecimal } from "@/lib/application-constants";
-import { CheckoutItem } from "@/lib/types";
+import { CheckoutItem, StripePaymentIntent } from "@/lib/types";
 import { eq } from "drizzle-orm";
+import { cookies } from "next/headers";
 import stripeDetails from "stripe";
+import { getStoreId } from "../store-details";
 
 export async function createPaymentIntent({
   items,
@@ -24,12 +26,11 @@ export async function createPaymentIntent({
 
     const stripeAccountId = payment[0].stripeAccountId;
 
-    console.log({ stripeAccountId });
-
     if (!stripeAccountId) {
-      console.log("erro");
       throw new Error("Stripe Account Id not found");
     }
+
+    const cartId = Number(cookies().get("cartId")?.value);
 
     // Create a PaymentIntent with the order amount and currency
     const { orderTotal, platformFee } = calculateOrderAmounts(items);
@@ -37,6 +38,9 @@ export async function createPaymentIntent({
       {
         amount: orderTotal,
         currency: "usd",
+        metadata: {
+          cartId: isNaN(cartId) ? undefined : cartId,
+        },
         automatic_payment_methods: {
           enabled: true,
         },
@@ -64,3 +68,44 @@ const calculateOrderAmounts = (items: CheckoutItem[]) => {
     platformFee: (fee * 100).toFixed(0),
   };
 };
+
+export async function getPaymentIntents() {
+  try {
+    // @ts-ignore
+    const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
+
+    const storeId = Number(await getStoreId());
+
+    if (isNaN(storeId)) throw Error("Invalid store id");
+
+    const payment = await db
+      .select({
+        stripeAccountId: payments.stripeAccountId,
+      })
+      .from(payments)
+      .where(eq(payments.storeId, storeId));
+
+    if (!payment[0].stripeAccountId) throw Error("Stripe Account Id not found");
+
+    const paymentIntents = await stripe.paymentIntents.list(
+      {
+        // starting_after: "pi_3NE8neEI0ZNRv6hY1fPSNxW6",
+        limit: 10,
+      },
+      {
+        stripeAccount: payment[0].stripeAccountId,
+      }
+    );
+
+    return paymentIntents.data;
+    /*
+    .filter(
+      (item: StripePaymentIntent) =>
+        !!item.metadata.cartId && item.status === "requires_payment_method"
+    );
+    */
+  } catch (err) {
+    console.log("error", err);
+    return [];
+  }
+}

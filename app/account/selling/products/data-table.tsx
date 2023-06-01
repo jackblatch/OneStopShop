@@ -19,7 +19,7 @@ import {
   TableHead,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "../ui/button";
+import { Button } from "../../../../components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { XIcon } from "lucide-react";

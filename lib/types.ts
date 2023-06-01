@@ -26,3 +26,14 @@ export type StripeAccount = {
   country: string;
   email: string;
 };
+
+export type StripePaymentIntent = {
+  id: string;
+  amount: number;
+  created: number;
+  currency: string;
+  metadata: {
+    cartId: number;
+  };
+  status: "requires_payment_method" | string;
+};
