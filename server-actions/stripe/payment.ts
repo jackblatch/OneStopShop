@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db/db";
-import { payments } from "@/db/schema";
+import { carts, payments } from "@/db/schema";
 import { platformFeeDecimal } from "@/lib/application-constants";
 import { CheckoutItem, StripePaymentIntent } from "@/lib/types";
 import { eq } from "drizzle-orm";
@@ -34,8 +34,34 @@ export async function createPaymentIntent({
 
     const cartId = Number(cookies().get("cartId")?.value);
 
-    // Create a PaymentIntent with the order amount and currency
     const { orderTotal, platformFee } = calculateOrderAmounts(items);
+
+    // check if cartid has a paymentIntent already
+    if (!isNaN(cartId)) {
+      const paymentIntent = await db
+        .select({
+          paymentIntentId: carts.paymentIntentId,
+          clientSecret: carts.clientSecret,
+        })
+        .from(carts)
+        .where(eq(carts.id, cartId));
+
+      if (paymentIntent[0].clientSecret && paymentIntent[0].paymentIntentId) {
+        await stripe.paymentIntents.update(
+          paymentIntent[0].paymentIntentId,
+          {
+            amount: orderTotal,
+            application_fee_amount: platformFee,
+          },
+          {
+            stripeAccount: stripeAccountId,
+          }
+        );
+        return { clientSecret: paymentIntent[0].clientSecret };
+      }
+    }
+
+    // If no existing paymentIntent connected to cart, create a new PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create(
       {
         amount: orderTotal,
@@ -52,7 +78,14 @@ export async function createPaymentIntent({
         stripeAccount: stripeAccountId,
       }
     );
-
+    // save paymentIntent to cart in db
+    await db
+      .update(carts)
+      .set({
+        paymentIntentId: paymentIntent.id,
+        clientSecret: paymentIntent.client_secret,
+      })
+      .where(eq(carts.id, cartId));
     return { clientSecret: paymentIntent.client_secret };
   } catch (err) {
     console.log(err);

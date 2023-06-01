@@ -3,7 +3,7 @@ import CheckoutWrapper from "../components/checkout-wrapper";
 import { cookies } from "next/headers";
 import { getCart } from "@/server-actions/get-cart-details";
 import { db } from "@/db/db";
-import { payments, products, stores } from "@/db/schema";
+import { carts, payments, products, stores } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { CheckoutItem } from "@/lib/types";
 import { CartLineItems } from "@/components/storefront/cart-line-items";
