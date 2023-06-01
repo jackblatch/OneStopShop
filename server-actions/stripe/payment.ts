@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/db/db";
 import { payments } from "@/db/schema";
 import { platformFeeDecimal } from "@/lib/application-constants";
@@ -69,7 +71,13 @@ const calculateOrderAmounts = (items: CheckoutItem[]) => {
   };
 };
 
-export async function getPaymentIntents() {
+export async function getPaymentIntents({
+  startingAfterPaymentId,
+  beforePaymentId,
+}: {
+  startingAfterPaymentId?: string;
+  beforePaymentId?: string;
+}) {
   try {
     // @ts-ignore
     const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
@@ -87,17 +95,36 @@ export async function getPaymentIntents() {
 
     if (!payment[0].stripeAccountId) throw Error("Stripe Account Id not found");
 
+    const paymentIntentOptions = {
+      limit: 5,
+    } as {
+      limit: number;
+      starting_after?: string;
+      ending_before?: string;
+    };
+
+    if (startingAfterPaymentId) {
+      paymentIntentOptions["starting_after"] = startingAfterPaymentId;
+    } else if (beforePaymentId) {
+      paymentIntentOptions["ending_before"] = beforePaymentId;
+    }
+
     const paymentIntents = await stripe.paymentIntents.list(
-      {
-        // starting_after: "pi_3NE8neEI0ZNRv6hY1fPSNxW6",
-        limit: 10,
-      },
+      paymentIntentOptions,
       {
         stripeAccount: payment[0].stripeAccountId,
       }
     );
 
-    return paymentIntents.data;
+    return {
+      paymentIntents: paymentIntents.data.map((item: StripePaymentIntent) => ({
+        id: item.id,
+        amount: item.amount / 100,
+        created: item.created,
+        cartId: item.metadata.cartId,
+      })),
+      hasMore: paymentIntents.has_more,
+    };
     /*
     .filter(
       (item: StripePaymentIntent) =>
@@ -106,6 +133,9 @@ export async function getPaymentIntents() {
     */
   } catch (err) {
     console.log("error", err);
-    return [];
+    return {
+      paymentIntents: [],
+      hasMore: false,
+    };
   }
 }
