@@ -3,7 +3,7 @@ import { db } from "@/db/db";
 import { payments } from "@/db/schema";
 import { singleLevelNestedRoutes } from "@/lib/routes";
 import { eq } from "drizzle-orm";
-import stripeDetails from "stripe";
+import Stripe from "stripe";
 import { getStoreId } from "../store-details";
 import { StripeAccount } from "@/lib/types";
 
@@ -29,8 +29,9 @@ export async function createAccountLink() {
     if (await hasConnectedStripeAccount()) {
       throw new Error("Stripe account already exists");
     }
-    // @ts-ignore
-    const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      apiVersion: "2022-11-15",
+    });
 
     const storeId = Number(await getStoreId());
 
@@ -98,8 +99,13 @@ export async function getStripeAccountDetails(storeId: number) {
       .from(payments)
       .where(eq(payments.storeId, storeId));
 
-    // @ts-ignore
-    const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      apiVersion: "2022-11-15",
+    });
+
+    if (!payment[0].stripeAccountId)
+      throw new Error("Stripe account not found");
+
     const account = await stripe.accounts.retrieve(payment[0].stripeAccountId);
     return account as StripeAccount;
   } catch (err) {

@@ -1,46 +1,41 @@
-// The library needs to be configured with your account's secret key.
-// Ensure the key is kept out of any version control system you might be using.
+import Stripe from "stripe";
+import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/db/db";
 import { carts } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { headers } from "next/headers";
-import { NextResponse } from "next/server";
-import stripeDetails from "stripe";
 
-export const bodyParser = false; // ensures webhook can be verified
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> => {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2022-11-15",
+  });
 
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
 
-export async function POST(request: Request) {
-  // @ts-ignore
-  const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
+  if (req.method === "POST") {
+    const sig = req.headers["stripe-signature"];
 
-  const headersList = headers();
-  const sig = headersList.get("stripe-signature");
-  let event;
+    let event: Stripe.Event;
 
-  try {
-    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-  } catch (err: any) {
-    return NextResponse.json(
-      { error: `Webhook Error: ${err.message}` },
-      { status: 400 }
-    );
-  }
+    try {
+      const body = await buffer(req);
+      event = stripe.webhooks.constructEvent(body, sig as any, webhookSecret);
+    } catch (err: any) {
+      // On error, log and return the error message
+      console.log(`❌ Error message: ${err.message}`);
+      res.status(400).send(`Webhook Error: ${err.message}`);
+      return;
+    }
 
-  // Handle the event
-  switch (event.type) {
-    case "payment_intent.payment_failed":
-      const paymentIntentPaymentFailed = event.data.object;
-      // Then define and call a function to handle the event payment_intent.payment_failed
-      break;
-    case "payment_intent.processing":
-      const paymentIntentProcessing = event.data.object;
-      // Then define and call a function to handle the event payment_intent.processing
-      break;
-    case "payment_intent.succeeded":
-      const paymentIntentSucceeded = event.data.object;
-      // Then define and call a function to handle the event payment_intent.succeeded
+    // Successfully constructed event
+    console.log("✅ Success:", event.id);
+
+    // Cast event data to Stripe object
+    if (event.type === "payment_intent.succeeded") {
+      const stripeObject: Stripe.PaymentIntent = event.data
+        .object as Stripe.PaymentIntent;
 
       // Mark cart as closed in DB
       await db
@@ -48,13 +43,41 @@ export async function POST(request: Request) {
         .set({
           isClosed: true,
         })
-        .where(eq(carts.paymentIntentId, paymentIntentSucceeded.id));
+        .where(eq(carts.paymentIntentId, stripeObject.id));
 
-      break;
-    // ... handle other event types
-    default:
-      console.log(`Unhandled event type ${event.type}`);
+      console.log(`💰 PaymentIntent status: ${stripeObject.status}`);
+    } else {
+      console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`);
+    }
+
+    // Return a response to acknowledge receipt of the event
+    res.json({ received: true });
+  } else {
+    res.setHeader("Allow", "POST");
+    res.status(405).end("Method Not Allowed");
   }
+};
 
-  return NextResponse.json({ status: 200 });
-}
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+const buffer = (req: NextApiRequest) => {
+  return new Promise<Buffer>((resolve, reject) => {
+    const chunks: Buffer[] = [];
+
+    req.on("data", (chunk: Buffer) => {
+      chunks.push(chunk);
+    });
+
+    req.on("end", () => {
+      resolve(Buffer.concat(chunks));
+    });
+
+    req.on("error", reject);
+  });
+};
+
+export default handler;
