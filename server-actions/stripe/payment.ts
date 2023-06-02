@@ -156,7 +156,7 @@ export async function getPaymentIntents({
         id: item.id,
         amount: item.amount / 100,
         created: item.created,
-        cartId: item.metadata.cartId,
+        cartId: Number(item.metadata.cartId),
       })),
       hasMore: paymentIntents.has_more,
     };
