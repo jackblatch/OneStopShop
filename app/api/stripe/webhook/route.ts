@@ -56,16 +56,29 @@ export async function POST(request: Request) {
       // Then define and call a function to handle the event payment_intent.succeeded
       // Mark cart as closed in DB
 
-      // @ts-ignore
-      const paymentIntentId = event?.data?.object?.id as string;
-      // @ts-ignore
-      const orderTotal = event?.data?.object?.amount as string;
-      // @ts-ignore
-      const name = event?.data?.object?.shipping?.name as string;
-      // @ts-ignore
-      const email = event?.data?.object?.receipt_email as string;
-      // @ts-ignore
-      const status = event?.data?.object?.status as string;
+      const stripeObject = event?.data?.object as {
+        id: string;
+        amount: string;
+        shipping: {
+          name: string;
+          address: {
+            line1: string;
+            line2: string;
+            city: string;
+            state: string;
+            postal_code: string;
+            country: string;
+          };
+        };
+        receipt_email: string;
+        status: string;
+      };
+
+      const paymentIntentId = stripeObject?.id;
+      const orderTotal = stripeObject?.amount;
+      const name = stripeObject?.shipping?.name;
+      const email = stripeObject?.receipt_email;
+      const status = stripeObject?.status;
 
       try {
         // check if order with paymentId already exists
@@ -92,16 +105,8 @@ export async function POST(request: Request) {
           const items = cart[0].items;
 
           // create new address in DB
-          // @ts-ignore
-          const stripeAddress = event?.data?.object?.shipping?.address as {
-            line1: string;
-            line2: string;
-            city: string;
-            state: string;
-            postal_code: string;
-            country: string;
-          };
-          console.log({ stripeAddress });
+          const stripeAddress = stripeObject?.shipping?.address;
+
           const newAddress = await db.insert(addresses).values({
             line1: stripeAddress?.line1,
             line2: stripeAddress?.line2,
@@ -110,7 +115,7 @@ export async function POST(request: Request) {
             postal_code: stripeAddress?.postal_code,
             country: stripeAddress?.country,
           });
-          console.log({ newAddress });
+
           if (!newAddress.insertId) throw new Error("No address created");
 
           // create new order in DB
