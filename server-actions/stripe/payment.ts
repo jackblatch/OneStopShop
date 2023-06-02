@@ -3,10 +3,10 @@
 import { db } from "@/db/db";
 import { carts, payments } from "@/db/schema";
 import { platformFeeDecimal } from "@/lib/application-constants";
-import { CheckoutItem, StripePaymentIntent } from "@/lib/types";
+import { CheckoutItem } from "@/lib/types";
 import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
-import stripeDetails from "stripe";
+import Stripe from "stripe";
 import { getStoreId } from "../store-details";
 
 export async function createPaymentIntent({
@@ -18,8 +18,9 @@ export async function createPaymentIntent({
 }) {
   try {
     // This is your test secret API key.
-    // @ts-ignore
-    const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      apiVersion: "2022-11-15",
+    });
 
     const payment = await db
       .select()
@@ -67,7 +68,7 @@ export async function createPaymentIntent({
         amount: orderTotal,
         currency: "usd",
         metadata: {
-          cartId: isNaN(cartId) ? undefined : cartId,
+          cartId: isNaN(cartId) ? "" : cartId,
         },
         automatic_payment_methods: {
           enabled: true,
@@ -99,8 +100,8 @@ const calculateOrderAmounts = (items: CheckoutItem[]) => {
   }, 0);
   const fee = total * platformFeeDecimal;
   return {
-    orderTotal: (total * 100).toFixed(0), // converts to cents which stripe charges in
-    platformFee: (fee * 100).toFixed(0),
+    orderTotal: Number((total * 100).toFixed(0)), // converts to cents which stripe charges in
+    platformFee: Number((fee * 100).toFixed(0)),
   };
 };
 
@@ -112,8 +113,9 @@ export async function getPaymentIntents({
   beforePaymentId?: string;
 }) {
   try {
-    // @ts-ignore
-    const stripe = stripeDetails(process.env.STRIPE_SECRET_KEY);
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      apiVersion: "2022-11-15",
+    });
 
     const storeId = Number(await getStoreId());
 
@@ -150,11 +152,11 @@ export async function getPaymentIntents({
     );
 
     return {
-      paymentIntents: paymentIntents.data.map((item: StripePaymentIntent) => ({
+      paymentIntents: paymentIntents.data.map((item) => ({
         id: item.id,
         amount: item.amount / 100,
         created: item.created,
-        cartId: item.metadata.cartId,
+        cartId: Number(item.metadata.cartId),
       })),
       hasMore: paymentIntents.has_more,
     };

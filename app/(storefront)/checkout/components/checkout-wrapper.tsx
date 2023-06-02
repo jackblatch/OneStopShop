@@ -16,7 +16,7 @@ import { CheckoutItem } from "@/lib/types";
 import { currencyFormatter } from "@/lib/currency";
 
 export default function CheckoutWrapper(props: {
-  paymentIntent: Promise<{ clientSecret: string } | undefined>;
+  paymentIntent: Promise<{ clientSecret: string | null } | undefined>;
   detailsOfProductsInCart: CheckoutItem[];
   storeStripeAccountId: string;
   cartLineItems: React.ReactNode;
