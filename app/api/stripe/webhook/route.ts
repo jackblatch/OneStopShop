@@ -73,6 +73,7 @@ export async function POST(request: Request) {
       console.log(`Unhandled event type ${event.type}`);
   }
   return NextResponse.json(
+    // @ts-ignore
     { response: dbResponse, data: event.data.object.id, event: event },
     { status: 200 }
   );
