@@ -103,18 +103,18 @@ export async function POST(request: Request) {
           };
           console.log({ stripeAddress });
           const newAddress = await db.insert(addresses).values({
-            line1: stripeAddress.line1,
-            line2: stripeAddress.line2,
-            city: stripeAddress.city,
-            state: stripeAddress.state,
-            postal_code: stripeAddress.postal_code,
-            country: stripeAddress.country,
+            line1: stripeAddress?.line1,
+            line2: stripeAddress?.line2,
+            city: stripeAddress?.city,
+            state: stripeAddress?.state,
+            postal_code: stripeAddress?.postal_code,
+            country: stripeAddress?.country,
           });
-
+          console.log({ newAddress });
           if (!newAddress.insertId) throw new Error("No address created");
 
           // create new order in DB
-          await db.insert(orders).values({
+          const newOrder = await db.insert(orders).values({
             storeId: storeId,
             items: items,
             total: String(Number(orderTotal) / 100),
@@ -124,6 +124,7 @@ export async function POST(request: Request) {
             email: email,
             addressId: Number(newAddress.insertId),
           });
+          console.log("ORDER CREATED", newOrder);
         }
       } catch (err) {
         console.log("ORDER CREATION WEBHOOK ERROR", err);
