@@ -8,6 +8,8 @@ import {
   mysqlTable,
   serial,
   text,
+  uniqueIndex,
+  varchar,
 } from "drizzle-orm/mysql-core";
 
 export const stores = mysqlTable("stores", {
@@ -51,17 +53,27 @@ export const payments = mysqlTable("payments", {
 
 export type Payment = InferModel<typeof payments>;
 
-export const orders = mysqlTable("orders", {
-  id: serial("id").primaryKey(),
-  storeId: int("store_id"),
-  items: json("items"),
-  total: decimal("total", { precision: 10, scale: 2 }).default("0"),
-  stripePaymentIntentId: text("stripe_payment_intent_id"),
-  stripePaymentIntentStatus: text("stripe_payment_intent_status"),
-  name: text("name"),
-  email: text("email"),
-  addressId: int("address"),
-});
+export const orders = mysqlTable(
+  "orders",
+  {
+    id: serial("id").primaryKey(),
+    storeId: int("store_id"),
+    items: json("items"),
+    total: decimal("total", { precision: 10, scale: 2 }).default("0"),
+    stripePaymentIntentId: varchar("stripe_payment_intent_id", { length: 256 }), // text field is valid for uniqueIndex in MySQL
+    stripePaymentIntentStatus: text("stripe_payment_intent_status"),
+    name: text("name"),
+    email: text("email"),
+    addressId: int("address"),
+  },
+  (table) => {
+    return {
+      stripePaymentIntentIdIndex: uniqueIndex(
+        "stripe_payment_intent_id_index"
+      ).on(table.stripePaymentIntentId),
+    };
+  }
+);
 
 export type Order = InferModel<typeof orders>;
 
