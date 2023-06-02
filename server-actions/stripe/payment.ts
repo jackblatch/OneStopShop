@@ -35,6 +35,11 @@ export async function createPaymentIntent({
 
     const cartId = Number(cookies().get("cartId")?.value);
 
+    const metadata = {
+      cartId: isNaN(cartId) ? "" : cartId,
+      items: JSON.stringify(items),
+    };
+
     const { orderTotal, platformFee } = calculateOrderAmounts(items);
 
     // check if cartid has a paymentIntent already
@@ -53,6 +58,7 @@ export async function createPaymentIntent({
           {
             amount: orderTotal,
             application_fee_amount: platformFee,
+            metadata,
           },
           {
             stripeAccount: stripeAccountId,
@@ -67,9 +73,7 @@ export async function createPaymentIntent({
       {
         amount: orderTotal,
         currency: "usd",
-        metadata: {
-          cartId: isNaN(cartId) ? "" : cartId,
-        },
+        metadata,
         automatic_payment_methods: {
           enabled: true,
         },

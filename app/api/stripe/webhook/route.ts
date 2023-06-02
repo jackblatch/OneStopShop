@@ -1,5 +1,6 @@
+import { addresses } from "./../../../../db/schema";
 import { db } from "@/db/db";
-import { carts } from "@/db/schema";
+import { carts, orders, payments } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
     );
   }
 
-  let dbResponse;
+  let dbUpdateCartResponse;
   // Handle the event
   switch (event.type) {
     case "payment_intent.payment_failed":
@@ -57,9 +58,80 @@ export async function POST(request: Request) {
 
       // @ts-ignore
       const paymentIntentId = event.data.object.id as string;
+      // @ts-ignore
+      const orderTotal = event.data.object.amount as string;
+      // @ts-ignore
+      const name = event.data.shipping.name as string;
+      // @ts-ignore
+      const email = event.data.receipt_email as string;
+      // @ts-ignore
+      const status = event.data.status as string;
 
       try {
-        dbResponse = await db
+        // check if order with paymentId already exists
+        const existingOrder = await db
+          .select()
+          .from(orders)
+          .where(eq(orders.stripePaymentIntentId, paymentIntentId));
+
+        if (!existingOrder.length) {
+          if (!event.account) throw new Error("No account on event");
+          const store = await db
+            .select({
+              storeId: payments.storeId,
+            })
+            .from(payments)
+            .where(eq(payments.stripeAccountId, event.account));
+
+          const storeId = store[0].storeId;
+
+          const cart = await db
+            .select()
+            .from(carts)
+            .where(eq(carts.paymentIntentId, paymentIntentId));
+          const items = cart[0].items;
+
+          // create new address in DB
+          // @ts-ignore
+          const stripeAddress = event.data.shipping.address as {
+            line1: string;
+            line2: string;
+            city: string;
+            state: string;
+            postal_code: string;
+            country: string;
+          };
+          const newAddress = await db.insert(addresses).values({
+            line1: stripeAddress.line1,
+            line2: stripeAddress.line2,
+            city: stripeAddress.city,
+            state: stripeAddress.state,
+            postal_code: stripeAddress.postal_code,
+            country: stripeAddress.country,
+          });
+
+          if (!newAddress.insertId) throw new Error("No address created");
+
+          // create new order in DB
+          await db.insert(orders).values({
+            storeId: storeId,
+            items: items,
+            total: orderTotal,
+            stripePaymentIntentId: paymentIntentId,
+            stripePaymentIntentStatus: status,
+            name: name,
+            email: email,
+            addressId: Number(newAddress.insertId),
+          });
+        }
+      } catch (err) {
+        console.log("ORDER CREATION WEBHOOK ERROR", err);
+        return NextResponse.json({ error: err }, { status: 500 });
+      }
+
+      try {
+        // Close cart and clear items
+        dbUpdateCartResponse = await db
           .update(carts)
           .set({
             isClosed: true,
@@ -69,7 +141,7 @@ export async function POST(request: Request) {
       } catch (err) {
         console.log("WEBHOOK ERROR", err);
         return NextResponse.json(
-          { response: dbResponse, error: err },
+          { response: dbUpdateCartResponse, error: err },
           { status: 500 }
         );
       }
