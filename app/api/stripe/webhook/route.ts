@@ -57,15 +57,15 @@ export async function POST(request: Request) {
       // Mark cart as closed in DB
 
       // @ts-ignore
-      const paymentIntentId = event.data.object.id as string;
+      const paymentIntentId = event?.data?.object?.id as string;
       // @ts-ignore
-      const orderTotal = event.data.object.amount as string;
+      const orderTotal = event?.data?.object?.amount as string;
       // @ts-ignore
-      const name = event.data.shipping.name as string;
+      const name = event?.data?.shipping?.name as string;
       // @ts-ignore
-      const email = event.data.receipt_email as string;
+      const email = event?.data?.receipt_email as string;
       // @ts-ignore
-      const status = event.data.status as string;
+      const status = event?.data?.status as string;
 
       try {
         // check if order with paymentId already exists
