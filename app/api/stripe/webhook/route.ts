@@ -63,6 +63,7 @@ export async function POST(request: Request) {
           .update(carts)
           .set({
             isClosed: true,
+            items: JSON.stringify([]),
           })
           .where(eq(carts.paymentIntentId, paymentIntentId));
       } catch (err) {
