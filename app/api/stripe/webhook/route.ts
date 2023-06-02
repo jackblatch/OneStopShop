@@ -116,7 +116,7 @@ export async function POST(request: Request) {
           await db.insert(orders).values({
             storeId: storeId,
             items: items,
-            total: orderTotal,
+            total: String(Number(orderTotal) / 100),
             stripePaymentIntentId: paymentIntentId,
             stripePaymentIntentStatus: status,
             name: name,
