@@ -61,11 +61,11 @@ export async function POST(request: Request) {
       // @ts-ignore
       const orderTotal = event?.data?.object?.amount as string;
       // @ts-ignore
-      const name = event?.data?.shipping?.name as string;
+      const name = event?.data?.object?.shipping?.name as string;
       // @ts-ignore
-      const email = event?.data?.receipt_email as string;
+      const email = event?.data?.object?.receipt_email as string;
       // @ts-ignore
-      const status = event?.data?.status as string;
+      const status = event?.data?.object?.status as string;
 
       try {
         // check if order with paymentId already exists
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
 
           // create new address in DB
           // @ts-ignore
-          const stripeAddress = event?.data?.shipping?.address as {
+          const stripeAddress = event?.data?.object?.shipping?.address as {
             line1: string;
             line2: string;
             city: string;
