@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db/db";
-import { carts, payments } from "@/db/schema";
+import { carts, payments, stores } from "@/db/schema";
 import { platformFeeDecimal } from "@/lib/application-constants";
 import { CheckoutItem } from "@/lib/types";
 import { eq } from "drizzle-orm";
@@ -35,6 +35,11 @@ export async function createPaymentIntent({
 
     const cartId = Number(cookies().get("cartId")?.value);
 
+    const metadata = {
+      cartId: isNaN(cartId) ? "" : cartId,
+      items: JSON.stringify(items),
+    };
+
     const { orderTotal, platformFee } = calculateOrderAmounts(items);
 
     // check if cartid has a paymentIntent already
@@ -53,6 +58,7 @@ export async function createPaymentIntent({
           {
             amount: orderTotal,
             application_fee_amount: platformFee,
+            metadata,
           },
           {
             stripeAccount: stripeAccountId,
@@ -67,9 +73,7 @@ export async function createPaymentIntent({
       {
         amount: orderTotal,
         currency: "usd",
-        metadata: {
-          cartId: isNaN(cartId) ? "" : cartId,
-        },
+        metadata,
         automatic_payment_methods: {
           enabled: true,
         },
@@ -172,5 +176,53 @@ export async function getPaymentIntents({
       paymentIntents: [],
       hasMore: false,
     };
+  }
+}
+
+export async function getPaymentIntentDetails({
+  paymentIntentId,
+  storeSlug,
+  deliveryPostalCode,
+}: {
+  paymentIntentId: string;
+  storeSlug: string;
+  deliveryPostalCode?: string;
+}) {
+  try {
+    const cartId = cookies().get("cartId")?.value;
+
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      apiVersion: "2022-11-15",
+    });
+
+    const store = await db
+      .select({
+        stripeAccountId: payments.stripeAccountId,
+      })
+      .from(stores)
+      .leftJoin(payments, eq(payments.storeId, stores.id))
+      .where(eq(stores.slug, storeSlug));
+
+    if (!store[0].stripeAccountId) throw Error("Store not found");
+
+    const paymentDetails = await stripe.paymentIntents.retrieve(
+      paymentIntentId,
+      {
+        stripeAccount: store[0].stripeAccountId,
+      }
+    );
+
+    if (
+      paymentDetails.metadata.cartId !== cartId &&
+      deliveryPostalCode !==
+        paymentDetails.shipping?.address?.postal_code?.split(" ").join("")
+    ) {
+      throw Error("Invalid cart id - further verification needed");
+    }
+
+    return { paymentDetails, isVerified: true };
+  } catch (err) {
+    console.log("ERROR", err);
+    return { isVerified: false };
   }
 }
