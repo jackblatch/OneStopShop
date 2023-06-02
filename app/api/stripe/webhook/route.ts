@@ -5,7 +5,6 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { Readable } from "stream";
 import Stripe from "stripe";
-import ts from "typescript";
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -56,18 +55,25 @@ export async function POST(request: Request) {
       // Then define and call a function to handle the event payment_intent.succeeded
       // Mark cart as closed in DB
 
-      dbResponse = await db
-        .update(carts)
-        .set({
-          isClosed: true,
-        })
-        // @ts-ignore
-        .where(eq(carts.clientSecret, event.client_secret));
+      // @ts-ignore
+      const paymentIntentId = paymentIntentSucceeded.id ?? "";
+
+      console.log({ paymentIntentSucceeded });
+
+      // dbResponse = await db
+      //   .update(carts)
+      //   .set({
+      //     isClosed: true,
+      //   })
+      //   .where(eq(carts.paymentIntentId, "1"));
 
       break;
     // ... handle other event types
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
-  return NextResponse.json({ response: dbResponse }, { status: 200 });
+  return NextResponse.json(
+    { response: dbResponse, data: event.data.object, event: event },
+    { status: 200 }
+  );
 }
