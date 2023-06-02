@@ -56,25 +56,27 @@ export async function POST(request: Request) {
       // Mark cart as closed in DB
 
       // @ts-ignore
-      const paymentIntentId = paymentIntentSucceeded.id ?? "";
+      const paymentIntentId = event.data.object.id as string;
 
-      console.log({ paymentIntentSucceeded });
-
-      // dbResponse = await db
-      //   .update(carts)
-      //   .set({
-      //     isClosed: true,
-      //   })
-      //   .where(eq(carts.paymentIntentId, "1"));
+      try {
+        dbResponse = await db
+          .update(carts)
+          .set({
+            isClosed: true,
+          })
+          .where(eq(carts.paymentIntentId, paymentIntentId));
+      } catch (err) {
+        console.log("WEBHOOK ERROR", err);
+        return NextResponse.json(
+          { response: dbResponse, error: err },
+          { status: 500 }
+        );
+      }
 
       break;
     // ... handle other event types
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
-  return NextResponse.json(
-    // @ts-ignore
-    { response: dbResponse, data: event.data.object.id, event: event },
-    { status: 200 }
-  );
+  return NextResponse.json({ status: 200 });
 }
