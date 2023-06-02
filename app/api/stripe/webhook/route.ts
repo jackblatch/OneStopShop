@@ -93,7 +93,7 @@ export async function POST(request: Request) {
 
           // create new address in DB
           // @ts-ignore
-          const stripeAddress = event.data.shipping.address as {
+          const stripeAddress = event?.data?.shipping?.address as {
             line1: string;
             line2: string;
             city: string;
@@ -101,6 +101,7 @@ export async function POST(request: Request) {
             postal_code: string;
             country: string;
           };
+          console.log({ stripeAddress });
           const newAddress = await db.insert(addresses).values({
             line1: stripeAddress.line1,
             line2: stripeAddress.line2,
@@ -126,7 +127,6 @@ export async function POST(request: Request) {
         }
       } catch (err) {
         console.log("ORDER CREATION WEBHOOK ERROR", err);
-        return NextResponse.json({ error: err }, { status: 500 });
       }
 
       try {
