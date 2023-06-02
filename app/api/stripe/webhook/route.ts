@@ -59,6 +59,10 @@ export async function POST(request: Request) {
       const stripeObject = event?.data?.object as {
         id: string;
         amount: string;
+        metadata: {
+          cartId: string;
+          items: string;
+        };
         shipping: {
           name: string;
           address: {
@@ -76,9 +80,6 @@ export async function POST(request: Request) {
 
       const paymentIntentId = stripeObject?.id;
       const orderTotal = stripeObject?.amount;
-      const name = stripeObject?.shipping?.name;
-      const email = stripeObject?.receipt_email;
-      const status = stripeObject?.status;
 
       try {
         // check if order with paymentId already exists
@@ -98,12 +99,6 @@ export async function POST(request: Request) {
 
           const storeId = store[0].storeId;
 
-          const cart = await db
-            .select()
-            .from(carts)
-            .where(eq(carts.paymentIntentId, paymentIntentId));
-          const items = cart[0].items;
-
           // create new address in DB
           const stripeAddress = stripeObject?.shipping?.address;
 
@@ -121,12 +116,12 @@ export async function POST(request: Request) {
           // create new order in DB
           const newOrder = await db.insert(orders).values({
             storeId: storeId,
-            items: items,
+            items: stripeObject.metadata?.items,
             total: String(Number(orderTotal) / 100),
             stripePaymentIntentId: paymentIntentId,
-            stripePaymentIntentStatus: status,
-            name: name,
-            email: email,
+            stripePaymentIntentStatus: stripeObject?.status,
+            name: stripeObject?.shipping?.name,
+            email: stripeObject?.receipt_email,
             addressId: Number(newAddress.insertId),
           });
           console.log("ORDER CREATED", newOrder);
