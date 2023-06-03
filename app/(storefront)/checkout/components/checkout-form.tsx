@@ -18,7 +18,7 @@ import {
   StripeLinkAuthenticationElementChangeEvent,
   StripePaymentElementOptions,
 } from "@stripe/stripe-js";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -138,9 +138,10 @@ export default function CheckoutForm() {
         id="submit"
         className="w-fit"
       >
-        <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
-        </span>
+        <div className="flex items-center justify-center gap-2">
+          {!!isLoading && <Loader2 size={18} className="animate-spin" />}
+          <p>Pay Now</p>
+        </div>
       </Button>
     </form>
   );
