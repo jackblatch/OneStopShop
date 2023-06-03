@@ -19,6 +19,13 @@ export type CartLineItemDetails = Omit<Product, "description" | "images"> & {
   images: ProductImages[];
 };
 
+export type OrderConfirmationDetails = Omit<
+  Product,
+  "description" | "images" | "description" | "price" | "inventory"
+> & {
+  images: ProductImages[];
+};
+
 export type StripeAccount = {
   details_submitted: boolean;
   created: number;
