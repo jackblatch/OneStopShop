@@ -89,8 +89,8 @@ export default async function OrderConfirmation({
             <div className="p-6 bg-secondary border border-border rounded-md">
               <Heading size="h3">What&apos;s next?</Heading>
               <p>
-                Our warehouse team is busy preparing your order. You'll receive
-                an email once your order ships.
+                Our warehouse team is busy preparing your order. You&apos;ll
+                receive an email once your order ships.
               </p>
             </div>
             <div className="lg:grid grid-cols-2 gap-4 flex flex-col">
