@@ -134,7 +134,7 @@ export default async function OrderConfirmation({
       ) : (
         <div>
           <Heading size="h2">Thanks for your order!</Heading>
-          <p className="mb-4">
+          <p className="mb-4 mt-2">
             Please enter your delivery postcode below to view your order
             details.
           </p>

@@ -1,12 +1,15 @@
 "use client";
 
+import { TextInputWithLabel } from "@/components/text-input-with-label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export const Verification = () => {
-  const [postcode, setPostcode] = useState("");
+  const [formValues, setFormValues] = useState({
+    postcode: "",
+  });
   const router = useRouter();
 
   return (
@@ -17,20 +20,25 @@ export const Verification = () => {
         router.push(
           window.location.href.split("&delivery_postal_code=")[0] +
             "&delivery_postal_code=" +
-            postcode.split(" ").join("")
+            formValues.postcode.split(" ").join("")
         );
       }}
     >
-      <p>Enter delivery postcode</p>
       <div className="md:grid flex flex-col grid-cols-12 gap-4">
-        <Input
-          className="md:col-span-8"
-          value={postcode}
-          onChange={(e) => setPostcode(e.target.value)}
-        />
-        <Button className="md:col-span-4" type="submit">
-          Submit
-        </Button>
+        <div className="md:col-span-8">
+          <TextInputWithLabel
+            label="Enter delivery postcode"
+            id="postcode"
+            type="text"
+            state={formValues}
+            setState={setFormValues}
+          />
+        </div>
+        <div className="flex w-full items-end md:col-span-4">
+          <Button className="w-full" type="submit">
+            Submit
+          </Button>
+        </div>
       </div>
     </form>
   );
