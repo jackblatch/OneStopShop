@@ -19,7 +19,7 @@ export type CartLineItemDetails = Omit<Product, "description" | "images"> & {
   images: ProductImages[];
 };
 
-export type OrderConfirmationDetails = Omit<
+export type OrderItemDetails = Omit<
   Product,
   "description" | "images" | "description" | "price" | "inventory"
 > & {
@@ -60,7 +60,13 @@ export type StripeCheckoutFormDetails = {
 
 export type OrdersTable = Omit<
   Order,
-  "stripePaymentIntentId" | "addressId" | "storeId" | "items" | "email"
+  | "stripePaymentIntentId"
+  | "addressId"
+  | "storeId"
+  | "items"
+  | "email"
+  | "createdAt"
 > & {
   items: CheckoutItem[];
+  createdAt: number;
 };

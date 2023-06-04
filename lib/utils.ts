@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import { orderNumberPrefix } from "./application-constants";
+import { formatRelative } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -25,6 +26,15 @@ export function convertSecondsToDate(seconds: number) {
   return time;
 }
 
+export function convertDateToRelativeTime(date: Date) {
+  const relativeDate = formatRelative(date, new Date());
+  return relativeDate[0].toUpperCase() + relativeDate.slice(1);
+}
+
 export function formatOrderNumber(id: number) {
   return `#${orderNumberPrefix + id.toString()}`;
+}
+
+export function removeOrderNumberFormatting(id: number) {
+  return Number(String(id).split(String(orderNumberPrefix))[1]);
 }

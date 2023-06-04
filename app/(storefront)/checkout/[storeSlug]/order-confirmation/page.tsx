@@ -1,29 +1,13 @@
 import { Heading } from "@/components/ui/heading";
 import { getPaymentIntentDetails } from "@/server-actions/stripe/payment";
 import { Verification } from "./components/verification";
-import { OrderConfirmationLineItems } from "./components/order-confirmation-line-items";
 import { db } from "@/db/db";
-import { products, stores } from "@/db/schema";
-import { eq, inArray } from "drizzle-orm";
-import { CheckoutItem, OrderConfirmationDetails } from "@/lib/types";
+import { stores } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { OrderItemDetails } from "@/lib/types";
 import { Check } from "lucide-react";
-
-const getProducts = async (checkoutItems: CheckoutItem[]) => {
-  return (await db
-    .select({
-      id: products.id,
-      name: products.name,
-      images: products.images,
-      storeId: products.storeId,
-    })
-    .from(products)
-    .where(
-      inArray(
-        products.id,
-        checkoutItems.map((item) => item.id)
-      )
-    )) as OrderConfirmationDetails[];
-};
+import { OrderLineItems } from "@/components/order-line-items";
+import { getDetailsOfProductsOrdered } from "@/server-actions/orders";
 
 const getSellerName = async (storeSlug: string) => {
   return await db
@@ -56,11 +40,11 @@ export default async function OrderConfirmation({
 
   const checkoutItems = JSON.parse(paymentDetails?.metadata?.items ?? "[]");
 
-  let products: OrderConfirmationDetails[] = [];
+  let products: OrderItemDetails[] = [];
   let sellerDetails;
   if (isVerified) {
     sellerDetails = (await getSellerName(params.storeSlug))[0];
-    products = await getProducts(checkoutItems);
+    products = await getDetailsOfProductsOrdered(checkoutItems);
   }
 
   return (
@@ -123,7 +107,7 @@ export default async function OrderConfirmation({
                 <div className="mb-2">
                   <Heading size="h4">Order Details</Heading>
                 </div>
-                <OrderConfirmationLineItems
+                <OrderLineItems
                   checkoutItems={checkoutItems}
                   products={products}
                 />
