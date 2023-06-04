@@ -35,10 +35,18 @@ const baseAccountProductRoute = singleLevelNestedRoutes.account.products.slice(
   -1
 );
 
+const baseAccountOrderRoute = singleLevelNestedRoutes.account.orders.slice(
+  0,
+  -1
+);
+
 export const secondLevelNestedRoutes = {
   product: {
     base: baseAccountProductRoute,
     new: baseAccountProductRoute + "/new",
+  },
+  order: {
+    base: baseAccountOrderRoute,
   },
 };
 

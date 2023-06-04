@@ -22,7 +22,9 @@ async function getData(): Promise<OrdersTable[]> {
     })
     .from(orders)
     .where(eq(orders.storeId, Number(storeId)));
-  return storeOrders as OrdersTable[];
+  return (storeOrders as OrdersTable[]).sort(
+    (a, b) => b.createdAt - a.createdAt
+  );
 }
 
 export default async function OrdersPage() {

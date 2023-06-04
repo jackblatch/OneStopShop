@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { StatusLabel } from "@/components/ui/status-label";
 import { currencyFormatter } from "@/lib/currency";
+import { secondLevelNestedRoutes } from "@/lib/routes";
 import { CheckoutItem } from "@/lib/types";
 
 import { OrdersTable } from "@/lib/types";
@@ -9,6 +10,7 @@ import { convertSecondsToDate, formatOrderNumber } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { formatRelative } from "date-fns";
 import { ArrowUpDown } from "lucide-react";
+import Link from "next/link";
 
 export const columns: ColumnDef<OrdersTable>[] = [
   {
@@ -24,12 +26,24 @@ export const columns: ColumnDef<OrdersTable>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => formatOrderNumber(Number(row.getValue("id"))),
+    cell: ({ row }) => {
+      const id = row.getValue("id");
+      return (
+        <Link
+          href={`${secondLevelNestedRoutes.order.base}/${formatOrderNumber(
+            Number(id) as number
+          ).slice(1)}`}
+        >
+          <Button variant="link" className="m-0 h-fit py-0 font-semibold">
+            {formatOrderNumber(Number(id))}
+          </Button>
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "name",
     header: "Customer",
-    cell: ({ row }) => <p className="font-semibold">{row.getValue("name")}</p>,
   },
   {
     accessorKey: "total",

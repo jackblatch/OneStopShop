@@ -7,13 +7,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { currencyFormatter } from "@/lib/currency";
-import { CheckoutItem, OrderConfirmationDetails } from "@/lib/types";
+import { CheckoutItem, OrderItemDetails } from "@/lib/types";
 import { ProductImage } from "@/components/product-image";
 import { Button } from "@/components/ui/button";
 
-export const OrderConfirmationLineItems = (props: {
+export const OrderLineItems = (props: {
   checkoutItems: CheckoutItem[];
-  products: OrderConfirmationDetails[];
+  products: OrderItemDetails[];
 }) => {
   return (
     <Table>
