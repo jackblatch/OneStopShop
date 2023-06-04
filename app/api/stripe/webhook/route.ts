@@ -1,7 +1,7 @@
 import { addresses } from "./../../../../db/schema";
 import { db } from "@/db/db";
 import { carts, orders, payments } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { Readable } from "stream";
@@ -82,50 +82,49 @@ export async function POST(request: Request) {
       const orderTotal = stripeObject?.amount;
 
       try {
-        // check if order with paymentId already exists
-        const existingOrder = await db
-          .select()
-          .from(orders)
-          .where(eq(orders.stripePaymentIntentId, paymentIntentId));
+        if (!event.account) throw new Error("No account on event");
+        const store = await db
+          .select({
+            storeId: payments.storeId,
+          })
+          .from(payments)
+          .where(eq(payments.stripeAccountId, event.account));
 
-        if (!existingOrder.length) {
-          if (!event.account) throw new Error("No account on event");
-          const store = await db
-            .select({
-              storeId: payments.storeId,
-            })
-            .from(payments)
-            .where(eq(payments.stripeAccountId, event.account));
+        const storeId = store[0].storeId;
 
-          const storeId = store[0].storeId;
+        // create new address in DB
+        const stripeAddress = stripeObject?.shipping?.address;
 
-          // create new address in DB
-          const stripeAddress = stripeObject?.shipping?.address;
+        const newAddress = await db.insert(addresses).values({
+          line1: stripeAddress?.line1,
+          line2: stripeAddress?.line2,
+          city: stripeAddress?.city,
+          state: stripeAddress?.state,
+          postal_code: stripeAddress?.postal_code,
+          country: stripeAddress?.country,
+        });
 
-          const newAddress = await db.insert(addresses).values({
-            line1: stripeAddress?.line1,
-            line2: stripeAddress?.line2,
-            city: stripeAddress?.city,
-            state: stripeAddress?.state,
-            postal_code: stripeAddress?.postal_code,
-            country: stripeAddress?.country,
-          });
+        if (!newAddress.insertId) throw new Error("No address created");
 
-          if (!newAddress.insertId) throw new Error("No address created");
+        // get current order count in DB
+        const ordersCount = await db
+          .select({ count: sql<number>`count(*)` })
+          .from(orders);
 
-          // create new order in DB
-          const newOrder = await db.insert(orders).values({
-            storeId: storeId,
-            items: stripeObject.metadata?.items,
-            total: String(Number(orderTotal) / 100),
-            stripePaymentIntentId: paymentIntentId,
-            stripePaymentIntentStatus: stripeObject?.status,
-            name: stripeObject?.shipping?.name,
-            email: stripeObject?.receipt_email,
-            addressId: Number(newAddress.insertId),
-          });
-          console.log("ORDER CREATED", newOrder);
-        }
+        // create new order in DB
+        const newOrder = await db.insert(orders).values({
+          id: ordersCount[0].count + 1,
+          storeId: storeId,
+          items: stripeObject.metadata?.items,
+          total: String(Number(orderTotal) / 100),
+          stripePaymentIntentId: paymentIntentId,
+          stripePaymentIntentStatus: stripeObject?.status,
+          name: stripeObject?.shipping?.name,
+          email: stripeObject?.receipt_email,
+          createdAt: event.created,
+          addressId: Number(newAddress.insertId),
+        });
+        console.log("ORDER CREATED", newOrder);
       } catch (err) {
         console.log("ORDER CREATION WEBHOOK ERROR", err);
       }

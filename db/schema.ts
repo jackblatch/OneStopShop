@@ -8,6 +8,7 @@ import {
   mysqlTable,
   serial,
   text,
+  timestamp,
   uniqueIndex,
   varchar,
 } from "drizzle-orm/mysql-core";
@@ -64,6 +65,7 @@ export const orders = mysqlTable(
     stripePaymentIntentStatus: text("stripe_payment_intent_status"),
     name: text("name"),
     email: text("email"),
+    createdAt: int("created_at"),
     addressId: int("address"),
   },
   (table) => {

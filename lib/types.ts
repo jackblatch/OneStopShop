@@ -1,4 +1,4 @@
-import { Product } from "@/db/schema";
+import { Order, Product } from "@/db/schema";
 
 export type ProductImages = {
   id: string;
@@ -56,4 +56,11 @@ export type StripeCheckoutFormDetails = {
     postal_code: string;
     country: string;
   };
+};
+
+export type OrdersTable = Omit<
+  Order,
+  "stripePaymentIntentId" | "addressId" | "storeId" | "items" | "email"
+> & {
+  items: CheckoutItem[];
 };
