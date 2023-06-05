@@ -4,10 +4,11 @@ import { Verification } from "./components/verification";
 import { db } from "@/db/db";
 import { stores } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { OrderItemDetails } from "@/lib/types";
+import { CheckoutItem, OrderItemDetails } from "@/lib/types";
 import { Check } from "lucide-react";
 import { OrderLineItems } from "@/components/order-line-items";
 import { getDetailsOfProductsOrdered } from "@/server-actions/orders";
+import { currencyFormatter } from "@/lib/currency";
 
 const getSellerName = async (storeSlug: string) => {
   return await db
@@ -38,7 +39,9 @@ export default async function OrderConfirmation({
     deliveryPostalCode: searchParams.delivery_postal_code,
   });
 
-  const checkoutItems = JSON.parse(paymentDetails?.metadata?.items ?? "[]");
+  const checkoutItems = JSON.parse(
+    paymentDetails?.metadata?.items ?? "[]"
+  ) as CheckoutItem[];
 
   let products: OrderItemDetails[] = [];
   let sellerDetails;
@@ -111,6 +114,17 @@ export default async function OrderConfirmation({
                   checkoutItems={checkoutItems}
                   products={products}
                 />
+                <div className="border-y border-slate-200 py-2 px-2 mx-1 mt-2 flex items-center gap-2">
+                  <Heading size="h4">Order Total: </Heading>
+                  <p className="scroll-m-20 text-xl tracking-tight">
+                    {currencyFormatter(
+                      checkoutItems.reduce(
+                        (acc, curr) => acc + curr.price * curr.qty,
+                        0
+                      )
+                    )}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
