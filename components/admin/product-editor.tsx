@@ -13,8 +13,8 @@ import {
 import { createProduct } from "@/lib/apiTypes";
 import { toast } from "../ui/use-toast";
 import { HeadingAndSubheading } from "./heading-and-subheading";
-import { ProductImageUploader } from "./product-image-uploader";
 import { ProductImages } from "@/lib/types";
+import { ProductImageUploader } from "./product-image-uploader";
 
 const defaultValues = {
   name: "",

@@ -1,15 +1,17 @@
 "use client";
-import { OurFileRouter } from "@/app/api/uploadthing/core";
-import { generateReactHelpers } from "@uploadthing/react";
-import { Button } from "../ui/button";
-import { Label } from "../ui/label";
-import { ProductImages } from "@/lib/types";
-import Image from "next/image";
-import { Product } from "@/db/schema";
-import { useState } from "react";
-import { XIcon } from "lucide-react";
+import { useDropzone } from "react-dropzone";
+import type { FileWithPath } from "react-dropzone";
 
-const { useUploadThing } = generateReactHelpers<OurFileRouter>();
+import { useUploadThing } from "@/lib/uploadthing-generate-react-helpers";
+import { useCallback, useState } from "react";
+import { Product } from "@/db/schema";
+import { ProductImages } from "@/lib/types";
+import { generateClientDropzoneAccept } from "uploadthing/client";
+import { Label } from "@radix-ui/react-label";
+import Image from "next/image";
+import { XIcon } from "lucide-react";
+import { Button } from "../ui/button";
+import { toast } from "../ui/use-toast";
 
 export function ProductImageUploader(props: {
   product: Omit<Product, "images"> & { images: ProductImages[] };
@@ -18,43 +20,75 @@ export function ProductImageUploader(props: {
   imagesToDelete: ProductImages[];
   setImagesToDelete: React.Dispatch<React.SetStateAction<ProductImages[]>>;
 }) {
-  const [isUploading, setIsUploading] = useState(false);
-  const { getRootProps, getInputProps, files, startUpload } =
-    useUploadThing("productUploader");
+  const [files, setFiles] = useState<File[]>([]);
+  const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
+    setFiles(acceptedFiles);
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: generateClientDropzoneAccept(["image"]),
+  });
+
+  const { startUpload, isUploading, permittedFileInfo } = useUploadThing({
+    endpoint: "imageUploader", // replace this with an actual endpoint name
+    onClientUploadComplete: (data) => {
+      setFiles([]);
+      if (!data) return;
+      props.setNewImages(
+        data.map((item) => {
+          return {
+            url: item.fileUrl,
+            alt: item.fileKey.split("_")[1],
+            id: item.fileKey,
+          };
+        })
+      );
+    },
+    onUploadError: () => {
+      toast({
+        title: "Sorry, an error occured while uploading your image(s).",
+      });
+    },
+  });
 
   return (
-    <div {...getRootProps()}>
+    <div>
       <Label htmlFor="product-images">Images</Label>
       <div className="mt-2 border border-border p-4 rounded-md flex items-center justify-start gap-2 flex-wrap">
-        {props.product.images &&
-          props.product.images.length > 0 &&
-          [...props.product.images, ...props.newImages]
-            .filter((item) => !props.imagesToDelete.includes(item))
-            .map((image) => (
-              <div key={image.id}>
-                <li className="relative w-36 h-36">
-                  <Image
-                    src={image.url}
-                    alt={image.alt ?? ""}
-                    fill
-                    className="object-cover w-36 h-36"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      props.setImagesToDelete((prev) => [...prev, image]);
-                    }}
-                    className="relative -top-4 ml-28 bg-white rounded-full w-6 h-6 flex items-center justify-center"
-                  >
-                    <XIcon className="w-5 h-5" />
-                  </button>
-                </li>
-              </div>
-            ))}
-        <div className="border-border border-2 rounded-md border-dashed w-36 h-36">
+        {[...props.product.images, ...props.newImages]
+          .filter((item) => !props.imagesToDelete.includes(item))
+          .map((image) => (
+            <div key={image.id}>
+              <li className="relative w-36 h-36">
+                <Image
+                  src={image.url}
+                  alt={image.alt ?? ""}
+                  fill
+                  className="object-cover w-36 h-36"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    props.setImagesToDelete((prev) => [...prev, image]);
+                  }}
+                  className="relative -top-4 ml-28 bg-white rounded-full w-6 h-6 flex items-center justify-center"
+                >
+                  <XIcon className="w-5 h-5" />
+                </button>
+              </li>
+            </div>
+          ))}
+        <div
+          {...getRootProps()}
+          className="border-border border-2 rounded-md border-dashed w-36 h-36"
+        >
           <p className="items-center justify-center flex relative top-[50px] flex-col text-sm">
             <span className="font-semibold mr-1">Click to upload</span>
             <span>or drag and drop.</span>
+            <span className="text-xs text-muted-foreground">
+              (Max {permittedFileInfo?.config.image?.maxFileSize})
+            </span>
           </p>
           <input
             id="product-images"
@@ -68,7 +102,7 @@ export function ProductImageUploader(props: {
         <div className="mt-4">
           {files.map((file, i) => (
             <li key={i}>
-              {file.file.name} - {file.file.size} bytes
+              {file.name} - {file.size} bytes
               {/* <Button
                 type="button"
                 variant="link"
@@ -84,22 +118,7 @@ export function ProductImageUploader(props: {
           <Button
             disabled={isUploading}
             className="mt-2"
-            onClick={() => {
-              setIsUploading(true);
-              const res = startUpload();
-              res.then((data) => {
-                props.setNewImages(
-                  data.map((item) => {
-                    return {
-                      url: item.fileUrl,
-                      alt: item.fileKey.split("_")[1],
-                      id: item.fileKey,
-                    };
-                  })
-                );
-                setIsUploading(false);
-              });
-            }}
+            onClick={() => startUpload(files)}
             type="button"
           >
             {`${isUploading ? "Uploading" : "Upload"} ${files.length} file${
