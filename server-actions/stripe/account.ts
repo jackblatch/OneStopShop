@@ -12,12 +12,14 @@ export async function hasConnectedStripeAccount(
   useProvidedStoreId?: boolean
 ) {
   if (useProvidedStoreId && !providedStoreId) return;
-  const loggedInStoreId = Number(await getStoreId());
-  if (isNaN(loggedInStoreId)) return;
 
   try {
     const storeId =
-      useProvidedStoreId && providedStoreId ? providedStoreId : loggedInStoreId;
+      useProvidedStoreId && providedStoreId
+        ? providedStoreId
+        : Number(await getStoreId());
+
+    if (isNaN(storeId)) return;
 
     const payment = await db
       .select()
