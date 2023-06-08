@@ -11,6 +11,7 @@ export default authMiddleware({
     "/auth(.*)",
     "/checkout(.*)",
     "/api/stripe/(.*)",
+    "/api/uploadthing",
   ],
 });
 export const config = {
