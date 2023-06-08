@@ -108,13 +108,14 @@ export async function POST(request: Request) {
         if (!newAddress.insertId) throw new Error("No address created");
 
         // get current order count in DB
-        const ordersCount = await db
-          .select({ count: sql<number>`count(*)` })
-          .from(orders);
+        // const ordersCount = await db
+        //   .select({ count: sql<number>`count(*)` })
+        //   .from(orders);
+        //   // change this to use pretty order id and add where clause to increment by one from last entry on THAT store
 
         // create new order in DB
         const newOrder = await db.insert(orders).values({
-          id: Number(ordersCount[0].count) + 1,
+          // id: Number(ordersCount[0].count) + 1,
           storeId: storeId,
           items: stripeObject.metadata?.items,
           total: String(Number(orderTotal) / 100),
@@ -145,7 +146,7 @@ export async function POST(request: Request) {
         sqlChunks.push(sql` SET inventory = inventory - 1 WHERE `);
 
         for (let i = 0; i < idsOfOrderedItems.length; i++) {
-          sqlChunks.push(sql`id = ${idsOfOrderedItems[i]}`);
+          sqlChunks.push(sql`id = ${Number(idsOfOrderedItems[i])}`);
 
           if (i === 4) continue;
           sqlChunks.push(sql` or `);
