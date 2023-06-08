@@ -2,7 +2,7 @@ import { addresses, products } from "./../../../../db/schema";
 import { db } from "@/db/db";
 import { carts, orders, payments } from "@/db/schema";
 import { CheckoutItem } from "@/lib/types";
-import { eq, inArray, sql } from "drizzle-orm";
+import { SQL, eq, inArray, sql } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { Readable } from "stream";
@@ -132,16 +132,30 @@ export async function POST(request: Request) {
 
       // update inventory from DB
       try {
-        const items = JSON.parse(
+        const orderedItems = JSON.parse(
           stripeObject.metadata?.items
         ) as CheckoutItem[];
-        const itemIds = items.map((item) => item.id);
-        await db
-          .update(products)
-          .set({
-            inventory: String(Number(products.inventory) - 1),
-          })
-          .where(inArray(products.id, itemIds));
+
+        const idsOfOrderedItems = orderedItems.map((item) => item.id);
+
+        const sqlChunks: SQL[] = [];
+
+        sqlChunks.push(sql`UPDATE products`);
+
+        sqlChunks.push(sql` SET inventory = inventory - 1 WHERE `);
+
+        for (let i = 0; i < idsOfOrderedItems.length; i++) {
+          sqlChunks.push(sql`id = ${idsOfOrderedItems[i]}`);
+
+          if (i === 4) continue;
+          sqlChunks.push(sql` or `);
+        }
+
+        const finalSql: SQL = sql.fromList(sqlChunks);
+
+        // UPDATE products SET inventory = inventory - 1 WHERE id = $1 or id = $2 or id = $3 or id = $4 or id = $5; --> [0, 1, 2, 3, 4]
+
+        await db.execute(sql`${finalSql}`);
       } catch (err) {
         console.log("INVENTORY UPDATE WEBHOOK ERROR", err);
       }
