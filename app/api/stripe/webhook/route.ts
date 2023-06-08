@@ -1,7 +1,8 @@
-import { addresses } from "./../../../../db/schema";
+import { addresses, products } from "./../../../../db/schema";
 import { db } from "@/db/db";
 import { carts, orders, payments } from "@/db/schema";
-import { eq, sql } from "drizzle-orm";
+import { CheckoutItem } from "@/lib/types";
+import { eq, inArray, sql } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { Readable } from "stream";
@@ -127,6 +128,22 @@ export async function POST(request: Request) {
         console.log("ORDER CREATED", newOrder);
       } catch (err) {
         console.log("ORDER CREATION WEBHOOK ERROR", err);
+      }
+
+      // update inventory from DB
+      try {
+        const items = JSON.parse(
+          stripeObject.metadata?.items
+        ) as CheckoutItem[];
+        const itemIds = items.map((item) => item.id);
+        await db
+          .update(products)
+          .set({
+            inventory: String(Number(products.inventory) - 1),
+          })
+          .where(inArray(products.id, itemIds));
+      } catch (err) {
+        console.log("INVENTORY UPDATE WEBHOOK ERROR", err);
       }
 
       try {

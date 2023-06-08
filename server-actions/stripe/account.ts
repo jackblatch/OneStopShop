@@ -12,16 +12,23 @@ export async function hasConnectedStripeAccount(
   useProvidedStoreId?: boolean
 ) {
   if (useProvidedStoreId && !providedStoreId) return;
-  const storeId =
-    useProvidedStoreId && providedStoreId
-      ? providedStoreId
-      : Number(await getStoreId());
-  const payment = await db
-    .select()
-    .from(payments)
-    .where(eq(payments.storeId, storeId));
+  const loggedInStoreId = Number(await getStoreId());
+  if (isNaN(loggedInStoreId)) return;
 
-  return payment.length ? payment[0]?.details_submitted : false;
+  try {
+    const storeId =
+      useProvidedStoreId && providedStoreId ? providedStoreId : loggedInStoreId;
+
+    const payment = await db
+      .select()
+      .from(payments)
+      .where(eq(payments.storeId, storeId));
+
+    return payment.length ? payment[0]?.details_submitted : false;
+  } catch (err) {
+    console.log("Payment status header", err);
+    return false;
+  }
 }
 
 export async function createAccountLink() {
