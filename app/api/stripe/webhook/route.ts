@@ -132,34 +132,36 @@ export async function POST(request: Request) {
       }
 
       // update inventory from DB
-      try {
-        const orderedItems = JSON.parse(
-          stripeObject.metadata?.items
-        ) as CheckoutItem[];
+      // try {
+      //   const orderedItems = JSON.parse(
+      //     stripeObject.metadata?.items
+      //   ) as CheckoutItem[];
 
-        const idsOfOrderedItems = orderedItems.map((item) => item.id);
+      //   const idsOfOrderedItems = orderedItems.map((item) => item.id);
 
-        const sqlChunks: SQL[] = [];
+      //   const sqlChunks: SQL[] = [];
 
-        sqlChunks.push(sql`UPDATE products`);
+      //   sqlChunks.push(sql`UPDATE products`);
 
-        sqlChunks.push(sql` SET inventory = inventory - 1 WHERE `);
+      //   sqlChunks.push(sql` SET inventory = inventory - 1 WHERE `);
 
-        for (let i = 0; i < idsOfOrderedItems.length; i++) {
-          sqlChunks.push(sql`id = ${Number(idsOfOrderedItems[i])}`);
+      // SET STATEMENT SHOULD BE DYNAMIC BASED ON AMOUNT ORDERED
 
-          if (i === 4) continue;
-          sqlChunks.push(sql` or `);
-        }
+      //   for (let i = 0; i < idsOfOrderedItems.length; i++) {
+      //     sqlChunks.push(sql`id = ${Number(idsOfOrderedItems[i])}`);
 
-        const finalSql: SQL = sql.fromList(sqlChunks);
+      //     if (i === 4) continue;
+      //     sqlChunks.push(sql` or `);
+      //   }
 
-        // UPDATE products SET inventory = inventory - 1 WHERE id = $1 or id = $2 or id = $3 or id = $4 or id = $5; --> [0, 1, 2, 3, 4]
+      //   const finalSql: SQL = sql.fromList(sqlChunks);
 
-        await db.execute(sql`${finalSql}`);
-      } catch (err) {
-        console.log("INVENTORY UPDATE WEBHOOK ERROR", err);
-      }
+      //   // UPDATE products SET inventory = inventory - 1 WHERE id = $1 or id = $2 or id = $3 or id = $4 or id = $5; --> [0, 1, 2, 3, 4]
+
+      //   await db.execute(sql`${finalSql}`);
+      // } catch (err) {
+      //   console.log("INVENTORY UPDATE WEBHOOK ERROR", err);
+      // }
 
       try {
         // Close cart and clear items
