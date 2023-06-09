@@ -33,7 +33,7 @@ export default async function OrderDetailPage(context: {
     .where(
       and(
         eq(
-          orders.id,
+          orders.prettyOrderId,
           removeOrderNumberFormatting(Number(context.params.orderId))
         ),
         eq(orders.storeId, Number(storeId))
@@ -51,7 +51,9 @@ export default async function OrderDetailPage(context: {
     <div className="flex flex-col gap-4">
       <div className="bg-secondary border border-border p-6 rounded-md">
         <HeadingAndSubheading
-          heading={`Order ${formatOrderNumber(record.order?.id)}`}
+          heading={`Order ${formatOrderNumber(
+            record.order?.prettyOrderId ?? 0
+          )}`}
           subheading={`${
             !record.order?.createdAt
               ? ""

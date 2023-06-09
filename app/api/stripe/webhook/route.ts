@@ -91,7 +91,7 @@ export async function POST(request: Request) {
           .from(payments)
           .where(eq(payments.stripeAccountId, event.account));
 
-        const storeId = store[0].storeId;
+        const storeId = store[0].storeId as number;
 
         // create new address in DB
         const stripeAddress = stripeObject?.shipping?.address;
@@ -108,14 +108,14 @@ export async function POST(request: Request) {
         if (!newAddress.insertId) throw new Error("No address created");
 
         // get current order count in DB
-        // const ordersCount = await db
-        //   .select({ count: sql<number>`count(*)` })
-        //   .from(orders);
-        //   // change this to use pretty order id and add where clause to increment by one from last entry on THAT store
+        const storeOrderCount = await db
+          .select({ count: sql<number>`count(*)` })
+          .from(orders)
+          .where(eq(orders.storeId, storeId));
 
         // create new order in DB
         const newOrder = await db.insert(orders).values({
-          // id: Number(ordersCount[0].count) + 1,
+          prettyOrderId: storeOrderCount[0].count + 1,
           storeId: storeId,
           items: stripeObject.metadata?.items,
           total: String(Number(orderTotal) / 100),
@@ -137,28 +137,13 @@ export async function POST(request: Request) {
       //     stripeObject.metadata?.items
       //   ) as CheckoutItem[];
 
-      //   const idsOfOrderedItems = orderedItems.map((item) => item.id);
-
-      //   const sqlChunks: SQL[] = [];
-
-      //   sqlChunks.push(sql`UPDATE products`);
-
-      //   sqlChunks.push(sql` SET inventory = inventory - 1 WHERE `);
-
-      // SET STATEMENT SHOULD BE DYNAMIC BASED ON AMOUNT ORDERED
-
-      //   for (let i = 0; i < idsOfOrderedItems.length; i++) {
-      //     sqlChunks.push(sql`id = ${Number(idsOfOrderedItems[i])}`);
-
-      //     if (i === 4) continue;
-      //     sqlChunks.push(sql` or `);
+      //   for (let index in orderedItems) {
+      //     orderedItems[index].id;
       //   }
 
-      //   const finalSql: SQL = sql.fromList(sqlChunks);
+      //   orderedItems.forEach((item) => item.id);
 
       //   // UPDATE products SET inventory = inventory - 1 WHERE id = $1 or id = $2 or id = $3 or id = $4 or id = $5; --> [0, 1, 2, 3, 4]
-
-      //   await db.execute(sql`${finalSql}`);
       // } catch (err) {
       //   console.log("INVENTORY UPDATE WEBHOOK ERROR", err);
       // }

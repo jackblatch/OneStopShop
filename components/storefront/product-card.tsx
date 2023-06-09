@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import { ProductAndStore } from "@/app/(storefront)/(main)/products/page";
 import { ProductImage } from "../product-image";
 import { ProductForm } from "./product-form";
+import { addToCart } from "@/server-actions/add-to-cart";
 
 export const ProductCard = (props: {
   storeAndProduct: ProductAndStore;
@@ -46,6 +47,7 @@ export const ProductCard = (props: {
             </Button>
           </Link>
           <ProductForm
+            addToCartAction={addToCart}
             disableQuantitySelector={true}
             availableInventory={props.storeAndProduct.product.inventory}
             productId={props.storeAndProduct.product.id}

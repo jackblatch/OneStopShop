@@ -8,11 +8,11 @@ import { db } from "@/db/db";
 import { Product, products, stores } from "@/db/schema";
 import { currencyFormatter } from "@/lib/currency";
 import { eq } from "drizzle-orm";
-import { ImageOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { productsQueryParams, routes } from "@/lib/routes";
 import { ProductImage } from "@/components/product-image";
+import { addToCart } from "@/server-actions/add-to-cart";
 
 export default async function StorefrontProductDetails(props: {
   params: { productId: string };
@@ -87,6 +87,7 @@ export default async function StorefrontProductDetails(props: {
             {currencyFormatter(Number(product.price))}
           </Text>
           <ProductForm
+            addToCartAction={addToCart}
             productName={product.name}
             availableInventory={product.inventory}
             productId={product.id}

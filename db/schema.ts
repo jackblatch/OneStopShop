@@ -58,6 +58,7 @@ export const orders = mysqlTable(
   "orders",
   {
     id: serial("id").primaryKey(),
+    prettyOrderId: int("pretty_order_id"),
     storeId: int("store_id"),
     items: json("items"),
     total: decimal("total", { precision: 10, scale: 2 }).default("0"),
