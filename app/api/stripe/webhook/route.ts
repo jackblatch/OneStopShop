@@ -115,7 +115,7 @@ export async function POST(request: Request) {
 
         // create new order in DB
         const newOrder = await db.insert(orders).values({
-          prettyOrderId: storeOrderCount[0].count + 1,
+          prettyOrderId: Number(storeOrderCount[0].count) + 1,
           storeId: storeId,
           items: stripeObject.metadata?.items,
           total: String(Number(orderTotal) / 100),
