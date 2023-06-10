@@ -4,13 +4,14 @@ import { useState, useTransition } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { addToCart } from "@/server-actions/add-to-cart";
+import { type addToCart } from "@/server-actions/add-to-cart";
 import { toast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
 import { routes } from "@/lib/routes";
 import { cn, handleInputQuantity } from "@/lib/utils";
 
 export const ProductForm = (props: {
+  addToCartAction: typeof addToCart;
   availableInventory: string | null;
   productId: number;
   productName: string | null;
@@ -49,7 +50,7 @@ export const ProductForm = (props: {
           onClick={() => {
             startTransition(
               () =>
-                void addToCart({
+                void props.addToCartAction({
                   id: props.productId,
                   qty: Number(quantity),
                 })

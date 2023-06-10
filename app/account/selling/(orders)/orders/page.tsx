@@ -13,7 +13,7 @@ async function getData(): Promise<OrdersTable[]> {
   if (isNaN(Number(storeId))) return [];
   const storeOrders = await db
     .select({
-      id: orders.id,
+      id: orders.prettyOrderId,
       name: orders.name,
       items: orders.items,
       total: orders.total,
