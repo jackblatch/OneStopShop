@@ -6,22 +6,6 @@ type basicResponse = {
   action?: string;
 };
 
-export type createStore = {
-  input: {
-    formData: {
-      storeName: string;
-    };
-  };
-  output: basicResponse;
-};
-
-export type updateStoreDetails = {
-  input: {
-    newStoreValues: Store;
-  };
-  output: basicResponse;
-};
-
 export type createProduct = {
   input: {
     name: string;

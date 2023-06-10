@@ -5,15 +5,12 @@ import { Button } from "../ui/button";
 import { Heading } from "../ui/heading";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { apiRoutes } from "@/lib/routes";
-import { createStore } from "@/lib/apiTypes";
 import { useToast } from "../ui/use-toast";
+import { type createStore } from "@/server-actions/store";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
-// type DataFetchStatus<T extends {formStateStatus: string}> = T["formStateStatus"] extends "error" ? T & createStore["output"] : {formStateStatus: "idle" | "loading"};
-// @TODO: something similar to type above should be used for formState type to ensure createStore["output"] is present when formSTateStatus is "error"
-
-export const CreateNewStore = () => {
+export const CreateNewStore = (props: { createStore: typeof createStore }) => {
   const router = useRouter();
   const { toast } = useToast();
   const [storeName, setStoreName] = useState("");
@@ -22,26 +19,17 @@ export const CreateNewStore = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    const req: createStore["input"] = { formData: { storeName } };
-    (async function getData() {
-      const res = await fetch(apiRoutes.store, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(req),
-      });
-      const data: createStore["output"] = await res.json();
+    props.createStore(storeName).then((res) => {
       setIsLoading(false);
-      if (!data.error) {
+      if (!res.error) {
         setStoreName("");
         router.refresh();
       }
       toast({
-        title: data.message,
-        description: data.action,
+        title: res.message,
+        description: res.action,
       });
-    })();
+    });
   };
 
   return (
@@ -65,7 +53,8 @@ export const CreateNewStore = () => {
           />
         </div>
         <div className="w-fit">
-          <Button type="submit" disabled={isLoading}>
+          <Button type="submit" className="flex gap-2" disabled={isLoading}>
+            {!!isLoading && <Loader2 size={18} className="animate-spin" />}
             Create
           </Button>
         </div>

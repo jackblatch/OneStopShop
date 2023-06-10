@@ -4,7 +4,7 @@ import { db } from "@/db/db";
 import { stores } from "@/db/schema";
 import { currentUser } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
-import { LoadingSkeleton } from "@/components/ui/loading-skeleton";
+import { updateStore } from "@/server-actions/store";
 
 export default async function SellerProfile() {
   const user = await currentUser();
@@ -24,7 +24,12 @@ export default async function SellerProfile() {
         heading="Selling profile"
         subheading="Review and update your store settings"
       />
-      {storeDetails && <EditStoreFields storeDetails={storeDetails[0]} />}
+      {storeDetails && (
+        <EditStoreFields
+          storeDetails={storeDetails[0]}
+          updateStore={updateStore}
+        />
+      )}
     </>
   );
 }

@@ -8,18 +8,26 @@ import {
   mysqlTable,
   serial,
   text,
-  timestamp,
   uniqueIndex,
   varchar,
 } from "drizzle-orm/mysql-core";
 
-export const stores = mysqlTable("stores", {
-  id: serial("id").primaryKey(),
-  name: text("store_name"),
-  industry: text("industry"),
-  description: text("description"),
-  slug: text("slug"),
-});
+export const stores = mysqlTable(
+  "stores",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("store_name", { length: 40 }),
+    industry: text("industry"),
+    description: text("description"),
+    slug: varchar("slug", { length: 50 }),
+  },
+  (table) => {
+    return {
+      storeNameIndex: uniqueIndex("store_name_index").on(table.name),
+      storeSlugIndex: uniqueIndex("store_slug_index").on(table.slug),
+    };
+  }
+);
 
 export type Store = InferModel<typeof stores>;
 
