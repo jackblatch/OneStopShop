@@ -10,11 +10,15 @@ import {
   secondLevelNestedRoutes,
   singleLevelNestedRoutes,
 } from "@/lib/routes";
-import { createProduct } from "@/lib/apiTypes";
 import { toast } from "../ui/use-toast";
 import { HeadingAndSubheading } from "./heading-and-subheading";
 import { ProductImages } from "@/lib/types";
 import { ProductImageUploader } from "./product-image-uploader";
+import type {
+  createProduct,
+  deleteProduct,
+  updateProduct,
+} from "@/server-actions/products";
 
 const defaultValues = {
   name: "",
@@ -27,6 +31,11 @@ const defaultValues = {
 export const ProductEditor = (props: {
   displayType?: "page" | "modal";
   productStatus: "new-product" | "existing-product";
+  productActions: {
+    createProduct: typeof createProduct;
+    updateProduct: typeof updateProduct;
+    deleteProduct: typeof deleteProduct;
+  };
   initialValues?: Product;
 }) => {
   const router = useRouter();
@@ -67,9 +76,7 @@ export const ProductEditor = (props: {
     e.preventDefault();
     setIsLoading(true);
 
-    const mutate = async (
-      action: "create" | "update" | "delete"
-    ): Promise<createProduct["output"]> => {
+    const mutate = async (action: "create" | "update" | "delete") => {
       const res = await mutateProduct({
         values: formValues,
         action,
@@ -84,22 +91,36 @@ export const ProductEditor = (props: {
 
     let data;
     if (buttonAction === "delete") {
+      // delete product
       data = await mutate("delete");
       if (!data.error) {
         router.push(singleLevelNestedRoutes.account.products);
       }
     } else if (props.initialValues) {
-      data = await mutate("update");
+      // update product
+      // data = await props.productActions.updateProduct(formValues);
+      /*
+      {
+          ...props.values,
+          images: [
+            ...(props.initialValues?.images as []),
+            ...(props.newImages ?? []),
+          ].filter(
+            (item) =>
+              props.imagesToDelete && !props.imagesToDelete.includes(item)
+          ),
+        },
+      */
+      // look at how current update works with images
     } else {
-      data = await mutate("create");
-      if (!data.error) {
-        router.push(
-          `${secondLevelNestedRoutes.product.base}/${data.productId}`
-        );
+      // create new product
+      // TODO look at how current create works with images
+      data = await props.productActions.createProduct(formValues);
+      if (!data.productId) {
         setFormValues(defaultValues);
       }
+      router.push(`${secondLevelNestedRoutes.product.base}/${data.productId}`);
     }
-
     setIsLoading(false);
     toast({
       title: data.message,

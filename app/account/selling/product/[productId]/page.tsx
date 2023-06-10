@@ -1,6 +1,11 @@
 import { ProductEditor } from "@/components/admin/product-editor";
 import { db } from "@/db/db";
 import { products } from "@/db/schema";
+import {
+  createProduct,
+  deleteProduct,
+  updateProduct,
+} from "@/server-actions/products";
 import { currentUser } from "@clerk/nextjs";
 import { and, eq } from "drizzle-orm";
 
@@ -34,6 +39,11 @@ export default async function ProductDetailPage(props: {
       <ProductEditor
         productStatus="existing-product"
         initialValues={productDetails}
+        productActions={{
+          createProduct,
+          updateProduct,
+          deleteProduct,
+        }}
       />
     </>
   );
