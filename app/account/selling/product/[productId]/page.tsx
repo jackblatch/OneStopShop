@@ -39,11 +39,6 @@ export default async function ProductDetailPage(props: {
       <ProductEditor
         productStatus="existing-product"
         initialValues={productDetails}
-        productActions={{
-          createProduct,
-          updateProduct,
-          deleteProduct,
-        }}
       />
     </>
   );

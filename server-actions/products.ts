@@ -1,6 +1,7 @@
+"use server";
+
 import { db } from "@/db/db";
 import { Product, products } from "@/db/schema";
-import type { createProduct, UpdateProduct } from "@/lib/apiTypes";
 import { currentUser } from "@clerk/nextjs";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
@@ -44,7 +45,7 @@ export async function createProduct(
 
     return res;
   } catch (err) {
-    console.log(err);
+    console.log("CATCH ERR", err);
     const res = {
       error: true,
       message: "Sorry, an error occured creating your product.",
@@ -73,18 +74,18 @@ export async function updateProduct(productValues: Omit<Product, "storeId">) {
       name: productValues.name,
       description: productValues.description,
       price: isNaN(Number(productValues.price))
-        ? 0
-        : Number(productValues.price),
+        ? "0"
+        : String(productValues.price),
       inventory: isNaN(Number(productValues.inventory))
-        ? 0
-        : Number(productValues.inventory),
+        ? "0"
+        : String(productValues.inventory),
       images: productValues.images,
       storeId: Number(user?.privateMetadata.storeId),
     };
 
     const dbRes = await db
       .update(products)
-      .set(values as any)
+      .set(values)
       .where(
         and(
           eq(products.id, productValues.id),
@@ -110,4 +111,27 @@ export async function updateProduct(productValues: Omit<Product, "storeId">) {
   }
 }
 
-export async function deleteProduct(productValues: Omit<Product, "storeId">) {}
+export async function deleteProduct(productId: number | undefined) {
+  const schema = z.number();
+
+  try {
+    schema.parse(productId);
+
+    if (!productId) throw new Error("No product id provided");
+
+    await db.delete(products).where(eq(products.id, productId));
+
+    return {
+      error: false,
+      message: "Product deleted",
+      action: "Success, your product has been deleted",
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      error: true,
+      message: "Sorry, an error occured deleting your product.",
+      action: "Please try again.",
+    };
+  }
+}

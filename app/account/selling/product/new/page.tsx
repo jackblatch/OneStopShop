@@ -6,14 +6,5 @@ import {
 } from "@/server-actions/products";
 
 export default function NewProductPage() {
-  return (
-    <ProductEditor
-      productStatus="new-product"
-      productActions={{
-        createProduct,
-        updateProduct,
-        deleteProduct,
-      }}
-    />
-  );
+  return <ProductEditor productStatus="new-product" />;
 }
