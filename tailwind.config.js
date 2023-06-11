@@ -53,6 +53,7 @@ module.exports = {
         },
         transparent: "rgba(255, 255, 255, 0)",
         translucentWhite: "rgba(255, 255, 255, 80)",
+        translucentDark: "rgba(25, 33, 58, 0.80)",
       },
       borderRadius: {
         lg: `var(--radius)`,
