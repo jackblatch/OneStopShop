@@ -44,7 +44,6 @@ export const NavBar = ({
         <ContentWrapper className="flex justify-between items-center md:hidden flex-wrap gap-4">
           <Logo />
           <div className="ml-auto flex items-center gap-8">
-            {/* @ts-expect-error Async Server Component */}
             <ShoppingCartHeader />
             <MobileNavigation />
           </div>
@@ -69,7 +68,6 @@ export const NavBar = ({
               </Link>
             </li>
             <li>
-              {/* @ts-expect-error Async Server Component */}
               <ShoppingCartHeader />
             </li>
           </ul>

@@ -55,7 +55,6 @@ export default async function StorefrontProductsPage(context: {
         storeAndProduct={storeAndProduct}
         activeSellers={await getActiveSellers()}
       >
-        {/* @ts-expect-error Async Server Component */}
         <CollectionPagePagination
           productsPerPage={PRODUCTS_PER_PAGE}
           sellerParams={context.searchParams.seller as string}
