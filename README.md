@@ -1,4 +1,4 @@
-## One Stop Shop
+## OneStopShop
 
 > **Warning**
 > This app is a work in progress and shouldn't be considered production ready. It uses new technologies that are yet to be stable such as the Server Actions and Drizzle ORM.
@@ -16,6 +16,10 @@ Key features:
 - UploadThing for typesafe file uploads (e.g., product images)
 - User authentication with Clerk
 - Stripe Connect integration for marketplace payments (including platform fees and seller payouts)
+
+## Demo
+
+To demo the checkout experience, checkout with a test card number such as `4242 4242 4242 4242` and use any future date for the expiry and any 3 digits for the CVC. You will only be able to checkout with products from sellers that have a Stripe account connected to their store (such as [Tim's Toy's](https://onestopshop.jackblatch.com/products?seller=tims-toys)). You can also create your own seller account and connect it to Stripe for the full experience.
 
 Home page
 ![Home page](/.github/images/home.jpeg?raw=0)

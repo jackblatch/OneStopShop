@@ -43,7 +43,7 @@ export const SlideShow = () => {
               <p className="uppercase font-medium tracking-wide">Summer Sale</p>
               <div className="flex flex-col gap-2 mb-2">
                 <p className="text-3xl font-bold">
-                  Save over 50% on clothes and accessories
+                  Save up to 50% on our entire range
                 </p>
                 <p>Over 100 products discounted</p>
               </div>
