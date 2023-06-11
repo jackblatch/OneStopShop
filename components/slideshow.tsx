@@ -21,7 +21,7 @@ export const SlideShow = () => {
     );
 
     return () => clearInterval(timer);
-  }, [currentImageIndex]);
+  }, [currentImageIndex, hasInteracted]);
 
   return (
     <div className="mb-4">

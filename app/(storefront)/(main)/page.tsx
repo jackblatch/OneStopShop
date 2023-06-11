@@ -111,10 +111,10 @@ export default async function Home() {
                 <p className="uppercase tracking-wide text-sm font-medium">
                   Featured seller
                 </p>
-                <p className="text-3xl font-bold">Tim's Terrific Toys</p>
+                <p className="text-3xl font-bold">Tim&apos;s Terrific Toys</p>
                 <p>
-                  Top seller of the month! Tim's Toys has been selling toys for
-                  10 years and is a top rated seller on the platform.
+                  Top seller of the month! Tim&apos;s Toys has been selling toys
+                  for 10 years and is a top rated seller on the platform.
                 </p>
                 <Link
                   href={routes.products + "?seller=tims-toys"}
