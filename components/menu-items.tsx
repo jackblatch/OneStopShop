@@ -63,8 +63,8 @@ export function MenuItems() {
                     className="flex h-full w-full select-none flex-col justify-end rounded-md no-underline outline-none focus:shadow-md bg-sport overflow-hidden"
                     href="/"
                   >
-                    <div className="relative top-0 bg-primary/60 w-full h-full p-6 pt-24">
-                      <div className="mb-2 mt-4 text-lg font-medium text-white">
+                    <div className="relative top-0 bg-secondary border border-border w-full h-full p-6 pt-24">
+                      <div className="mb-2 mt-4 text-lg font-medium text-primary">
                         Here to help
                       </div>
                       <p className="text-sm leading-tight text-muted-foreground text-gray-100">

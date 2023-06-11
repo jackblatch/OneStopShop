@@ -52,7 +52,8 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
         transparent: "rgba(255, 255, 255, 0)",
-        translucentWhite: "rgba(255, 255, 255, 80)",
+        translucentWhite: "rgba(255, 255, 255, 0.80)",
+        translucentDark: "rgba(25, 33, 58, 0.70)",
       },
       borderRadius: {
         lg: `var(--radius)`,

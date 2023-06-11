@@ -24,9 +24,10 @@ export async function createProduct(
     const values = {
       name: productValues.name,
       description: productValues.description,
-      price: isNaN(Number(productValues.price))
-        ? "0"
-        : String(productValues.price),
+      price:
+        isNaN(Number(productValues.price)) || Number(productValues.price) < 0
+          ? "0"
+          : String(productValues.price),
       inventory: isNaN(Number(productValues.inventory))
         ? "0"
         : String(productValues.inventory),
@@ -73,9 +74,10 @@ export async function updateProduct(productValues: Omit<Product, "storeId">) {
     const values = {
       name: productValues.name,
       description: productValues.description,
-      price: isNaN(Number(productValues.price))
-        ? "0"
-        : String(productValues.price),
+      price:
+        isNaN(Number(productValues.price)) || Number(productValues.price) < 0
+          ? "0"
+          : String(productValues.price),
       inventory: isNaN(Number(productValues.inventory))
         ? "0"
         : String(productValues.inventory),
