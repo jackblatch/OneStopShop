@@ -48,11 +48,11 @@ That's it. You should now be able to access the app at `http://localhost:3000`.
 
 Storybook has been added to this app, however, hasn't been actively worked on since the initial creation of the app. Regardless, it can be ran using the following commands:
 
-1. Run the tailwind build script to create an output file for tailwind classes
+1. Run the tailwind build script to create an output file for tailwind classes (after it's ran and completed, you may have to 'kill' the terminal (ie `ctrl + c`) to stop the process if it doesn't automatically stop).
 
    `npm run tailwind`
 
-2. Run Storybook
+2. Run Storybook (this will use the tailwind output file created in the previous step and run on `http://localhost:6006`)
 
    `npm run storybook`
 
