@@ -29,11 +29,24 @@ Admin Product Page Editor
 
 ## Running the app
 
-Run the app in development mode:
+Follow the below steps to run the app locally:
 
-    `npx run dev`
+1. Create a database in Planetscale
+2. Create a local .env file with the following variables as per the .env.example
+3. Run `npm install`
+4. Generate a migration with `npx drizzle-kit generate:mysql`
+5. Push to the migration to PlanetScale with `npx drizzle-kit up:mysql`. If this fails (or nothing happens), you can alternatively run the SQL queries that were generated in the `migrations-folder` from the previous step manually in the PlanetScale console.
+6. Run `npm run dev` to open open the app in development mode
 
-Storybook:
+That's it. You should now be able to access the app at `http://localhost:3000`.
+
+### Notes
+
+- When generating the migration for the first time with Drizzle, ensure that the `migrations-folder` is empty or doesn't exist.
+
+### Storybook
+
+Storybook has been added to this app, however, hasn't been actively worked on since the initial creation of the app. Regardless, it can be ran using the following commands:
 
 1. Run the tailwind build script to create an output file for tailwind classes
 
@@ -42,12 +55,6 @@ Storybook:
 2. Run Storybook
 
    `npm run storybook`
-
-### Drizzle Kit
-
-`npx drizzle-kit generate:mysql` - Generate new schema
-
-`npx drizzle-kit up:mysql` - Push to PlanetScale
 
 ## Contributing
 
