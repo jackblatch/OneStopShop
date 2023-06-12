@@ -1,1 +1,0 @@
-ALTER TABLE `stores` ADD `industry` text;
