@@ -32,7 +32,7 @@ Admin Product Page Editor
 Follow the below steps to run the app locally:
 
 1. Create a database in Planetscale
-2. Create a local .env file with the following variables as per the .env.example
+2. Create a local .env file with the variables as per the .env.example file
 3. Run `npm install`
 4. Generate a migration with `npx drizzle-kit generate:mysql`
 5. Push to the migration to PlanetScale with `npx drizzle-kit up:mysql`. If this fails (or nothing happens), you can alternatively run the SQL queries that were generated in the `migrations-folder` from the previous step manually in the PlanetScale console.
