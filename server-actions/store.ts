@@ -80,11 +80,9 @@ export async function updateStore(args: {
   industry: string | null;
 }) {
   const inputSchema = z.object({
-    newStoreValues: z.object({
-      name: z.string(),
-      description: z.string(),
-      industry: z.string(),
-    }),
+    name: z.string(),
+    description: z.string(),
+    industry: z.string(),
   });
 
   try {
@@ -107,6 +105,7 @@ export async function updateStore(args: {
 
     return res;
   } catch (err) {
+    console.log(err);
     const res = {
       error: true,
       message: "Sorry, an error occured updating your details.",

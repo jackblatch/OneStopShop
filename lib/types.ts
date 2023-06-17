@@ -70,3 +70,18 @@ export type OrdersTable = Omit<
   items: CheckoutItem[];
   createdAt: number;
 };
+
+export type BuyersOrderTable = Omit<
+  Order,
+  | "stripePaymentIntentId"
+  | "addressId"
+  | "storeId"
+  | "items"
+  | "name"
+  | "email"
+  | "createdAt"
+> & {
+  items: CheckoutItem[];
+  createdAt: number;
+  sellerName: string;
+};
