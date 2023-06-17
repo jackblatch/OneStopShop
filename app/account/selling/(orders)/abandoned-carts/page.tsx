@@ -3,6 +3,7 @@ import { Payment, columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
 import { InfoCard } from "@/components/admin/info-card";
 import { ShoppingCart } from "lucide-react";
+import { Heading } from "@/components/ui/heading";
 
 async function getData(): Promise<{
   paymentIntents: Payment[];
@@ -17,6 +18,9 @@ export default async function OrdersPage() {
 
   return (
     <div>
+      <div className="mb-4">
+        <Heading size="h4">Abondoned carts</Heading>
+      </div>
       {!data.paymentIntents.length ? (
         <InfoCard
           heading="You don't have any abandoned carts yet"

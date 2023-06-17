@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 import { getStoreId } from "@/server-actions/store-details";
 import { InfoCard } from "@/components/admin/info-card";
 import { Box } from "lucide-react";
+import { Heading } from "@/components/ui/heading";
 
 async function getData(): Promise<OrdersTable[]> {
   const storeId = await getStoreId();
@@ -32,6 +33,7 @@ export default async function OrdersPage() {
 
   return (
     <div>
+      <Heading size="h4">All orders</Heading>
       {data.length > 0 ? (
         <DataTable columns={columns} data={data} />
       ) : (
