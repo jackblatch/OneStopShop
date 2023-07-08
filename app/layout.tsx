@@ -20,7 +20,7 @@ export default async function RootLayout({
           <script
             defer
             data-domain="onestopshop.jackblatch.com"
-            src="https://plausible.io/js/script.js"
+            src="https://plausible.io/js/script.tagged-events.js"
           ></script>
         </head>
         <body>
