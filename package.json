@@ -38,7 +38,7 @@
     "clsx": "^1.2.1",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
-    "drizzle-orm": "^0.27.0",
+    "drizzle-orm": "^0.27.2",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "lucide-react": "^0.162.0",
@@ -64,7 +64,7 @@
     "@storybook/nextjs": "^7.0.6",
     "@storybook/react": "^7.0.6",
     "@storybook/testing-library": "^0.0.14-next.2",
-    "drizzle-kit": "^0.19.1",
+    "drizzle-kit": "^0.19.11",
     "eslint-plugin-storybook": "^0.6.11",
     "storybook": "^7.0.6",
     "tailwindcss-animate": "^1.0.5"
