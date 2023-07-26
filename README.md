@@ -34,9 +34,8 @@ Follow the below steps to run the app locally:
 1. Create a database in PlanetScale.
 2. Create a local `.env` file with the variables as per the `.env.example` file.
 3. Run `npm install`.
-4. Generate a migration with `npx drizzle-kit generate:mysql`. This creates a new folder called `migrations-folder` in the root which contains the SQL queries to create the database tables.
-5. Push the migration to PlanetScale with `npx drizzle-kit up:mysql` or `npx drizzle-kit push:mysql`. If this fails (or nothing happens) and your PlanetScale database isn't updated with all the tables, run the SQL queries that were generated in the `migrations-folder` from the previous step manually in the PlanetScale console.
-6. Run `npm run dev` to open the app in development mode.
+4. Generate a migration with `npx drizzle-kit generate:mysql`. This creates a new folder called `migrations-folder` in the root which contains the SQL queries to create the database tables. Migrations are automatically synced with the database through the migration function in `db.ts`. Alternatively, you can run the generated SQL queries from the migration manually through the PlanetScale console and remove the migration function in `db.ts`.
+5. Run `npm run dev` to open the app in development mode.
 
 That's it. You should now be able to access the app at `http://localhost:3000`.
 
@@ -55,6 +54,10 @@ Storybook has been added to this app, however, hasn't been actively worked on si
 2. Run Storybook (this will use the tailwind output file created in the previous step and run on `http://localhost:6006`).
 
    Command: `npm run storybook`
+
+## Troubleshooting
+
+If you see an error relating to a table not existing in PlanetScale (likely being thrown in `app/(storefront)/(main)/page.tsx` as this is the first use of the database), this is due to the database not being in sync. Revisit the 'running the app' steps above and check the 'Insights' tab in PlanetScale to check that table creation queries have ran.
 
 ## Contributing
 
