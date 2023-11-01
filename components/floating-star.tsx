@@ -4,14 +4,14 @@ import { PropsWithChildren } from "react";
 export const FloatingStar = () => {
   return (
     <div className="group">
-      <div className="hidden fixed bottom-4 bg-primary text-secondary rounded-r-full z-10 text-sm md:block p-4 hover:border-transparent">
+      <div className="hidden fixed bottom-4 bg-blue-500 text-secondary rounded-r-full z-10 text-sm md:block p-4 hover:border-transparent">
         <GitHubLinkWrapper>
           <Star className="inline-block" size={24} />
         </GitHubLinkWrapper>
       </div>
       <div className="group-hover:block hidden animate-roll-in-left fixed bottom-4 left-4 bg-primary text-secondary rounded-r-full z-[9] text-sm h-[56px] p-4 pl-[48px] pr-6">
         <GitHubLinkWrapper>
-          <p className="hover:underline mt-[2px]">Star project on GitHub</p>
+          <p className="hover:underline mt-[2px]">Go team yellow</p>
         </GitHubLinkWrapper>
       </div>
     </div>
@@ -21,7 +21,7 @@ export const FloatingStar = () => {
 const GitHubLinkWrapper = (props: PropsWithChildren) => {
   return (
     <a
-      href="https://github.com/jackblatch/OneStopShop"
+      href="http://localhost:3000"
       className="flex items-center justify-center gap-2 plausible-event-name=floating-star-outbound"
       target="_blank"
       rel="noopener noreferrer"

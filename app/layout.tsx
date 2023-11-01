@@ -4,7 +4,7 @@ import React from "react";
 import { Toaster } from "@/components/ui/Toaster";
 
 export const metadata = {
-  title: "OneStopShop - Online marketplace",
+  title: "Dayliff Soko - Online marketplace",
   description: "Online marketplace",
 };
 
@@ -19,7 +19,7 @@ export default async function RootLayout({
         <head>
           <script
             defer
-            data-domain="onestopshop.jackblatch.com"
+            //data-domain="onestopshop.jackblatch.com"
             src="https://plausible.io/js/script.tagged-events.js"
           ></script>
         </head>

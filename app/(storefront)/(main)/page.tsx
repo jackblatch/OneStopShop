@@ -25,18 +25,18 @@ import { Input } from "@/components/ui/input";
 import { TextInputWithLabel } from "@/components/text-input-with-label";
 
 export default async function Home() {
-  const storeAndProduct = (await db
-    .select({
-      product: products,
-      store: {
-        id: stores.id,
-        name: stores.name,
-        slug: stores.slug,
-      },
-    })
-    .from(products)
-    .leftJoin(stores, eq(products.storeId, stores.id))
-    .limit(8)) as ProductAndStore[];
+  // const storeAndProduct = (await db
+  //   .select({
+  //     product: products,
+  //     store: {
+  //       id: stores.id,
+  //       name: stores.name,
+  //       slug: stores.slug,
+  //     },
+  //   })
+  //   .from(products)
+  //   .leftJoin(stores, eq(products.storeId, stores.id))
+  //   .limit(8)) as ProductAndStore[];
 
   return (
     <div>
@@ -55,7 +55,7 @@ export default async function Home() {
               subheading={
                 <Heading size="h2">
                   Access our global marketplace and sell your <br /> products to
-                  over 1 million visitors.
+                  over 1 hundred thousand visitors.
                 </Heading>
               }
             >
@@ -94,26 +94,26 @@ export default async function Home() {
             >
               <Heading size="h3">Top Picks</Heading>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 overflow-auto mt-4">
-                {storeAndProduct.map((item) => (
+                {/* {storeAndProduct.map((item) => (
                   <ProductCard
                     key={item.product.id}
                     storeAndProduct={item}
                     hideButtonActions={true}
                   />
-                ))}
+                ))} */}
               </div>
               <div className="mt-12 grid place-content-center">
                 <Link href={routes.products}>
                   <Button variant="default">View All Products</Button>
                 </Link>
               </div>
-              <div className="bg-blue-900 text-white w-full p-12 rounded-md mt-12 flex items-center flex-col gap-2 justify-center text-center">
+              <div className="bg-gradient-to-br from-blue-600 via-white to-cyan-200 text-black w-full p-12 rounded-md mt-12 flex items-center flex-col gap-2 justify-center text-center">
                 <p className="uppercase tracking-wide text-sm font-medium">
                   Featured seller
                 </p>
-                <p className="text-3xl font-bold">Tim&apos;s Terrific Toys</p>
+                <p className="text-3xl font-bold">Ujenzi&apos;s Distributors</p>
                 <p>
-                  Top seller of the month! Tim&apos;s Toys has been selling toys
+                  Top seller of the month! Ujenzi&apos;s Distributors has been a seller
                   for 10 years and is a top rated seller on the platform.
                 </p>
                 <Link
@@ -126,7 +126,7 @@ export default async function Home() {
               <div className="md:grid md:grid-cols-3 gap-4 flex flex-col mt-12">
                 <FeatureBanner
                   heading="Free Shipping"
-                  subheading="Free shipping on all orders over $50"
+                  subheading="Free shipping on first order."
                   icon={<Truck size={32} />}
                 />
                 <FeatureBanner
@@ -137,7 +137,7 @@ export default async function Home() {
                 <FeatureBanner
                   heading="Best prices"
                   subheading="We offer the best prices on the market."
-                  icon={<DollarSign size={32} />}
+                  icon={<Wind size={32} />}
                 />
               </div>
             </HomePageLayout>

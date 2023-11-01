@@ -21,7 +21,7 @@ export const NavBar = ({
     <>
       <AnnouncementBar
         columns={2}
-        description="Free shipping on all orders over $50"
+        description="Free shipping on first order"
       >
         <div className="items-center justify-end gap-6 hidden sm:flex">
           <Link
@@ -82,8 +82,8 @@ export const NavBar = ({
       {showSecondAnnouncementBar && (
         <AnnouncementBar
           columns={1}
-          description="New summer sale - limited time only!"
-          backgroundColor="bg-blue-900"
+          description="New hackathon sale - limited time only!"
+          backgroundColor="bg-gradient-to-br from-blue-900 to-cyan-100 opacity-90" 
           textColor="text-secondary"
         />
       )}

@@ -30,7 +30,7 @@ export const ShoppingCartHeader = async () => {
         <SheetTrigger className="flex items-center justify-center relative -left-2">
           <ShoppingCart size={26} />
           {numberOfCartItems && numberOfCartItems > 0 ? (
-            <span className="bg-primary rounded-full w-6 h-6 text-white flex items-center justify-center text-sm absolute -top-2 -right-3">
+            <span className="bg-blue-500 rounded-full w-6 h-6 text-white flex items-center justify-center text-sm absolute -top-2 -right-3">
               {numberOfCartItems}
             </span>
           ) : null}
@@ -57,7 +57,7 @@ export const ShoppingCartHeader = async () => {
             : ""}
         </SheetTitle>
         <SheetDescription className="border border-border bg-secondary p-2 rounded-md flex items-center justify-center text-center py-3">
-          Free shipping on all orders over $50
+          Free shipping on first order
         </SheetDescription>
       </SheetHeader>
       {numberOfCartItems && numberOfCartItems > 0 ? (

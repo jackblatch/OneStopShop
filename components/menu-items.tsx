@@ -17,10 +17,10 @@ import { routes } from "@/lib/routes";
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: "Tim's Toys",
+    title: "Ujenzi Distributors",
     href: "/",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod lorem ipsum dolor sit amet.",
+      "For best ball valves, only ",
   },
   {
     title: "James' Jackpots",
@@ -75,13 +75,13 @@ export function MenuItems() {
                 </NavigationMenuLink>
               </li>
               <ListItem href={routes.products} title="New Arrivals">
-                Shop our new arrivals and exclusive collections.
+                Shop for the latest ball valves.
               </ListItem>
-              <ListItem href={routes.products} title="Sport">
-                Discover our new sports range.
+              <ListItem href={routes.products} title="Guages">
+                Discover our new temperature gauge range.
               </ListItem>
-              <ListItem href={routes.products} title="Summer Sale">
-                Grab a bargain with our summer sale.
+              <ListItem href={routes.products} title="Hackathon Sale">
+                Grab a bargain with our hackathon sale.
               </ListItem>
             </ul>
           </NavigationMenuContent>

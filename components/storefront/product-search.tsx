@@ -66,7 +66,7 @@ export function ProductSearch() {
     <>
       <div className="flex items-center justify-between gap-2">
         <button
-          className="border border-border px-4 py-2 rounded-md w-full flex items-center justify-between gap-2"
+          className="border border-border px-4 py-2 rounded-md w-9/12 flex items-center justify-between gap-2"
           onClick={() => setOpen((prev) => !prev)}
         >
           <p className="text-muted-foreground text-sm">Search...</p>

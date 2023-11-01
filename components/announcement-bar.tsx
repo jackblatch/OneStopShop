@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 export const AnnouncementBar = ({
   columns,
   description,
-  backgroundColor = "bg-primary",
+  backgroundColor = "bg-gradient-to-br from-blue-600 to-cyan-100",
   textColor = "text-secondary",
   children,
 }: PropsWithChildren<{
