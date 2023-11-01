@@ -1,10 +1,11 @@
 // db.ts
 import { drizzle } from "drizzle-orm/mysql2";
 //import { connect } from "@planetscale/database";
-import { createPool, PoolConnection } from "mysql2/promise";
+//import { createPool, PoolConnection } from "mysql2/promise";
+import { createPool } from "mysql2/promise";
 import { migrate } from "drizzle-orm/mysql2/migrator";
 
-let db: any;
+
 
 // create the connection
 async function connectToMySQL() {
@@ -29,12 +30,11 @@ process.env.NODE_ENV === "development" &&
   migrate(db as any, { migrationsFolder: "./migrations-folder" })
     .then((res) => res)
     .catch((err) => console.log("Migration error in db.ts:", err));
-
-}
-
-initializeDB();
-
-export function getDB() {
+  
   return db;
 }
 
+(async () => {
+  // Export the initialized db instance
+  module.exports.db = await initializeDB();
+})();
