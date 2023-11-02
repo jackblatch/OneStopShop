@@ -9,7 +9,7 @@ import { anchorTags } from "@/lib/routes";
 import { LoadingSkeleton } from "../ui/loading-skeleton";
 
 const mockImage =
-  "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80";
+  "https://images.unsplash.com/photo-1426927308491-6380b6a9936f?auto=format&fit=crop&q=80&w=2071&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 export const CollectionHeaderWrapper = (
   props: PropsWithChildren<{ heading: string }>

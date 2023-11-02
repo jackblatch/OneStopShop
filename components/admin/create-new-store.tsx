@@ -47,7 +47,7 @@ export const CreateNewStore = (props: { createStore: typeof createStore }) => {
             className="mt-2"
             id="store-name"
             name="store-name"
-            placeholder="e.g. Tim's Toys"
+            placeholder="e.g. Tim's "
             value={storeName}
             onChange={(e) => setStoreName(e.target.value)}
           />

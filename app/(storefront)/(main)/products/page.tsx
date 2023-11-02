@@ -24,7 +24,7 @@ export default async function StorefrontProductsPage(context: {
     .select({
       product: products,
       store: {
-        id: stores.id,
+        id: stores.id ? stores.id : 1,
         name: stores.name,
         slug: stores.slug,
       },

@@ -13,7 +13,7 @@ export default async function SellerProfile() {
     .select()
     .from(stores)
     .where(eq(stores.id, Number(user?.privateMetadata?.storeId)))
-    .catch((err) => {
+    .catch((err: any) => {
       console.log(err);
       return null;
     });

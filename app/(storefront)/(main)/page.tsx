@@ -2,7 +2,7 @@ import { ContentWrapper } from "@/components/content-wrapper";
 import { SlideShow } from "@/components/slideshow";
 import { Heading } from "@/components/ui/heading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { db } from "@/db/db";
+//import { db } from "@/db/db";
 import { products, stores } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { PropsWithChildren } from "react";
@@ -117,7 +117,7 @@ export default async function Home() {
                   for 10 years and is a top rated seller on the platform.
                 </p>
                 <Link
-                  href={routes.products + "?seller=tims-toys"}
+                  href={routes.products + "?seller=ujenzi-ball-valves"}
                   className="mt-6"
                 >
                   <Button variant="secondary">Explore seller</Button>
