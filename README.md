@@ -31,7 +31,7 @@ Admin Product Page Editor
 
 Follow the below steps to run the app locally:
 
-1. Create a database in PlanetScale.
+1. Create a MySQL database.
 2. Create a local `.env` file with the variables as per the `.env.example` file.
 3. Run `npm install`.
 4. Generate a migration with `npx drizzle-kit generate:mysql`. This creates a new folder called `migrations-folder` in the root which contains the SQL queries to create the database tables. Migrations are automatically synced with the database through the migration function in `db.ts`. Alternatively, you can run the generated SQL queries from the migration manually through the PlanetScale console and remove the migration function in `db.ts`.

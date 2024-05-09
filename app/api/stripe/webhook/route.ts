@@ -105,7 +105,7 @@ export async function POST(request: Request) {
           country: stripeAddress?.country,
         });
 
-        if (!newAddress.insertId) throw new Error("No address created");
+        if (!newAddress[0].insertId) throw new Error("No address created");
 
         // get current order count in DB
         const storeOrderCount = await db
@@ -124,7 +124,7 @@ export async function POST(request: Request) {
           name: stripeObject?.shipping?.name,
           email: stripeObject?.receipt_email,
           createdAt: event.created,
-          addressId: Number(newAddress.insertId),
+          addressId: Number(newAddress[0].insertId),
         });
         console.log("ORDER CREATED", newOrder);
       } catch (err) {
