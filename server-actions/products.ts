@@ -41,7 +41,7 @@ export async function createProduct(
       error: false,
       message: "Product created",
       action: "Success, your new product has been created",
-      productId: dbRes.insertId,
+      productId: dbRes[0].insertId,
     };
 
     return res;

@@ -26,7 +26,7 @@ export async function createStore(storeName: string) {
       return res;
     }
 
-    const { insertId: storeId } = await db.insert(stores).values({
+    const [{ insertId: storeId }] = await db.insert(stores).values({
       name: storeName,
       slug: createSlug(storeName),
     });

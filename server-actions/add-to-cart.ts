@@ -58,7 +58,7 @@ export async function addToCart(newCartItem: CartItem) {
       .insert(carts)
       .values({ items: JSON.stringify([newCartItem]) });
     // @ts-ignore
-    cookieStore.set("cartId", String(newCart.insertId));
+    cookieStore.set("cartId", String(newCart[0].insertId));
     revalidatePath("/");
     return;
   }
