@@ -1,19 +1,10 @@
 // db.ts
-import { drizzle } from "drizzle-orm/planetscale-serverless";
-import { connect } from "@planetscale/database";
-import { migrate } from "drizzle-orm/mysql2/migrator";
+import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2/promise";
 
 // create the connection
-const connection = connect({
-  host: process.env["DATABASE_HOST"],
-  username: process.env["DATABASE_USERNAME"],
-  password: process.env["DATABASE_PASSWORD"],
+const connection = await mysql.createConnection({
+  uri: process.env.DATABASE_URL,
 });
 
 export const db = drizzle(connection);
-
-// syncs the migrations folder to PlanetScale
-process.env.NODE_ENV === "development" &&
-  migrate(db as any, { migrationsFolder: "./migrations-folder" })
-    .then((res) => res)
-    .catch((err) => console.log("Migration error in db.ts:", err));
