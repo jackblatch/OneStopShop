@@ -1,4 +1,5 @@
 "use client";
+
 import { useDropzone } from "react-dropzone";
 import type { FileWithPath } from "react-dropzone";
 
@@ -30,27 +31,29 @@ export function ProductImageUploader(props: {
     accept: generateClientDropzoneAccept(["image"]),
   });
 
-  const { startUpload, isUploading, permittedFileInfo } = useUploadThing({
-    endpoint: "imageUploader", // replace this with an actual endpoint name
-    onClientUploadComplete: (data) => {
-      setFiles([]);
-      if (!data) return;
-      props.setNewImages(
-        data.map((item) => {
-          return {
-            url: item.fileUrl,
-            alt: item.fileKey.split("_")[1],
-            id: item.fileKey,
-          };
-        })
-      );
-    },
-    onUploadError: () => {
-      toast({
-        title: "Sorry, an error occured while uploading your image(s).",
-      });
-    },
-  });
+  const { startUpload, isUploading, permittedFileInfo } = useUploadThing(
+    "imageUploader",
+    {
+      onClientUploadComplete: (data) => {
+        setFiles([]);
+        if (!data) return;
+        props.setNewImages(
+          data.map((item) => {
+            return {
+              url: item.url,
+              alt: item.key.split("_")[1],
+              id: item.key,
+            };
+          })
+        );
+      },
+      onUploadError: () => {
+        toast({
+          title: "Sorry, an error occured while uploading your image(s).",
+        });
+      },
+    }
+  );
 
   return (
     <div>
