@@ -1,4 +1,3 @@
-import SiteDescription from "../../../(content)/site-description.mdx";
 import { CollectionBody } from "@/components/storefront/collection-body";
 import { CollectionHeaderWrapper } from "@/components/storefront/collection-header-wrapper";
 import { CollectionPagePagination } from "@/components/storefront/collection-page-pagination";
@@ -49,7 +48,37 @@ export default async function StorefrontProductsPage(context: {
   return (
     <div>
       <CollectionHeaderWrapper heading="Products">
-        <SiteDescription />
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis at
+          tellus at urna. Sit amet porttitor eget dolor morbi non. Feugiat nibh
+          sed pulvinar proin gravida hendrerit. Fermentum odio eu feugiat
+          pretium nibh. Commodo ullamcorper a lacus vestibulum sed arcu non odio
+          euismod. Auctor augue mauris augue neque gravida in fermentum.
+        </p>
+        <p>
+          Consectetur libero id faucibus nisl tincidunt eget nullam non. Fames
+          ac turpis egestas sed tempus urna et. Massa sed elementum tempus
+          egestas sed sed risus pretium quam. Erat pellentesque adipiscing
+          commodo elit at imperdiet. Blandit turpis cursus in hac habitasse
+          platea dictumst. Rhoncus aenean vel elit scelerisque mauris
+          pellentesque pulvinar pellentesque habitant.
+        </p>
+        <p>
+          In mollis nunc sed id semper risus in hendrerit gravida. Imperdiet dui
+          accumsan sit amet nulla facilisi morbi tempus. Quis vel eros donec ac
+          odio tempor. Elementum pulvinar etiam non quam lacus suspendisse
+          faucibus interdum.
+        </p>
+        <p>
+          Urna cursus eget nunc scelerisque viverra mauris in. Eget nullam non
+          nisi est sit amet facilisis magna etiam. Elit sed vulputate mi sit
+          amet mauris commodo. Ut sem nulla pharetra diam sit amet nisl
+          suscipit. Turpis tincidunt id aliquet risus feugiat. Maecenas pharetra
+          convallis posuere morbi. Leo vel orci porta non pulvinar. Sodales
+          neque sodales ut etiam sit. Lacinia quis vel eros donec. Massa sapien
+          faucibus et molestie ac feugiat sed.
+        </p>
       </CollectionHeaderWrapper>
       <CollectionBody
         storeAndProduct={storeAndProduct}
