@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+export const nextConfig = {
   experimental: {
     appDir: true,
     serverActions: true,
@@ -28,6 +28,3 @@ const nextConfig = {
     ],
   },
 };
-
-const withMDX = require("@next/mdx")();
-module.exports = withMDX(nextConfig);
