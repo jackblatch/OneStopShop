@@ -9,8 +9,8 @@ dependencies:
     specifier: ^4.17.1
     version: 4.17.1(next@13.4.6)(react-dom@18.2.0)(react@18.2.0)
   '@next/mdx':
-    specifier: ^13.3.1
-    version: 13.3.1
+    specifier: ^14.2.4
+    version: 14.2.4
   '@radix-ui/react-accordion':
     specifier: ^1.1.2
     version: 1.1.2(@types/react-dom@18.2.4)(@types/react@18.2.10)(react-dom@18.2.0)(react@18.2.0)
@@ -3483,8 +3483,8 @@ packages:
       glob: 7.1.7
     dev: false
 
-  /@next/mdx@13.3.1:
-    resolution: {integrity: sha512-DasSzihfUHVwX+NRuc7GdnGtspOp3AHTlUc397CEK8qkBw05TVQIAOywP6gT/0WpbKWD4iOch9JZS8XVkXKq7A==}
+  /@next/mdx@14.2.4:
+    resolution: {integrity: sha512-eklTNNoH08xGy9UiKcohZmoLhmHAYaYm5ndPGQqJybaeNErgYL8fmp2tk5DRD0L54DNqMz97oN+CAEHqfqIVcw==}
     peerDependencies:
       '@mdx-js/loader': '>=0.15.0'
       '@mdx-js/react': '>=0.15.0'
