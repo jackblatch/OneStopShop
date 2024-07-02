@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-export const nextConfig = {
+const nextConfig = {
   experimental: {
     appDir: true,
     serverActions: true,
@@ -28,3 +28,5 @@ export const nextConfig = {
     ],
   },
 };
+
+module.exports = nextConfig;
